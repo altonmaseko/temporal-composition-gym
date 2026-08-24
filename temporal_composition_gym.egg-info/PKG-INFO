@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: temporal_composition_gym
+Version: 0.1.0
+Requires-Dist: gymnasium
+Requires-Dist: minigrid
+Requires-Dist: pygame
+Requires-Dist: pymunk
+Requires-Dist: numpy
+Requires-Dist: pytablericons
+Requires-Dist: Pillow
+Dynamic: requires-dist

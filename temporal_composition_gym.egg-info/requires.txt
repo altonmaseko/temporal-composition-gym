@@ -1,0 +1,7 @@
+gymnasium
+minigrid
+pygame
+pymunk
+numpy
+pytablericons
+Pillow

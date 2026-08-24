@@ -10,5 +10,7 @@ setup(
         "pygame",
         "pymunk",
         "numpy",
+        "pytablericons",
+        "Pillow",
     ],
 )

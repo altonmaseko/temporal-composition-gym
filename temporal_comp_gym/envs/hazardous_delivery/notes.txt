@@ -1,0 +1,3 @@
+*** Visual Display Icons
+  To change the visual display icons into images, 
+  go to objects.py, and look for custom_path variable
