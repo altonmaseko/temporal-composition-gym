@@ -1,0 +1,40 @@
+# Hazardous Delivery Task: Agent Observation Space
+
+The observation space is a flat, 1D vector of floating-point numbers. Unlike traditional MiniGrid environments that provide a 3D ego-centric visual matrix, this environment is strictly designed as a partially-observable tabular/state-vector task to test Recurrent Neural Networks (RNNs) and memory-augmented agents.
+
+Depending on the environment configuration, the vector contains either 7, 8, or 9 values at each time step.
+
+## Core Vector (Always Present - 7 Values)
+
+1. **`X Coordinate` (float):** The agent's absolute X position on the grid.
+2. **`Y Coordinate` (float):** The agent's absolute Y position on the grid.
+   *Purpose:* Provides global spatial awareness without providing a global map.
+
+3. **`Sensor Up` (float):** Object directly above (y-1)
+4. **`Sensor Down` (float):** Object directly below (y+1)
+5. **`Sensor Left` (float):** Object directly left (x-1)
+6. **`Sensor Right` (float):** Object directly right (x+1)
+   *Purpose:* Acts as a local proximity scanner. It allows the agent to navigate safely around immediate hazards and locate objectives without seeing the whole map. 
+   
+7. **`Current Square` (float):** The object occupying the square the agent is currently standing on.
+   *Purpose:* Provides confirmation of the agent's current physical overlap (e.g., confirming it is standing on a health node).
+
+### Sensor Values Mapping:
+The sensors (values 3-7) map the physical objects into the following discrete integers:
+* `0.0` = Safe / Empty Floor / Wall
+* `1.0` = Damage Square
+* `2.0` = Death Square (Lava)
+* `3.0` = Package OR Destination
+* `4.0` = Level Goal
+
+## Memory Toggles (Optional - up to 2 Values)
+
+These values are conditionally appended to the end of the vector. If toggled off before training, the agent is forced to use its own internal recurrent memory (like an LSTM cell) to track its history.
+
+8. **`Health State` (float):** The agent's current health score (e.g., 10.0). 
+   *Present only if `include_health_in_state=True`.*
+   *Purpose:* If hidden, the agent must actively remember how many damage squares it has stepped on.
+
+9. **`Inventory State` (float):** The total number of packages the agent has successfully delivered.
+   *Present only if `include_inventory_in_state=True`.*
+   *Purpose:* If hidden, the agent must explicitly memorize its delivery history to know when it is safe to enter the Level Goal.

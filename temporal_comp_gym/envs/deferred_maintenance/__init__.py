@@ -1,13 +1,9 @@
-import gymnasium as gym
+from .core import DeferredMaintenanceEnv as _CoreEnv
+from .wrappers import DeferredMaintenanceObservationWrapper
 
-class DeferredMaintenanceEnv(gym.Env):
+class DeferredMaintenanceEnv(DeferredMaintenanceObservationWrapper):
+    metadata = {"render_modes": ["human"], "render_fps": 60}
+    
     def __init__(self, **kwargs):
-        super().__init__()
-        # Placeholder
-        
-    def reset(self, seed=None, options=None):
-        super().reset(seed=seed)
-        return None, {}
-        
-    def step(self, action):
-        return None, 0.0, False, False, {}
+        env = _CoreEnv(**kwargs)
+        super().__init__(env)

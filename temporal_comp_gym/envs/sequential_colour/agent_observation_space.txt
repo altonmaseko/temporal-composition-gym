@@ -1,0 +1,40 @@
+Sequential Colour Navigation Task: Agent Observation Space
+=========================================================
+
+The agent receives a visual observation at every time step. To ensure the environment strictly tests temporal memory and visual processing, the agent does NOT receive any explicit internal state variables (like its coordinates, the current phase, or the target sequence).
+
+Observation Shape and Type
+--------------------------
+* Type: 3D NumPy array (Box space)
+* Shape: (84, 84, 3) 
+* Data Type: np.uint8 (integers from 0 to 255)
+* Format: RGB (Red, Green, Blue) image frame.
+
+What the Agent Sees (By Phase)
+------------------------------
+Because this task relies on temporal composition, the exact meaning of the RGB array changes depending on the current phase of the episode:
+
+1. Phase 1: Memorisation
+   * Observation: A completely solid-coloured 84x84x3 image.
+   * Purpose: Represents a single colour from the sequence the agent must memorise. The agent must process this solid colour through its CNN and store it in its internal recurrent memory (e.g., LSTM) because directional actions have no physical effect during this phase.
+
+2. Phase 2: Retention (Delay)
+   * Observation: A completely solid black 84x84x3 image (all RGB values are 0).
+   * Purpose: Acts as a blank buffer between the memorisation and navigation phases. The agent must retain the memorised sequence through this visually empty period without forgetting it.
+
+3. Phase 3: Navigation
+   * Observation: A top-down 84x84x3 visual representation of the navigation room.
+   * Purpose: The agent must use this spatial view to navigate towards the correct wall.
+   * Visual Elements in this frame:
+     - Background: Solid black.
+     - Agent: A white square representing the agent's current position.
+     - Walls: Four distinct coloured rectangles bordering the edges of the frame (Top, Bottom, Left, Right). 
+   * Note: The rendering engine scales the physical room dimensions down to precisely fit this 84x84 window, ensuring the agent always sees the entire room, itself, and all four walls at once.
+
+Observation Noise Wrapper
+-------------------------
+If the environment is wrapped with the `GaussianNoiseWrapper` and `observation_noise_level` is set above 0.0:
+* Random Gaussian noise is applied to every pixel in the 84x84x3 array across all phases.
+* The intensity of the noise scales with the `observation_noise_level` parameter.
+* The final pixel values are clipped back to the valid 0-255 range.
+* Purpose: To evaluate the robustness of the agent's visual feature extractor and memory retention under imperfect, noisy conditions.
