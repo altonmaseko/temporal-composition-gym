@@ -23,12 +23,22 @@ class HazardousDeliveryObservationWrapper(gym.ObservationWrapper):
         x, y = env.agent_pos
         
         def get_type_val(obj):
-            if obj is None: return 0
-            if obj.type == 'damage': return 1
-            if obj.type == 'lava': return 2
-            if obj.type in ['package', 'destination']: return 3
-            if obj.type == 'goal': return 4
-            return 0 
+            if obj is None: return 0.0
+            if obj.type == 'damage': return 1.0
+            if obj.type == 'lava': return 2.0
+            
+            if obj.type == 'package':
+                if getattr(env, 'task_dependencies', False) and getattr(obj, 'seq_id', None) is not None:
+                    return 10.0 + obj.seq_id # E.g., 11.0 for Package 1
+                return 3.0
+                
+            if obj.type == 'destination':
+                if getattr(env, 'task_dependencies', False) and getattr(obj, 'seq_id', None) is not None:
+                    return 20.0 + obj.seq_id # E.g., 21.0 for Destination 1
+                return 3.0
+                
+            if obj.type == 'goal': return 4.0
+            return 0.0 
             
         grid = env.grid
         up = grid.get(x, y-1)

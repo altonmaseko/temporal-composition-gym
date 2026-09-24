@@ -7,22 +7,26 @@ import pytablericons as pt
 class HazardousDeliveryCoreEnv(MiniGridEnv):
     def __init__(
         self,
-        grid_size=10,
-        percent_death_squares=0.05,
-        percent_damage_squares=0.05,
-        randomise_start=True,
-        randomise_goal=True,
-        num_packages=3,
-        carrying_capacity=1,
-        health_regeneration_nodes=2,
-        reward_delivery=10.0,
-        reward_task_completion=50.0,
-        penalty_damage=-1.0,
-        penalty_premature_goal=-50.0,
-        penalty_death_square=-50.0,
+        grid_size=10, # The width and height of the 2D grid
+        percent_death_squares=0.05, # The percentage of the grid covered by instant-kill death squares
+        percent_damage_squares=0.05, # The percentage of the grid covered by damage-inducing squares
+        randomise_start=True, # If True, the agent spawns at a random safe coordinate each episode
+        randomise_goal=True, # If True, the location of the Goal square changes every episode
+        num_packages=3, # The total number of packages that must be delivered to unlock the goal square
+        carrying_capacity=1, # The maximum number of packages the agent can hold simultaneously
+        health_regeneration_nodes=2, # The number of single-use healing squares spawned on the grid
+        task_dependencies=False, # If True, packages must be collected and delivered in a specific sequential order
+        
+        # Rewards and Penalty ====================
+        reward_delivery=10.0, # Positive reward granted when a package is deposited at its correct destination
+        reward_task_completion=50.0, # Large positive terminal reward for safely entering the Goal square after all deliveries
+        penalty_damage=-1.0, # Negative reward applied each time the agent steps on a damage square
+        penalty_premature_goal=-50.0, # Large negative terminal reward for entering the Goal square before deliveries are complete
+        penalty_death_square=-50.0, # Large negative terminal reward for stepping into a death square hazard
         max_steps=500,
         **kwargs
     ):
+        self.grid_size = grid_size
         self.percent_death_squares = percent_death_squares
         self.percent_damage_squares = percent_damage_squares
         self.randomise_start = randomise_start
@@ -30,6 +34,7 @@ class HazardousDeliveryCoreEnv(MiniGridEnv):
         self.num_packages = num_packages
         self.carrying_capacity = carrying_capacity
         self.health_regeneration_nodes = health_regeneration_nodes
+        self.task_dependencies = task_dependencies
         
         self.reward_delivery = reward_delivery
         self.reward_task_completion = reward_task_completion
@@ -71,11 +76,13 @@ class HazardousDeliveryCoreEnv(MiniGridEnv):
         else:
             self.put_obj(LevelGoal(), width - 2, height - 2)
             
-        for _ in range(self.num_packages):
-            self.place_obj(Package())
+        for i in range(self.num_packages):
+            seq_id = (i + 1) if self.task_dependencies else None
+            self.place_obj(Package(seq_id=seq_id))
             
-        for _ in range(self.num_packages):
-            self.place_obj(Destination())
+        for i in range(self.num_packages):
+            seq_id = (i + 1) if self.task_dependencies else None
+            self.place_obj(Destination(seq_id=seq_id))
             
         for _ in range(num_death):
             self.place_obj(DeathSquare())
@@ -132,12 +139,25 @@ class HazardousDeliveryCoreEnv(MiniGridEnv):
                 self.grid.set(self.agent_pos[0], self.agent_pos[1], None)
                 
             elif curr_cell.type == 'package':
-                if self.carried_packages < self.carrying_capacity:
+                # Check sequential order if task_dependencies is enabled
+                can_pickup = True
+                if self.task_dependencies:
+                    # The next required package sequence number is (carried + delivered + 1)
+                    if curr_cell.seq_id != (self.carried_packages + self.delivered_packages + 1):
+                        can_pickup = False
+                        
+                if can_pickup and self.carried_packages < self.carrying_capacity:
                     self.carried_packages += 1
                     self.grid.set(self.agent_pos[0], self.agent_pos[1], None)
                     
             elif curr_cell.type == 'destination':
-                if self.carried_packages > 0:
+                can_deliver = True
+                if self.task_dependencies:
+                    # The next required destination sequence number is (delivered + 1)
+                    if curr_cell.seq_id != (self.delivered_packages + 1):
+                        can_deliver = False
+                        
+                if can_deliver and self.carried_packages > 0:
                     self.carried_packages -= 1
                     self.delivered_packages += 1
                     reward = self.reward_delivery

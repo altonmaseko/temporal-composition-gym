@@ -24,8 +24,12 @@ The sensors (values 3-7) map the physical objects into the following discrete in
 * `0.0` = Safe / Empty Floor / Wall
 * `1.0` = Damage Square
 * `2.0` = Death Square (Lava)
-* `3.0` = Package OR Destination
+* `3.0` = Generic Package OR Destination (When `task_dependencies=False`)
 * `4.0` = Level Goal
+
+*Note: If `task_dependencies=True`, the agent needs to know the exact identity of packages and destinations to sequence them. The mapping dynamically changes:*
+* `11.0, 12.0, 13.0, ...` = Package 1, Package 2, Package 3, etc.
+* `21.0, 22.0, 23.0, ...` = Destination 1, Destination 2, Destination 3, etc.
 
 ## Memory Toggles (Optional - up to 2 Values)
 

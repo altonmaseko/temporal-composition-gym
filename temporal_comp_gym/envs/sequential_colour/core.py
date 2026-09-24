@@ -45,17 +45,27 @@ class SequentialColourEnv(gym.Env):
     
     def __init__(
         self, 
-        render_mode=None,
-        sequence_length_range=(3, 5),
-        retention_delay_steps=2,
-        allow_consecutive_duplicates=False,
-        colour_vocabulary_size=6,
-        randomise_wall_colors=True,
-        reward_density='sparse',
-        penalty_severity=1.0,
-        hard_death_mode=False,
-        infinite_mode=False,
-        agent_wall_distance_blocks=2
+        
+        # Base Environment Settings
+        render_mode=None,                               # Pygame rendering mode ('human', 'rgb_array', or None)
+        
+        # Difficulty & Logic Settings
+        sequence_length_range=(3, 5),                   # Min/max colours flashed during memorisation
+        retention_delay_steps=2,                        # Number of blank frames between memorisation and navigation
+        allow_consecutive_duplicates=False,             # If True, the same colour can flash back-to-back
+        colour_vocabulary_size=6,                       # Number of distinct colours the agent must learn
+        randomise_wall_colors=True,                     # If True, randomises the 4 navigation wall colours every reset
+        hard_death_mode=False,                          # If True, touching one incorrect wall ends the episode
+        infinite_mode=False,                            # If True, immediately starts next sequence instead of terminating
+        
+        # Room Scaling
+        agent_wall_distance_blocks=6,                   # Distance in blocks between the agent's spawn and the walls
+        
+        # Reward & Penalty Settings
+        reward_density='sparse',                        # 'dense' grants reward per wall, 'sparse' requires full completion
+        reward_correct_wall=1.0,                        # Reward granted when touching the correct wall (if density='dense')
+        reward_sequence_completion=10.0,                # Terminal reward for finishing the sequence (if density='sparse')
+        penalty_severity=1.0                            # Deduction applied to score and reward when touching an incorrect wall
     ):
         super().__init__()
         
@@ -65,11 +75,14 @@ class SequentialColourEnv(gym.Env):
         self.allow_consecutive_duplicates = allow_consecutive_duplicates
         self.colour_vocabulary_size = min(colour_vocabulary_size, len(COLORS))
         self.randomise_wall_colors = randomise_wall_colors
-        self.reward_density = reward_density
-        self.penalty_severity = penalty_severity
         self.hard_death_mode = hard_death_mode
         self.infinite_mode = infinite_mode
         self.agent_wall_distance_blocks = agent_wall_distance_blocks
+        
+        self.reward_density = reward_density
+        self.reward_correct_wall = reward_correct_wall
+        self.reward_sequence_completion = reward_sequence_completion
+        self.penalty_severity = penalty_severity
         
         self.vocab_colors = COLORS[:self.colour_vocabulary_size]
         
@@ -272,12 +285,12 @@ class SequentialColourEnv(gym.Env):
                 
                 if touched_color == target_color:
                     if self.reward_density == 'dense':
-                        reward += 1.0
+                        reward += self.reward_correct_wall
                     self.current_seq_idx += 1
                     
                     if self.current_seq_idx >= len(self.sequence):
                         if self.reward_density == 'sparse':
-                            reward += 10.0
+                            reward += self.reward_sequence_completion
                         if self.infinite_mode:
                             # Start next loop immediately
                             self.current_phase = "memorisation"

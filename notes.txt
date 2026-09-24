@@ -1,7 +1,7 @@
 ==========================================================
 
 ***To adjust speed of visual display:
-  Go to tests/test_env.py, and adjust the time.sleep(x).
+  Go to one of the files in tests folder, and adjust the time.sleep(x).
 
 ==========================================================
 
@@ -9,3 +9,10 @@
   All the parameters for each game/environment are located within the 
   __init__ method of the main class (named its game name) in the core.py
   file in each env folder.
+
+==========================================================
+
+***Playing the games yourself
+  You may play the games yourself for visual testing, by running the 
+  scripts in the play_human folder.
+

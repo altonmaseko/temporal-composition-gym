@@ -114,10 +114,32 @@ class HealthNode(WorldObj):
     def encode(self):
         return (OBJECT_TO_IDX["floor"], COLOR_TO_IDX[self.color], 0)
 
+def draw_number_on_img(img_arr, text):
+    """Draws a small sequence number on the tile image."""
+    from PIL import ImageDraw, ImageFont
+    h, w = img_arr.shape[:2]
+    pil_img = Image.fromarray(img_arr)
+    draw = ImageDraw.Draw(pil_img)
+    try:
+        font = ImageFont.truetype("arial.ttf", size=max(14, int(h * 0.45)))
+    except:
+        font = ImageFont.load_default()
+    
+    # Draw bottom right
+    x, y = int(w * 0.6), int(h * 0.5)
+    # Outline for visibility
+    draw.text((x-1, y-1), text, font=font, fill=(0,0,0))
+    draw.text((x+1, y-1), font=font, text=text, fill=(0,0,0))
+    draw.text((x-1, y+1), font=font, text=text, fill=(0,0,0))
+    draw.text((x+1, y+1), font=font, text=text, fill=(0,0,0))
+    draw.text((x, y), text, font=font, fill=(255,255,255))
+    img_arr[:, :, :] = np.array(pil_img)
+
 class Package(Ball):
-    def __init__(self, color="yellow"):
+    def __init__(self, color="yellow", seq_id=None):
         super().__init__(color)
         self.type = 'package'
+        self.seq_id = seq_id
         # Custom path can be set here:
         self.icon = CachedIcon(pt.OutlineIcon.PACKAGE, "#FFFF00", custom_path=None)
         
@@ -129,14 +151,17 @@ class Package(Ball):
         # We just want the icon over a transparent/floor background.
         arr = self.icon.get_arr(img.shape[0])
         blend_icon(img, arr)
+        if self.seq_id is not None:
+            draw_number_on_img(img, str(self.seq_id))
         
     def encode(self):
         return (OBJECT_TO_IDX["ball"], COLOR_TO_IDX[self.color], 0)
 
 class Destination(WorldObj):
-    def __init__(self, color="blue"):
+    def __init__(self, color="blue", seq_id=None):
         super().__init__("box", color)
         self.type = "destination"
+        self.seq_id = seq_id
         # Custom path can be set here:
         self.icon = CachedIcon(pt.OutlineIcon.TARGET, "#0000FF", custom_path=None)
         
@@ -147,6 +172,8 @@ class Destination(WorldObj):
         fill_coords(img, point_in_rect(0, 1, 0, 1), np.array([0, 0, 40])) 
         arr = self.icon.get_arr(img.shape[0])
         blend_icon(img, arr)
+        if self.seq_id is not None:
+            draw_number_on_img(img, str(self.seq_id))
         
     def encode(self):
         return (OBJECT_TO_IDX["box"], COLOR_TO_IDX[self.color], 0)

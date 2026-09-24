@@ -1,0 +1,16 @@
+{"time":"2026-09-24T16:14:01.8168123+02:00","level":"INFO","msg":"wandb-core"}
+{"time":"2026-09-24T16:14:01.8173233+02:00","level":"INFO","msg":"stream: starting","core version":"0.30.0"}
+{"time":"2026-09-24T16:14:01.8280887+02:00","level":"INFO","msg":"stream: created new stream","id":"coq3r1eu"}
+{"time":"2026-09-24T16:14:01.8281672+02:00","level":"INFO","msg":"handler: started"}
+{"time":"2026-09-24T16:14:01.8398384+02:00","level":"INFO","msg":"writer: started","stream_id":"coq3r1eu"}
+{"time":"2026-09-24T16:14:01.8404757+02:00","level":"INFO","msg":"sender: started"}
+{"time":"2026-09-24T16:14:01.8404757+02:00","level":"INFO","msg":"stream: started"}
+{"time":"2026-09-24T16:14:02.0348503+02:00","level":"WARN","msg":"featurechecker: GraphQL client is nil, skipping feature loading"}
+{"time":"2026-09-24T16:14:02.0348503+02:00","level":"WARN","msg":"runupserter: server does not expand metric globs but the x_server_side_expand_glob_metrics setting is set; ignoring"}
+{"time":"2026-09-24T16:14:16.712376+02:00","level":"WARN","msg":"tensorboard: no root directory","error":"timed out after 10s"}
+{"time":"2026-09-24T16:14:16.712376+02:00","level":"INFO","msg":"tensorboard: tracking new log directory","logDir":"LocalOrCloudPath(LocalPath=\"C:\\\\Users\\\\alton\\\\Desktop\\\\School Work\\\\Research Project Development\\\\temporal-composition-gym\\\\runs\\\\ppo_rm_TemporalComp_HazardousDelivery-v0\\\\PPO_2\")","namespace":""}
+{"time":"2026-09-24T16:14:16.7128809+02:00","level":"INFO","msg":"tensorboard: saving file","fileLocation":"C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\temporal-composition-gym\\runs\\ppo_rm_TemporalComp_HazardousDelivery-v0\\PPO_2\\events.out.tfevents.1790259246.alton.21720.0","runPath":"runs/ppo_rm_TemporalComp_HazardousDelivery-v0/PPO_2/events.out.tfevents.1790259246.alton.21720.0"}
+{"time":"2026-09-24T16:14:16.7263512+02:00","level":"INFO","msg":"stream: finishing up"}
+{"time":"2026-09-24T16:14:16.7264958+02:00","level":"INFO","msg":"handler: closed"}
+{"time":"2026-09-24T16:14:16.7270638+02:00","level":"INFO","msg":"sender: closed"}
+{"time":"2026-09-24T16:14:16.7270638+02:00","level":"INFO","msg":"stream: all finished"}
