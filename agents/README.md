@@ -195,3 +195,15 @@ Because it wraps standard PPO, it supports both continuous and discrete environm
 ```bash
 python agents/ppo_rm/train_ppo_rm.py --env-id TemporalComp/HazardousDelivery-v0 --timesteps 100000
 ```
+---
+
+## ☁️ Cloud Execution Preparation (Vast.ai)
+
+Before executing these scripts on rented remote GPUs (like Vast.ai), several crucial preparations were implemented across all 6 agents to ensure bulletproof execution and automated data collection:
+
+- **Weights & Biases (WandB) Integration:** Every script now initializes `wandb.init(sync_tensorboard=True)`. This automatically streams learning curves, Expected Cumulative Rewards, and episodic lengths to your web dashboard, removing the need to manually parse local TensorBoard logs on a headless server.
+- **Crash Recovery & Auto-Resuming:** We introduced `load_latest_checkpoint()` (for PyTorch scripts) and `CheckpointCallback` with custom loaders (for SB3 scripts) which automatically save models every 100,000 steps. If a Vast.ai instance reboots, loses power, or gets preempted, simply restarting the script will automatically locate the latest `.pt` or `.zip` file in the `models/` directory, restore the network/optimizer weights, and resume training exactly where it left off.
+- **Dependency Freezing:** A strict `requirements.txt` was generated in the root directory to instantly replicate the environment on blank Vast.ai PyTorch Docker containers.
+- **Automated Multi-Seed Scripts:** To avoid manually typing commands for dozens of runs, the `run_scripts/` directory was created. It contains three master bash scripts (`run_memoryless_baselines.sh`, `run_implicit_memory_baselines.sh`, `run_explicit_memory_baselines.sh`) that use `for` loops to automatically train all agents across 3 random seeds sequentially.
+
+*(Note: Always execute the bash scripts inside a `tmux` session to ensure training survives SSH disconnects!)*
