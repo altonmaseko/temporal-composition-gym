@@ -3,8 +3,8 @@
 # Ensure script fails if any command fails
 set -e
 
-# Make sure we're in the right directory
-cd "$(dirname "$0")"
+# Make sure we're in the repository root directory
+cd "$(dirname "$0")/.."
 
 echo "======================================================"
 echo " Starting 6 Temporal Composition Gym Runs in Parallel "
