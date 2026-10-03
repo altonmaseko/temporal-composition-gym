@@ -59,11 +59,25 @@ def objective(trial):
     return get_latest_reward(latest_run)
 
 if __name__ == "__main__":
-    study = optuna.create_study(direction="maximize", study_name="drqn_tuning")
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    db_path = os.path.join(base_dir, "run_scripts", "hyperparameter_tuning", "drqn_tuning.db")
+    csv_path = os.path.join(base_dir, "run_scripts", "hyperparameter_tuning", "drqn_tuning_results.csv")
+    
+    study = optuna.create_study(
+        direction="maximize", 
+        study_name="drqn_tuning",
+        storage=f"sqlite:///{db_path}",
+        load_if_exists=True
+    )
     
     # Image-based environments can cause CUDA OOM, limit to n_jobs=2
     study.optimize(objective, n_trials=15, n_jobs=2)
     
+    # Save results to CSV for easy viewing
+    df = study.trials_dataframe()
+    df.to_csv(csv_path)
+    
+    print(f"Results saved to {csv_path}")
     print("Best trial:")
     trial = study.best_trial
     print(f"  Value: {trial.value}")

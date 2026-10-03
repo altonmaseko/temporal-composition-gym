@@ -10,7 +10,7 @@ from stable_baselines3.common.monitor import Monitor
 
 # Setup paths for custom wrappers
 base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(base_dir)
+sys.path.append(os.path.join(base_dir, "agents"))
 
 from rm_wrapper import DeferredMaintenanceRMWrapper
 
@@ -91,7 +91,8 @@ def objective(trial):
         ent_coef=ent_coef,
         clip_range=clip_range,
         verbose=0,
-        device="cuda"
+        device="cuda",
+        tensorboard_log=os.path.join(base_dir, "runs", "ppo_rm_tuning")
     )
     
     eval_callback = EvalCallback(
@@ -111,11 +112,24 @@ def objective(trial):
     return eval_callback.best_mean_reward
 
 if __name__ == "__main__":
-    study = optuna.create_study(direction="maximize", study_name="ppo_rm_tuning")
+    db_path = os.path.join(base_dir, "run_scripts", "hyperparameter_tuning", "ppo_rm_tuning.db")
+    csv_path = os.path.join(base_dir, "run_scripts", "hyperparameter_tuning", "ppo_rm_tuning_results.csv")
+    
+    study = optuna.create_study(
+        direction="maximize", 
+        study_name="ppo_rm_tuning",
+        storage=f"sqlite:///{db_path}",
+        load_if_exists=True
+    )
     
     # Continuous control is CPU heavy, GPU can handle it since it's MLP policy. Safe to parallelize.
     study.optimize(objective, n_trials=20, n_jobs=4)
     
+    # Save results to CSV for easy viewing
+    df = study.trials_dataframe()
+    df.to_csv(csv_path)
+    
+    print(f"Results saved to {csv_path}")
     print("Best trial:")
     trial = study.best_trial
     print(f"  Value: {trial.value}")

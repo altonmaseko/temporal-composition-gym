@@ -67,11 +67,25 @@ def objective(trial):
     return reward
 
 if __name__ == "__main__":
-    study = optuna.create_study(direction="maximize", study_name="qrm_tuning")
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    db_path = os.path.join(base_dir, "run_scripts", "hyperparameter_tuning", "qrm_tuning.db")
+    csv_path = os.path.join(base_dir, "run_scripts", "hyperparameter_tuning", "qrm_tuning_results.csv")
+    
+    study = optuna.create_study(
+        direction="maximize", 
+        study_name="qrm_tuning",
+        storage=f"sqlite:///{db_path}",
+        load_if_exists=True
+    )
     
     # Use n_jobs=8 for tabular environment as requested (CPU heavy)
     study.optimize(objective, n_trials=15, n_jobs=8)
     
+    # Save results to CSV for easy viewing
+    df = study.trials_dataframe()
+    df.to_csv(csv_path)
+    
+    print(f"Results saved to {csv_path}")
     print("Best trial:")
     trial = study.best_trial
     print(f"  Value: {trial.value}")
