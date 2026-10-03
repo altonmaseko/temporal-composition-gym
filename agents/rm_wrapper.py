@@ -58,3 +58,28 @@ class HazardousDeliveryRMWrapper(gym.Wrapper):
         info["propositions"] = propositions
         
         return obs, reward, terminated, truncated, info
+
+class DeferredMaintenanceRMWrapper(gym.Wrapper):
+    """
+    Wraps the Deferred Maintenance environment to emit logical propositions
+    needed for Reward Machines (QRM / PPO-RM). 
+    """
+    def __init__(self, env):
+        super().__init__(env)
+    
+    def step(self, action):
+        unwrapped = self.env.unwrapped
+        pre_score = unwrapped.score
+        
+        obs, reward, terminated, truncated, info = self.env.step(action)
+        
+        diff = unwrapped.score - pre_score
+        
+        propositions = set()
+        propositions.add(f"reward_{diff}")
+        
+        if unwrapped.readiness == 1.0:
+            propositions.add("is_ready")
+            
+        info["propositions"] = propositions
+        return obs, reward, terminated, truncated, info

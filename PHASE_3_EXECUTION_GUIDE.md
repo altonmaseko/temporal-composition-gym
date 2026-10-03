@@ -64,6 +64,9 @@ wandb login
 **🚨 CRITICAL WARNING:** If you simply run a Python script in your SSH terminal, the script will instantly be killed the second your laptop goes to sleep or your Wi-Fi flickers. You MUST use a tool called `tmux` to run things in the background.
 
 **1. Start a background terminal session:**
+*(Note: Vast.ai often automatically starts a `tmux` session when you log in. If you already see a green bar at the bottom of your screen, **SKIP THIS STEP** and proceed to Step 2).*
+
+If you do NOT see a green bar, run:
 ```bash
 tmux new -s phase3
 ```
@@ -86,10 +89,14 @@ While the script is running, press **`Ctrl + B`**, let go of both keys, and then
 *You will be kicked out to your normal terminal. The script is now safely running in the background! You can close your laptop.*
 
 **5. Check on the progress later:**
-When you wake up, SSH back into your Vast.ai server and type:
+When you wake up, SSH back into your Vast.ai server. Vast.ai will often automatically drop you right back into your running session (look for the green bar). 
+
+If you are NOT automatically re-attached, type:
 ```bash
-tmux attach -t phase3
+tmux attach
 ```
+*(If that gives an error, type `tmux attach -t phase3` if you manually created the session in Step 1).*
+
 *This drops you right back into the screen where the script is running. Once Script 1 finishes, run Script 2, and then Script 3.*
 
 ---

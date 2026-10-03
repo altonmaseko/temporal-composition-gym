@@ -105,16 +105,24 @@ class EpisodicReplayBuffer:
 class DRQN(nn.Module):
     def __init__(self, env):
         super().__init__()
-        # Simplified for 1D tabular states
-        obs_shape = np.array(env.observation_space.shape).prod()
-        self.fc1 = nn.Linear(obs_shape, 64)
+        self.obs_shape = env.observation_space.shape
+        self.num_obs_dims = len(self.obs_shape)
+        obs_features = np.array(self.obs_shape).prod()
+        self.fc1 = nn.Linear(obs_features, 64)
         self.lstm = nn.LSTM(64, 64, batch_first=True)
         self.fc2 = nn.Linear(64, env.action_space.n)
 
     def forward(self, x, hidden):
-        # x shape: (batch, seq_len, features) or (seq_len, features)
-        if len(x.shape) == 2:
-            x = x.unsqueeze(0) # add batch dim
+        # x is either (1, *obs_shape) from env step or (batch, seq_len, *obs_shape) from buffer
+        if len(x.shape) == self.num_obs_dims + 1:
+            x = x.unsqueeze(1) # Add seq_len dimension: (batch, 1, *obs_shape)
+            
+        # Now x is (batch, seq_len, *obs_shape)
+        batch_size = x.shape[0]
+        seq_len = x.shape[1]
+        
+        # Flatten the observation dimensions
+        x = x.reshape(batch_size, seq_len, -1)
             
         x = F.relu(self.fc1(x))
         out, hidden = self.lstm(x, hidden)

@@ -99,10 +99,28 @@ def main():
     env = gym.make(args.env_id)
     # 2. Add Stats Tracker
     env = gym.wrappers.RecordEpisodeStatistics(env)
-    # 3. Add RM Proposition Emitter
-    env = HazardousDeliveryRMWrapper(env)
-    # 4. Add PPO-RM State Augmentation (combines obs + one-hot RM state)
-    env = PPORMObservationWrapper(env, DeliveryRewardMachine)
+    # 3. Add RM Proposition Emitter & State Augmentation
+    if "HazardousDelivery" in args.env_id:
+        env = HazardousDeliveryRMWrapper(env)
+        env = PPORMObservationWrapper(env, DeliveryRewardMachine)
+    elif "DeferredMaintenance" in args.env_id:
+        from rm_wrapper import DeferredMaintenanceRMWrapper
+        env = DeferredMaintenanceRMWrapper(env)
+        
+        class MaintenanceRewardMachine:
+            def __init__(self, env):
+                self.num_states = 2
+            def get_initial_state(self):
+                return 0
+            def step(self, u, propositions):
+                if u == -1: return -1, 0.0, True
+                next_u = 1 if "is_ready" in propositions else u
+                reward = sum(float(p.split("_")[1]) for p in propositions if p.startswith("reward_"))
+                return next_u, reward, False
+                
+        env = PPORMObservationWrapper(env, MaintenanceRewardMachine)
+    else:
+        raise ValueError(f"Unsupported env_id for PPO-RM: {args.env_id}")
 
     # Initialize standard Stable Baselines 3 PPO!
     # Because the RM state is now part of the observation, PPO automatically learns temporal composition.
