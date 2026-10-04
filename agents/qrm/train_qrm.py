@@ -130,10 +130,10 @@ def linear_schedule(start_e: float, end_e: float, duration: int, t: int):
 import glob
 import re
 
-def load_latest_checkpoint(models_dir, env_id, algo_name, model, optimizer):
+def load_latest_checkpoint(models_dir, env_id, algo_name, model, optimizer, seed):
     os.makedirs(models_dir, exist_ok=True)
     env_name = env_id.split('/')[-1]
-    search_pattern = os.path.join(models_dir, f"{algo_name}_{env_name}_step_*.pt")
+    search_pattern = os.path.join(models_dir, f"{algo_name}_{env_name}_seed{seed}_step_*.pt")
     checkpoints = glob.glob(search_pattern)
     
     if not checkpoints:
@@ -186,7 +186,7 @@ if __name__ == "__main__":
     obs, _ = env.reset(seed=args.seed)
     u = rm.get_initial_state()
     
-    start_step = load_latest_checkpoint("models", args.env_id, "qrm", q_network, optimizer)
+    start_step = load_latest_checkpoint("models", args.env_id, "qrm", q_network, optimizer, args.seed)
     target_network.load_state_dict(q_network.state_dict())
     
     for global_step in range(start_step, args.total_timesteps):
@@ -277,7 +277,7 @@ if __name__ == "__main__":
             target_network.load_state_dict(q_network.state_dict())
             
         if global_step > 0 and global_step % 100000 == 0:
-            checkpoint_path = f"models/qrm_{args.env_id.split('/')[-1]}_step_{global_step}.pt"
+            checkpoint_path = f"models/qrm_{args.env_id.split('/')[-1]}_seed{args.seed}_step_{global_step}.pt"
             torch.save({
                 'global_step': global_step,
                 'model_state_dict': q_network.state_dict(),
