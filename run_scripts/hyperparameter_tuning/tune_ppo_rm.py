@@ -102,7 +102,7 @@ def objective(trial):
         clip_range=clip_range,
         verbose=0,
         device="cpu",
-        tensorboard_log=os.path.join(base_dir, "runs", "ppo_rm_tuning")
+        tensorboard_log=os.path.join(base_dir, "runs", f"ppo_rm_tuning_trial_{trial.number}")
     )
     
     eval_callback = EvalCallback(
