@@ -109,7 +109,7 @@ def objective(trial):
         batch_size=batch_size,
         ent_coef=ent_coef,
         clip_range=clip_range,
-        verbose=0,
+        verbose=1,
         device="cpu"
     )
     
@@ -117,7 +117,8 @@ def objective(trial):
         eval_env, 
         eval_freq=50000,
         deterministic=True, 
-        render=False
+        render=False,
+        verbose=1
     )
     
     wandb_callback = WandbCallback(
