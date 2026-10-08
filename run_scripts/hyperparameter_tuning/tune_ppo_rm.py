@@ -71,6 +71,7 @@ class PPORMObservationWrapper(gym.Wrapper):
 
 def make_env():
     env = gym.make("TemporalComp/DeferredMaintenance-v0")
+    env = gym.wrappers.TimeLimit(env, max_episode_steps=1000)
     env = DeferredMaintenanceRMWrapper(env)
     env = PPORMObservationWrapper(env, MaintenanceRewardMachine)
     env = Monitor(env)
