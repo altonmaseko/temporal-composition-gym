@@ -135,7 +135,7 @@ if __name__ == "__main__":
     )
     
     # Continuous control is CPU heavy, GPU can handle it since it's MLP policy. Safe to parallelize.
-    study.optimize(objective, n_trials=20, n_jobs=4)
+    study.optimize(objective, n_trials=20, n_jobs=1)
     
     # Save results to CSV for easy viewing
     df = study.trials_dataframe()
