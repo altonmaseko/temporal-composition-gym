@@ -1,6 +1,8 @@
 import os
 import sys
+import time
 import optuna
+import wandb
 import numpy as np
 import gymnasium as gym
 import temporal_comp_gym
@@ -82,6 +84,14 @@ def objective(trial):
     env = make_env()
     eval_env = make_env()
     
+    run = wandb.init(
+        project="temporal-composition-gym",
+        name=f"TemporalComp_DeferredMaintenance-v0__ppo_rm__{trial.number}__{int(time.time())}",
+        config=trial.params,
+        sync_tensorboard=True,
+        reinit=True
+    )
+    
     model = PPO(
         "MlpPolicy", 
         env, 
@@ -91,7 +101,7 @@ def objective(trial):
         ent_coef=ent_coef,
         clip_range=clip_range,
         verbose=0,
-        device="cuda",
+        device="cpu",
         tensorboard_log=os.path.join(base_dir, "runs", "ppo_rm_tuning")
     )
     
@@ -104,6 +114,8 @@ def objective(trial):
     
     # Reduced timesteps for tuning (500k instead of 2M)
     model.learn(total_timesteps=500000, callback=eval_callback)
+    
+    wandb.finish()
     
     # Return best mean reward
     if eval_callback.best_mean_reward == -np.inf:
