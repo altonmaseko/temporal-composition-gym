@@ -1,9 +1,16 @@
 import os
+# Prevent PyTorch OpenMP deadlock on Vast.ai high-core count instances
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+
 import sys
 import time
 import optuna
 import wandb
 import numpy as np
+import torch
+torch.set_num_threads(1)
+
 import gymnasium as gym
 import temporal_comp_gym
 from stable_baselines3 import PPO
@@ -88,9 +95,11 @@ def objective(trial):
         project="temporal-composition-gym",
         name=f"TemporalComp_DeferredMaintenance-v0__ppo_rm__{trial.number}__{int(time.time())}",
         config=trial.params,
-        sync_tensorboard=True,
         reinit=True
     )
+    
+    from wandb.integration.sb3 import WandbCallback
+    from stable_baselines3.common.callbacks import CallbackList
     
     model = PPO(
         "MlpPolicy", 
@@ -101,8 +110,7 @@ def objective(trial):
         ent_coef=ent_coef,
         clip_range=clip_range,
         verbose=0,
-        device="cpu",
-        tensorboard_log=os.path.join(base_dir, "runs", f"ppo_rm_tuning_trial_{trial.number}")
+        device="cpu"
     )
     
     eval_callback = EvalCallback(
@@ -112,8 +120,16 @@ def objective(trial):
         render=False
     )
     
+    wandb_callback = WandbCallback(
+        gradient_save_freq=0,
+        model_save_path=None,
+        verbose=0
+    )
+    
+    callbacks = CallbackList([eval_callback, wandb_callback])
+    
     # Reduced timesteps for tuning (500k instead of 2M)
-    model.learn(total_timesteps=500000, callback=eval_callback)
+    model.learn(total_timesteps=500000, callback=callbacks)
     
     wandb.finish()
     
