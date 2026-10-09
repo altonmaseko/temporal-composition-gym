@@ -14,7 +14,7 @@ from torch.utils.tensorboard import SummaryWriter
 # Import our custom wrapper
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from rm_wrapper import HazardousDeliveryRMWrapper
+from rm_wrapper import HazardousDeliveryRMWrapper, SequentialColourRMWrapper
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -30,6 +30,25 @@ def parse_args():
     parser.add_argument("--end-e", type=float, default=0.05)
     parser.add_argument("--exploration-fraction", type=float, default=0.5)
     return parser.parse_args()
+
+class SequentialColourRewardMachine:
+    def __init__(self, env):
+        self.num_states = env.unwrapped.sequence_length_range[1] + 1
+        self.reward_correct = env.unwrapped.reward_correct_wall
+        self.reward_complete = env.unwrapped.reward_sequence_completion
+        self.penalty = env.unwrapped.penalty_severity
+        
+    def get_initial_state(self):
+        return 0
+        
+    def step(self, u, propositions):
+        if u == -1: return -1, 0.0, True
+        if "correct_wall" in propositions:
+            next_u = min(u + 1, self.num_states - 1)
+            return next_u, self.reward_correct, False
+        if "incorrect_wall" in propositions:
+            return u, -self.penalty, False
+        return u, 0.0, False
 
 class DeliveryRewardMachine:
     """
@@ -117,6 +136,7 @@ class QRMNetwork(nn.Module):
         self.fc_q = nn.Linear(64, num_rm_states * num_actions)
 
     def forward(self, x):
+        x = x.view(x.size(0), -1)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         q = self.fc_q(x)
@@ -170,11 +190,18 @@ if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     # Environment Setup
-    raw_env = gym.make(args.env_id)
+    import json
+    import os
+    env_kwargs = json.loads(os.environ.get("ENV_KWARGS", "{}"))
+    raw_env = gym.make(args.env_id, **env_kwargs)
+    raw_env = gym.wrappers.TimeLimit(raw_env, max_episode_steps=1000)
     raw_env = gym.wrappers.RecordEpisodeStatistics(raw_env)
-    env = HazardousDeliveryRMWrapper(raw_env)
-    
-    rm = DeliveryRewardMachine(env)
+    if "SequentialColour" in args.env_id:
+        env = SequentialColourRMWrapper(raw_env)
+        rm = SequentialColourRewardMachine(env)
+    else:
+        env = HazardousDeliveryRMWrapper(raw_env)
+        rm = DeliveryRewardMachine(env)
     
     q_network = QRMNetwork(env.observation_space.shape, env.action_space.n, rm.num_states).to(device)
     target_network = QRMNetwork(env.observation_space.shape, env.action_space.n, rm.num_states).to(device)
@@ -213,6 +240,7 @@ if __name__ == "__main__":
             obs, _ = env.reset()
             u = rm.get_initial_state()
             if "episode" in info:
+                print(f"global_step={global_step}, episodic_return={info['episode']['r']}")
                 writer.add_scalar("charts/episodic_return", info["episode"]["r"], global_step)
         else:
             obs = next_obs

@@ -44,8 +44,7 @@ def main():
     wandb.init(
         project="temporal-composition-gym",
         name=run_name,
-        config=vars(args),
-        sync_tensorboard=True
+        config=vars(args)
     )
 
     # Environment-specific configurations
@@ -71,7 +70,10 @@ def main():
     }
 
     env_settings = config[args.env]
-    env = gym.make(args.env)
+    import json
+    env_kwargs = json.loads(os.environ.get("ENV_KWARGS", "{}"))
+    env = gym.make(args.env, **env_kwargs)
+    env = gym.wrappers.TimeLimit(env, max_episode_steps=1000)
     
     # Wrapper for tracking episode stats
     env = gym.wrappers.RecordEpisodeStatistics(env)
@@ -84,13 +86,16 @@ def main():
 
     latest_ckpt, start_step = load_latest_checkpoint_sb3("models", args.env, "recurrent_ppo")
     
+    from wandb.integration.sb3 import WandbCallback
+    wandb_callback = WandbCallback(gradient_save_freq=100, model_save_path=f"models/{run_name}")
+    
     if latest_ckpt:
         print(f"Loading model from {latest_ckpt}...")
         model = RecurrentPPO.load(latest_ckpt, env=env, tensorboard_log=f"./runs/recurrent_ppo_{args.env.replace('/', '_')}")
         remaining_timesteps = args.timesteps - start_step
         if remaining_timesteps > 0:
             print(f"Resuming Recurrent PPO training for {remaining_timesteps} timesteps...")
-            model.learn(total_timesteps=remaining_timesteps, reset_num_timesteps=False, callback=checkpoint_callback)
+            model.learn(total_timesteps=remaining_timesteps, reset_num_timesteps=False, callback=[checkpoint_callback, wandb_callback])
     else:
         model = RecurrentPPO(
             policy=env_settings["policy"],
@@ -103,7 +108,7 @@ def main():
             tensorboard_log=f"./runs/recurrent_ppo_{args.env.replace('/', '_')}"
         )
         print(f"Starting Recurrent PPO training on {args.env} for {args.timesteps} timesteps...")
-        model.learn(total_timesteps=args.timesteps, callback=checkpoint_callback)
+        model.learn(total_timesteps=args.timesteps, callback=[checkpoint_callback, wandb_callback])
     
     os.makedirs("models", exist_ok=True)
     save_path = f"models/recurrent_ppo_{args.env.split('/')[-1]}_seed{args.seed}"

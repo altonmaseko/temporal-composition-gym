@@ -254,13 +254,13 @@ class SequentialColourEnv(gym.Env):
                 self.memorisation_timer = 0
                 self.current_seq_idx += 1
                 if self.current_seq_idx >= len(self.sequence):
+                    self.current_seq_idx = 0
                     if self.retention_delay_steps > 0:
                         self.current_phase = "retention"
                     else:
                         self.current_phase = "navigation"
                         self.agent.reset()
-                        self._randomise_room()
-                    self.current_seq_idx = 0 
+                        self._randomise_room() 
         elif self.current_phase == "retention":
             self.retention_counter += 1
             if self.retention_counter >= self.retention_delay_steps:

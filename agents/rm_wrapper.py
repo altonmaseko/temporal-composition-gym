@@ -83,3 +83,27 @@ class DeferredMaintenanceRMWrapper(gym.Wrapper):
             
         info["propositions"] = propositions
         return obs, reward, terminated, truncated, info
+
+class SequentialColourRMWrapper(gym.Wrapper):
+    def __init__(self, env):
+        super().__init__(env)
+        
+    def step(self, action):
+        unwrapped = self.env.unwrapped
+        pre_idx = unwrapped.current_seq_idx
+        pre_score = unwrapped.score
+        
+        obs, reward, terminated, truncated, info = self.env.step(action)
+        
+        post_idx = unwrapped.current_seq_idx
+        post_score = unwrapped.score
+        
+        propositions = set()
+        
+        if post_idx > pre_idx:
+            propositions.add("correct_wall")
+        elif post_score < pre_score:
+            propositions.add("incorrect_wall")
+            
+        info["propositions"] = propositions
+        return obs, reward, terminated, truncated, info

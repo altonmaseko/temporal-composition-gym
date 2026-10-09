@@ -176,7 +176,11 @@ if __name__ == "__main__":
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    env = gym.make(args.env_id)
+    import json
+    import os
+    env_kwargs = json.loads(os.environ.get("ENV_KWARGS", "{}"))
+    env = gym.make(args.env_id, **env_kwargs)
+    env = gym.wrappers.TimeLimit(env, max_episode_steps=1000)
     env = gym.wrappers.RecordEpisodeStatistics(env)
     
     q_network = DRQN(env).to(device)

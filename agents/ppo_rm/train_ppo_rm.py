@@ -82,6 +82,11 @@ def main():
     parser.add_argument("--env-id", type=str, default="TemporalComp/HazardousDelivery-v0")
     parser.add_argument("--timesteps", type=int, default=100000)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--learning-rate", type=float, default=0.00080869)
+    parser.add_argument("--n-steps", type=int, default=4096)
+    parser.add_argument("--batch-size", type=int, default=128)
+    parser.add_argument("--clip-range", type=float, default=0.2)
+    parser.add_argument("--ent-coef", type=float, default=0.025738)
     args = parser.parse_args()
     
     import time
@@ -90,13 +95,15 @@ def main():
     wandb.init(
         project="temporal-composition-gym",
         name=run_name,
-        config=vars(args),
-        sync_tensorboard=True
+        config=vars(args)
     )
 
     # Environment Setup
     # 1. Base Environment
-    env = gym.make(args.env_id)
+    import json
+    env_kwargs = json.loads(os.environ.get("ENV_KWARGS", "{}"))
+    env = gym.make(args.env_id, **env_kwargs)
+    env = gym.wrappers.TimeLimit(env, max_episode_steps=1000)
     # 2. Add Stats Tracker
     env = gym.wrappers.RecordEpisodeStatistics(env)
     # 3. Add RM Proposition Emitter & State Augmentation
@@ -132,26 +139,31 @@ def main():
 
     latest_ckpt, start_step = load_latest_checkpoint_sb3("models", args.env_id, "ppo_rm")
     
+    from wandb.integration.sb3 import WandbCallback
+    wandb_callback = WandbCallback(gradient_save_freq=100, model_save_path=f"models/{run_name}")
+    
     if latest_ckpt:
         print(f"Loading model from {latest_ckpt}...")
         model = PPO.load(latest_ckpt, env=env, tensorboard_log=f"./runs/ppo_rm_{args.env_id.replace('/', '_')}")
         remaining_timesteps = args.timesteps - start_step
         if remaining_timesteps > 0:
             print(f"Resuming PPO-RM training for {remaining_timesteps} timesteps...")
-            model.learn(total_timesteps=remaining_timesteps, reset_num_timesteps=False, callback=checkpoint_callback)
+            model.learn(total_timesteps=remaining_timesteps, reset_num_timesteps=False, callback=[checkpoint_callback, wandb_callback])
     else:
         model = PPO(
             policy="MlpPolicy",
             env=env,
-            learning_rate=3e-4,
-            n_steps=2048,
-            batch_size=64,
+            learning_rate=args.learning_rate if hasattr(args, 'learning_rate') else 0.00080869,
+            n_steps=args.n_steps if hasattr(args, 'n_steps') else 4096,
+            batch_size=args.batch_size if hasattr(args, 'batch_size') else 128,
+            clip_range=args.clip_range if hasattr(args, 'clip_range') else 0.2,
+            ent_coef=args.ent_coef if hasattr(args, 'ent_coef') else 0.025738,
             seed=args.seed,
             verbose=1,
             tensorboard_log=f"./runs/ppo_rm_{args.env_id.replace('/', '_')}"
         )
         print(f"Starting PPO-RM training on {args.env_id} for {args.timesteps} timesteps...")
-        model.learn(total_timesteps=args.timesteps, callback=checkpoint_callback)
+        model.learn(total_timesteps=args.timesteps, callback=[checkpoint_callback, wandb_callback])
     
     os.makedirs("models", exist_ok=True)
     save_path = f"models/ppo_rm_{args.env_id.split('/')[-1]}_seed{args.seed}"
