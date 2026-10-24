@@ -1,0 +1,25 @@
+algorithm,delay_range,max_delay,success_rate
+PPO,"(1, 2)",2,-1290.0
+RecurrentPPO,"(1, 2)",2,-999.0
+PPO-RM,"(1, 2)",2,-843.0
+PPO,"(2, 3)",3,0.0
+RecurrentPPO,"(2, 3)",3,0.0
+PPO-RM,"(2, 3)",3,0.0
+PPO,"(3, 4)",4,0.0
+RecurrentPPO,"(3, 4)",4,0.0
+PPO-RM,"(3, 4)",4,0.0
+PPO,"(4, 5)",5,0.0
+RecurrentPPO,"(4, 5)",5,0.0
+PPO-RM,"(4, 5)",5,0.0
+PPO,"(5, 6)",6,0.0
+RecurrentPPO,"(5, 6)",6,0.0
+PPO-RM,"(5, 6)",6,0.0
+PPO,"(6, 7)",7,0.0
+RecurrentPPO,"(6, 7)",7,0.0
+PPO-RM,"(6, 7)",7,0.0
+PPO,"(7, 8)",8,0.0
+RecurrentPPO,"(7, 8)",8,0.0
+PPO-RM,"(7, 8)",8,0.0
+PPO,"(8, 10)",10,0.0
+RecurrentPPO,"(8, 10)",10,0.0
+PPO-RM,"(8, 10)",10,0.0
