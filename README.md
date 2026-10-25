@@ -1,5 +1,32 @@
 # Temporal Composition Gym
 
+## Experiment reruns: `new_experiments`
+
+This branch is for correcting the experiment pipeline and rerunning the baseline,
+hyperparameter-tuning, and stress-testing experiments. It starts from the code in
+[`main` at commit `972192a`](https://github.com/altonmaseko/temporal-composition-gym/tree/972192af99bf2cfd18bd7411047eec08b0f0f1b8).
+This initial branch setup preserves the implementation; experiment fixes and new
+runs have not yet been performed.
+
+Historical result exports, Optuna databases, and generated audit results have been
+removed from this branch's current files. The original code and results remain
+available on `main` and in Git history. Existing Phase Stories describe those
+historical experiments, not completed reruns on this branch. Audit utilities and
+historical source snapshots are retained as code and reference material; their
+original result inputs and generated reports are available on `main`.
+
+Save fresh results using the existing phase-specific layout:
+
+- Baselines: `wandb_phase_3_baseline_exports/`
+- Hyperparameter tuning: `run_scripts/hyperparameter_tuning/results/` and
+  `run_scripts/hyperparameter_tuning/wandb_exports/`
+- Stress tests: `run_scripts/stress_testing/results/` and
+  `run_scripts/stress_testing/wandb_exports/`
+
+Use fresh checkpoint and log directories for the reruns. Record the exact code
+commit, configuration, seed, training budget, and completion status for each run.
+Keep results from different executions distinguishable within these directories.
+
 A benchmark suite of non-Markovian reinforcement learning environments designed to evaluate temporal composition and memory-augmented agents. The suite spans tabular, continuous-control, and image-based settings to test how agents handle delayed, history-dependent rewards across varying sensory modalities.
 
 ---
