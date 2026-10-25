@@ -60,7 +60,7 @@ run_scripts/hyperparameter_tuning/
 └── tune_ppo_rm.py
 ```
 
-### Step 1: QRM Hyperparameter Tuning (Hazardous Delivery)
+### Step 1: QRM Hyperparameter Tuning & Checkpoint Collision Fix
 > 📁 Shell Driver: [`run_scripts/hyperparameter_tuning/run_tune_qrm.sh`](../run_scripts/hyperparameter_tuning/run_tune_qrm.sh)  
 > 🐍 Python Driver: [`run_scripts/hyperparameter_tuning/tune_qrm.py`](../run_scripts/hyperparameter_tuning/tune_qrm.py)
 
@@ -74,61 +74,97 @@ run_scripts/hyperparameter_tuning/
   * `target_network_frequency`: Categorical $[100,\, 500,\, 1000,\, 2000]$
   * `batch_size`: Categorical $[32,\, 64,\, 128]$
   * `exploration_fraction`: Uniform $[0.1,\, 0.8]$
-* **Winning Configuration (Trial 9):**
-  * **Objective Reward:** **-15.1**
-  * `learning_rate`: $2.2068 \times 10^{-5}$
-  * `buffer_size`: $100\,000$
-  * `target_network_frequency`: $2000$
-  * `batch_size`: $32$
-  * `exploration_fraction`: $0.4093$
+* **Initial Failure Diagnosed & Patched:**
+  * Early test trials failed or exhibited erratic returns due to a checkpoint collision bug in `load_latest_checkpoint()` within [`agents/qrm/train_qrm.py`](../agents/qrm/train_qrm.py).
+  * The checkpoint search glob (`qrm_HazardousDelivery-v0_step_*.pt`) did not condition on the random seed / trial number (`args.seed`). Consequently, newly spawned tuning trials inadvertently loaded pre-existing weights saved by previous trials or baseline runs.
+  * **Remediation:** Patched the search pattern to `f"{algo_name}_{env_name}_seed{seed}_step_*.pt"` ensuring every trial started with freshly initialized network parameters.
+* **Result:** After the patch, all 15 trials completed cleanly.
+  * **Winning Configuration (Trial 9):**
+    * **Objective Reward:** **-15.1**
+    * `learning_rate`: $2.2068 \times 10^{-5}$
+    * `buffer_size`: $100\,000$
+    * `target_network_frequency`: $2000$
+    * `batch_size`: $32$
+    * `exploration_fraction`: $0.4093$
 
 ---
 
-### Step 2: DRQN Hyperparameter Tuning (Sequential Colour)
+### Step 2: DRQN Hyperparameter Tuning & Memory Concurrency Constraints
 > 📁 Shell Driver: [`run_scripts/hyperparameter_tuning/run_tune_drqn.sh`](../run_scripts/hyperparameter_tuning/run_tune_drqn.sh)  
 > 🐍 Python Driver: [`run_scripts/hyperparameter_tuning/tune_drqn.py`](../run_scripts/hyperparameter_tuning/tune_drqn.py)
 
 * **Target Algorithm:** Deep Recurrent Q-Network (DRQN with LSTM cell)
 * **Environment:** `TemporalComp/SequentialColour-v0` (RGB Image Observations)
 * **Budget & Scale:** 15 Optuna Trials, 300,000 steps per trial (reduced from 3M for tuning)
-* **Concurrency:** 2 parallel Optuna workers (`n_jobs=2`) to strictly prevent GPU VRAM Out-Of-Memory (OOM) during image-based recurrent replay buffering
 * **Search Space:**
   * `learning_rate`: Log-uniform $[1\times 10^{-5},\, 1\times 10^{-3}]$
   * `buffer_size`: Categorical $[5\,000,\, 10\,000,\, 20\,000]$
   * `seq_len` (BPTT rollout length): Categorical $[4,\, 8,\, 16]$
   * `batch_size`: Categorical $[16,\, 32,\, 64]$
   * `exploration_fraction`: Uniform $[0.1,\, 0.8]$
-* **Winning Configuration (Trial 12):**
-  * **Objective Reward:** **-5.8**
-  * `learning_rate`: $1.2570 \times 10^{-5}$
-  * `buffer_size`: $10\,000$
-  * `seq_len`: $4$
-  * `batch_size`: $16$
-  * `exploration_fraction`: $0.6433$
+* **Failure Diagnosed & Handled:**
+  * Initial multi-worker runs (`n_jobs >= 4`) caused GPU Out-Of-Memory (CUDA OOM) crashes due to the large memory footprint of visual observation buffers during sequential recurrent rollouts.
+  * Applied the identical seed-specific checkpoint fix to [`agents/drqn/train_drqn.py`](../agents/drqn/train_drqn.py) to prevent weights bleed-through across trials.
+  * **Remediation:** Strictly capped concurrency to `n_jobs=2`.
+* **Result:** All 15 trials completed successfully without GPU VRAM exhaustion.
+  * **Winning Configuration (Trial 12):**
+    * **Objective Reward:** **-5.8**
+    * `learning_rate`: $1.2570 \times 10^{-5}$
+    * `buffer_size`: $10\,000$
+    * `seq_len`: $4$
+    * `batch_size`: $16$
+    * `exploration_fraction`: $0.6433$
 
 ---
 
-### Step 3: PPO-RM Hyperparameter Tuning (Deferred Maintenance)
+### Step 3: PPO-RM Tuning Failure (The 3-Hour Vast.ai Server Freeze)
 > 📁 Shell Driver: [`run_scripts/hyperparameter_tuning/run_tune_ppo_rm.sh`](../run_scripts/hyperparameter_tuning/run_tune_ppo_rm.sh)  
 > 🐍 Python Driver: [`run_scripts/hyperparameter_tuning/tune_ppo_rm.py`](../run_scripts/hyperparameter_tuning/tune_ppo_rm.py)
 
-* **Target Algorithm:** PPO for Reward Machines (PPO-RM with one-hot RM state observation wrapper)
+* **Target Algorithm:** PPO for Reward Machines (PPO-RM)
 * **Environment:** `TemporalComp/DeferredMaintenance-v0` (Continuous 2D Navigation)
-* **Budget & Scale:** 20 Optuna Trials, 500,000 steps per trial (reduced from 2M for tuning)
-* **Concurrency:** Sequential execution (`n_jobs=1`) with deterministic evaluation callback every 50k steps
-* **Search Space:**
-  * `learning_rate`: Log-uniform $[1\times 10^{-5},\, 1\times 10^{-3}]$
-  * `n_steps`: Categorical $[1024,\, 2048,\, 4096]$
-  * `batch_size`: Categorical $[64,\, 128,\, 256]$ (pruned if $n\_steps \pmod{batch\_size} \neq 0$)
-  * `ent_coef`: Log-uniform $[0.0001,\, 0.05]$
-  * `clip_range`: Categorical $[0.1,\, 0.2,\, 0.3]$
-* **Winning Configuration (Trial 8):**
-  * **Objective Reward:** **-434.2**
-  * `learning_rate`: $8.0869 \times 10^{-4}$
-  * `n_steps`: $4096$
-  * `batch_size`: $128$
-  * `ent_coef`: $0.0257$
-  * `clip_range`: $0.2$
+* **Failure Incident:**
+  * When launched on the 40-core Vast.ai server, the initial tuning run ran for over 3 hours with almost no progress, eventually stalling entirely with CPU utilization plummeting to **0.01%**.
+  * The terminal output froze mid-execution, requiring a hard manual termination (`kill -9`) of the job.
+* **Root Cause Diagnosis:**
+  1. **PyTorch OpenMP Thread Allocation Deadlock:** PyTorch CPU thread spawning across the 40 virtual cores caused extreme CPU thread thrashing and synchronization deadlocks inside the Ubuntu container.
+  2. **W&B / TensorBoard Thread Contention Deadlock:** The script utilized `sync_tensorboard=True` within sequential Optuna loops, which locked file write locks between TensorBoard's background flush threads and W&B sync threads.
+  3. **Deterministic Evaluation Infinite Loop:** Stable-Baselines3's deterministic `EvalCallback` hung indefinitely because `TemporalComp/DeferredMaintenance-v0` lacked an episode step limit wrapper. When an untrained agent entered a non-terminating trajectory loop, the evaluation never returned a `done` signal, blocking Optuna forever.
+* **Incident Clean-up:** The hung run was aborted, and the corrupted SQLite database (`run_scripts/hyperparameter_tuning/ppo_rm_tuning.db`) containing stale/frozen trial states was completely purged.
+
+---
+
+### Step 4: PPO-RM Remediation, Local Verification & Successful Rerun
+
+To resolve the triple-deadlock and allow PPO-RM tuning to finish, four critical fixes were engineered:
+
+1. **Thread Clamping:** Bound PyTorch and OpenMP thread pools to 1 single thread:
+   ```python
+   import os
+   os.environ["OMP_NUM_THREADS"] = "1"
+   os.environ["MKL_NUM_THREADS"] = "1"
+   import torch
+   torch.set_num_threads(1)
+   ```
+2. **Native W&B Callback:** Removed `sync_tensorboard=True` and integrated SB3's official callback:
+   ```python
+   from wandb.integration.sb3 import WandbCallback
+   ```
+3. **Mandatory Step Limit Wrapper:** Wrapped `DeferredMaintenance-v0` inside `make_env()`:
+   ```python
+   env = gym.wrappers.TimeLimit(env, max_episode_steps=1000)
+   ```
+4. **Execution Mode:** Shifted from multi-worker to strict sequential execution (`n_jobs=1`) with verbose terminal logging enabled to track progress.
+
+* **Local Verification:** Before redeploying to the cloud, the patched code was verified locally using the Conda environment (`D:\miniconda3\envs\temporal_gym\python.exe`) with offline logging (`WANDB_MODE=offline`) to confirm the evaluation callback successfully terminated.
+* **Final Cloud Execution Result:** Redeployed to Vast.ai, all 20 trials completed cleanly in ~3.5 hours.
+  * **Winning Configuration (Trial 8):**
+    * **Objective Reward:** **-434.2**
+    * `learning_rate`: $8.0869 \times 10^{-4}$
+    * `n_steps`: $4096$
+    * `batch_size`: $128$
+    * `ent_coef`: $0.0257$
+    * `clip_range`: $0.2$
 
 ---
 
@@ -240,22 +276,22 @@ In addition to the SQLite Optuna databases and summary CSVs, the full timeseries
 
 ---
 
-### Preliminary & Probe Check Runs (10 Verification Runs)
+### Preliminary, Aborted & Probe Check Runs (10 Early / Failed Runs)
 
-These preliminary smoke and cluster verification runs were launched prior to formal Optuna sweeps to test environment wrappers, GPU batch buffering, and TensorBoard logging hooks:
+Prior to launching the final Optuna studies, 10 preliminary probe, smoke test, and failed tuning trials were executed. These runs were aborted or rendered invalid due to the checkpoint cross-contamination bug (inadvertently restoring pre-trained weights from earlier runs), wrapper dimension checks, or initial hyperparameter smoke tests:
 
-| # | Paradigm | Environment | W&B Run Name | W&B Run ID | W&B Run Link | Status |
-|:---:|---|---|---|:---:|:---:|:---:|
-| 1 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__0__1791054027` | `0qsy4yuk` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/0qsy4yuk) | Finished |
-| 2 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__1__1791054114` | `4q3gcn7l` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/4q3gcn7l) | Finished |
-| 3 | DRQN | `SequentialColour-v0` | `TemporalComp_SequentialColour-v0__drqn__1__1791054143` | `ti8owe8n` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/ti8owe8n) | Finished |
-| 4 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__0__1791054610` | `vpw0qrdm` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/vpw0qrdm) | Finished |
-| 5 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__3__1791054610` | `cjp4ceox` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/cjp4ceox) | Finished |
-| 6 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__8__1791082348` | `ih7u2ojj` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/ih7u2ojj) | Finished |
-| 7 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__9__1791082364` | `u19prrak` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/u19prrak) | Finished |
-| 8 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__10__1791091595` | `is8mp7ev` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/is8mp7ev) | Finished |
-| 9 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__42__1791106979` | `gfs4uexw` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/gfs4uexw) | Finished |
-| 10 | DRQN | `SequentialColour-v0` | `TemporalComp_SequentialColour-v0__drqn__42__1791107019` | `afr29ede` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/afr29ede) | Finished |
+| # | Paradigm | Environment | W&B Run Name | W&B Run ID | W&B Run Link | Primary Failure / Role |
+|:---:|---|---|---|:---:|:---:|---|
+| 1 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__0__1791054027` | `0qsy4yuk` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/0qsy4yuk) | Aborted early; checkpoint collision verification |
+| 2 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__1__1791054114` | `4q3gcn7l` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/4q3gcn7l) | Aborted early; multi-worker concurrency test |
+| 3 | DRQN | `SequentialColour-v0` | `TemporalComp_SequentialColour-v0__drqn__1__1791054143` | `ti8owe8n` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/ti8owe8n) | Initial image buffer memory probe |
+| 4 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__0__1791054610` | `vpw0qrdm` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/vpw0qrdm) | Aborted; cross-seed checkpoint contamination |
+| 5 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__3__1791054610` | `cjp4ceox` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/cjp4ceox) | Aborted; cross-seed checkpoint contamination |
+| 6 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__8__1791082348` | `ih7u2ojj` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/ih7u2ojj) | Trial run aborted prior to study restart |
+| 7 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__9__1791082364` | `u19prrak` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/u19prrak) | Trial run aborted prior to study restart |
+| 8 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__10__1791091595` | `is8mp7ev` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/is8mp7ev) | Trial run aborted prior to study restart |
+| 9 | QRM | `HazardousDelivery-v0` | `TemporalComp_HazardousDelivery-v0__qrm__42__1791106979` | `gfs4uexw` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/gfs4uexw) | Standalone verification seed before clean study launch |
+| 10 | DRQN | `SequentialColour-v0` | `TemporalComp_SequentialColour-v0__drqn__42__1791107019` | `afr29ede` | [View Run](https://wandb.ai/altonmaseko-wits-university/temporal-composition-gym/runs/afr29ede) | Standalone verification seed before clean study launch |
 
 ---
 

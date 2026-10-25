@@ -1,0 +1,347 @@
+{
+  "scope": "Current local implementation; synthetic diagnostics, no experiment data or training",
+  "audit_date": "2026-10-24",
+  "python_executable": "D:\\miniconda3\\envs\\temporal_gym\\python.exe",
+  "source_sha256": {
+    "agents/rm_wrapper.py": "5cba2a59a1a0066bcd3d7813ea03abb5398e804e54faa7be1b9f4fc7f7c2c6df",
+    "agents/qrm/train_qrm.py": "bada79d81771a9761648b6efbe40ad1530368010c6dcc824c015d735afacdb29",
+    "agents/ppo_rm/train_ppo_rm.py": "e2846134cd51fceff52e9f3b48764dc3e864a4e7376697567afee91bde855aac",
+    "temporal_comp_gym/envs/deferred_maintenance/core.py": "8f2b8188227cb519948d890926f7276f81700124a3ac88ac83544a405d200c1c",
+    "temporal_comp_gym/envs/sequential_colour/core.py": "6d40db1958a214cc49d194dc3951bca79626042717ac394f1d06ea927d33fcb2"
+  },
+  "maintenance_seeding": {
+    "first": "baee4561f4b2263e",
+    "same_reset_seed_again": "0e18eae2d1f88187",
+    "reseed_global_and_reconstruct": "baee4561f4b2263e",
+    "reset_seed_alone_repeats": false,
+    "controlled_global_replay_repeats": true
+  },
+  "maintenance_toggles": {
+    "distractor_stations": {
+      "identical_layout_observations_and_rewards": true
+    },
+    "duration_matching_mode": {
+      "identical_layout_observations_and_rewards": true
+    }
+  },
+  "hazardous_lava_label": {
+    "environment_reward": -50.0,
+    "terminated": true,
+    "emitted_propositions": [
+      "reached_goal_prematurely"
+    ],
+    "identical_rm_outcomes_for_all_states": [
+      {
+        "u": 0,
+        "emitted": [
+          -1,
+          -50.0,
+          true
+        ],
+        "corrected": [
+          -1,
+          -50.0,
+          true
+        ]
+      },
+      {
+        "u": 1,
+        "emitted": [
+          -1,
+          -50.0,
+          true
+        ],
+        "corrected": [
+          -1,
+          -50.0,
+          true
+        ]
+      },
+      {
+        "u": 2,
+        "emitted": [
+          -1,
+          -50.0,
+          true
+        ],
+        "corrected": [
+          -1,
+          -50.0,
+          true
+        ]
+      },
+      {
+        "u": 3,
+        "emitted": [
+          -1,
+          -50.0,
+          true
+        ],
+        "corrected": [
+          -1,
+          -50.0,
+          true
+        ]
+      }
+    ]
+  },
+  "sequential_rm": {
+    "events": [
+      {
+        "step": 5,
+        "phase_before": "memorisation",
+        "index_before": 0,
+        "index_after": 1,
+        "propositions": [
+          "correct_wall"
+        ],
+        "environment_reward": 0.0,
+        "rm_reward": 1.0,
+        "rm_state_after": 1,
+        "rm_done": false,
+        "environment_terminated": false
+      },
+      {
+        "step": 10,
+        "phase_before": "memorisation",
+        "index_before": 1,
+        "index_after": 2,
+        "propositions": [
+          "correct_wall"
+        ],
+        "environment_reward": 0.0,
+        "rm_reward": 1.0,
+        "rm_state_after": 2,
+        "rm_done": false,
+        "environment_terminated": false
+      },
+      {
+        "step": 30,
+        "phase_before": "navigation",
+        "index_before": 0,
+        "index_after": 1,
+        "propositions": [
+          "correct_wall"
+        ],
+        "environment_reward": 0.0,
+        "rm_reward": 1.0,
+        "rm_state_after": 3,
+        "rm_done": false,
+        "environment_terminated": false
+      },
+      {
+        "step": 43,
+        "phase_before": "navigation",
+        "index_before": 1,
+        "index_after": 2,
+        "propositions": [
+          "correct_wall"
+        ],
+        "environment_reward": 0.0,
+        "rm_reward": 1.0,
+        "rm_state_after": 3,
+        "rm_done": false,
+        "environment_terminated": false
+      },
+      {
+        "step": 56,
+        "phase_before": "navigation",
+        "index_before": 2,
+        "index_after": 3,
+        "propositions": [
+          "correct_wall"
+        ],
+        "environment_reward": 10.0,
+        "rm_reward": 1.0,
+        "rm_state_after": 3,
+        "rm_done": false,
+        "environment_terminated": true
+      }
+    ],
+    "environment_return": 10.0,
+    "rm_return": 5.0
+  },
+  "maintenance_readiness_horizon": [
+    {
+      "target_stages": 1,
+      "readiness_initial_then_after_exits": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "final_reward": -1000.0,
+      "terminated": true
+    },
+    {
+      "target_stages": 2,
+      "readiness_initial_then_after_exits": [
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "final_reward": -1000.0,
+      "terminated": true
+    },
+    {
+      "target_stages": 3,
+      "readiness_initial_then_after_exits": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "final_reward": -1000.0,
+      "terminated": true
+    },
+    {
+      "target_stages": 4,
+      "readiness_initial_then_after_exits": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "final_reward": -1000.0,
+      "terminated": true
+    },
+    {
+      "target_stages": 5,
+      "readiness_initial_then_after_exits": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "final_reward": -1000.0,
+      "terminated": true
+    },
+    {
+      "target_stages": 6,
+      "readiness_initial_then_after_exits": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "final_reward": -1000.0,
+      "terminated": true
+    },
+    {
+      "target_stages": 7,
+      "readiness_initial_then_after_exits": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "final_reward": -1000.0,
+      "terminated": true
+    },
+    {
+      "target_stages": 8,
+      "readiness_initial_then_after_exits": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "final_reward": -1000.0,
+      "terminated": true
+    }
+  ],
+  "maintenance_inventory_memory": {
+    "identical_observations_with_different_required_history": true,
+    "cases": [
+      {
+        "held_codes": [
+          1
+        ],
+        "augmented_observation": [
+          175.0,
+          75.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          7.0,
+          7.0,
+          7.0,
+          2.0,
+          4.0,
+          2.0,
+          7.0,
+          7.0,
+          7.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          -99.0,
+          -99.0,
+          -99.0,
+          -99.0,
+          0.0,
+          1.0
+        ],
+        "reward": 100.0
+      },
+      {
+        "held_codes": [
+          2
+        ],
+        "augmented_observation": [
+          175.0,
+          75.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          7.0,
+          7.0,
+          7.0,
+          2.0,
+          4.0,
+          2.0,
+          7.0,
+          7.0,
+          7.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          -99.0,
+          -99.0,
+          -99.0,
+          -99.0,
+          0.0,
+          1.0
+        ],
+        "reward": -10.0
+      }
+    ]
+  },
+  "maintenance_rm_score_reward_divergence": {
+    "simultaneous_service_and_final_exit": true,
+    "environment_reward": 1100.0,
+    "score_delta_rm_reward": 1200.0,
+    "terminated": true,
+    "propositions": [
+      "is_ready",
+      "reward_1200.0"
+    ]
+  }
+}
