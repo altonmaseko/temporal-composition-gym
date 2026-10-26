@@ -7,7 +7,10 @@ Checks, without installing anything:
   - RAM and free disk for the role's largest run (image replay + restart checkpoints)
   - W&B: logged in (via W&B's own login, e.g. ~/.netrc from `wandb login`) and able to
     create an ONLINE run in the configured project. The API key is never read here.
-  - optionally (--learning-check) a short smoke run of each of the role's algorithms
+  - the code revision, a clean checkout and an up-to-date baseline_plan.json
+  - optionally (--learning-check) a short labelled smoke training of each of the role's
+    algorithms: real gradient updates, evaluations, a restart checkpoint, the planned device,
+    and (online mode) an online W&B run created by the training process; plus rough timings
 
     python run_scripts/baseline/preflight.py --role implicit --wandb-mode online --learning-check
 
@@ -161,20 +164,90 @@ def check_wandb(rep, mode, project, entity):
         rep.add("wandb online run", False, f"could not create an online run in {project!r}: {exc!r}")
 
 
-def learning_check(rep, role, device_policy, wandb_mode, project, entity):
-    from agents.common.baseline_plan import ALGORITHMS, ROLE_MAIN_RUNS
-    for env_key, algo in ROLE_MAIN_RUNS[role]:
+def check_revision(rep):
+    from agents.common.baseline_plan import main as plan_main
+    from agents.common.run_io import git_info
+    g = git_info()
+    rep.add("code revision", bool(g["rev"]), f"{g['rev']} on {g['branch']}")
+    rep.add("clean checkout", g["dirty"] is False,
+            "no uncommitted changes to tracked files" if g["dirty"] is False else
+            f"uncommitted changes: {g['changed_tracked_files'][:6]}", level="warn")
+    rep.add("baseline plan file", plan_main(["write", "--check"]) == 0, "run_scripts/baseline/baseline_plan.json matches the code")
+
+
+def _run_dirs(root):
+    import glob
+    return set(glob.glob(os.path.join(root, "v2", "smoke", "*", "*", "seed*__*")))
+
+
+def learning_check(rep, role, device_policy, wandb_mode, project, entity, results_root):
+    """Short labelled smoke training of every algorithm of the role (results/v2/smoke).
+
+    Passing means: exit 0, verified budget, gradient updates > 0, every evaluation point and
+    the final evaluation written, a restart checkpoint saved, the planned device used, and
+    (online mode) a W&B URL created by the training process itself.
+    """
+    import csv
+    from agents.common.baseline_plan import ALGORITHMS, BUDGETS, ROLE_CONTROL_RUNS, ROLE_MAIN_RUNS
+    from agents.common.run_io import read_json
+    projections = {}
+    for env_key, algo in ROLE_MAIN_RUNS[role] + ROLE_CONTROL_RUNS[role]:
         dev = "cpu" if device_policy == "cpu" or (device_policy == "plan" and env_key != "colour") else "cuda"
         cmd = [sys.executable, os.path.join(REPO_ROOT, ALGORITHMS[algo]["script"]), "--env", env_key, "--seed", "1",
-               "--mode", "smoke", "--device", dev, "--wandb-mode", wandb_mode, "--wandb-project", project]
+               "--mode", "smoke", "--device", dev, "--wandb-mode", wandb_mode, "--wandb-project", project,
+               "--results-root", results_root]
+        if dev == "cuda":
+            cmd.append("--require-gpu")
+        if algo == "dqn_ts":
+            cmd.append("--task-state")
         if entity:
             cmd += ["--wandb-entity", entity]
+        before = _run_dirs(results_root)
         t = time.time()
         res = subprocess.run(cmd, capture_output=True, text=True, cwd=REPO_ROOT)
-        tail = (res.stdout.strip().splitlines() or [""])[-1]
-        rep.add(f"smoke run {env_key}/{algo}", res.returncode == 0,
-                f"exit {res.returncode} in {time.time() - t:.0f}s: {tail}" if res.returncode == 0 else
-                f"exit {res.returncode}: {res.stderr.strip().splitlines()[-1] if res.stderr.strip() else tail}")
+        name = f"learning check {env_key}/{algo}"
+        new = sorted(_run_dirs(results_root) - before)
+        if res.returncode != 0 or len(new) != 1:
+            err = res.stderr.strip().splitlines()[-1] if res.stderr.strip() else "no run directory"
+            rep.add(name, False, f"exit {res.returncode}: {err}")
+            continue
+        rd = new[0]
+        st = read_json(os.path.join(rd, "status.json"))
+        meta = read_json(os.path.join(rd, "metadata.json"))
+        with open(os.path.join(rd, "eval_points.csv"), encoding="utf-8") as f:
+            points = list(csv.DictReader(f))
+        with open(os.path.join(rd, "resources.csv"), encoding="utf-8") as f:
+            res_rows = list(csv.DictReader(f))
+        problems = []
+        if not (st.get("state") == "complete" and st.get("verified")):
+            problems.append(f"status {st.get('state')}")
+        if not st.get("n_updates"):
+            problems.append("no gradient updates")
+        if len(points) < 2:
+            problems.append("fewer than 2 evaluation points")
+        if not os.path.exists(os.path.join(rd, "checkpoints", "restart", "state.json")):
+            problems.append("no restart checkpoint")
+        if dev == "cuda" and not meta["device"].get("is_gpu_run"):
+            problems.append("did not run on the GPU")
+        if wandb_mode == "online" and not (st.get("wandb") or {}).get("url"):
+            problems.append("no online W&B URL from the training process")
+        sps = [float(r["env_steps_per_s"]) for r in res_rows if r.get("env_steps_per_s")]
+        gpu = max([float(r["gpu_mem_max_gb"]) for r in res_rows if r.get("gpu_mem_max_gb")] or [0.0])
+        rss = max([float(r["rss_gb"]) for r in res_rows if r.get("rss_gb")] or [0.0])
+        if sps:
+            # Rough: smoke throughput (incl. its short evaluations) applied to the full budget.
+            projections[f"{env_key}/{algo}"] = round(BUDGETS[env_key] / sps[-1] / 3600, 2)
+        rep.add(name, not problems,
+                f"{time.time() - t:.0f}s, updates={st.get('n_updates')}, device={meta['device']['selected']}, "
+                f"peak RSS {rss:.2f} GB, peak GPU {gpu:.2f} GB, {sps[-1] if sps else float('nan'):.0f} env steps/s"
+                + (f", W&B {st['wandb']['url']}" if (st.get("wandb") or {}).get("url") else "")
+                + (f" -- problems: {problems}" if problems else ""))
+    if projections:
+        total = sum(projections.values()) * 5
+        rep.add("rough full-run time", False,
+                f"hours per run (smoke throughput x full budget): {projections}; x5 seeds ~ {total:.0f} h "
+                "(lower bound: full-size replay/batches and full evaluations are slower)", level="warn")
+    return projections
 
 
 def main():
@@ -195,7 +268,7 @@ def main():
     os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
     rep = Report()
     print(f"preflight: role={args.role} host={socket.gethostname()} {platform.platform()}", flush=True)
-    for fn in (lambda: check_python(rep), lambda: check_packages(rep),
+    for fn in (lambda: check_python(rep), lambda: check_revision(rep), lambda: check_packages(rep),
                lambda: check_device(rep, args.role, args.device_policy),
                lambda: check_resources(rep, args.role, args.results_root),
                lambda: check_wandb(rep, args.wandb_mode, args.wandb_project, args.wandb_entity)):
@@ -204,7 +277,8 @@ def main():
         except Exception as exc:                                           # noqa: BLE001
             rep.add("preflight internal", False, repr(exc))
     if args.learning_check and not rep.failed:
-        learning_check(rep, args.role, args.device_policy, args.wandb_mode, args.wandb_project, args.wandb_entity)
+        learning_check(rep, args.role, args.device_policy, args.wandb_mode, args.wandb_project, args.wandb_entity,
+                       args.results_root)
     if args.out:
         with open(args.out, "w", encoding="utf-8") as f:
             json.dump({"role": args.role, "host": socket.gethostname(), "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),

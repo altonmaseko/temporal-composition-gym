@@ -23,6 +23,8 @@ Usage: $(basename "$0") --python PATH [options]
   --wandb-entity NAME      optional W&B entity
   --results-root DIR       default: run_scripts/baseline/results
   --stop-on-failure        stop at the first failed run (default: record it and continue)
+  --continue-batch         restart after a crash: skip planned runs that are already complete,
+                           resume unfinished runs that have a restart checkpoint, start the rest fresh
   --skip-preflight         do not run preflight.py first (not recommended)
   --dry-run                print the commands without running anything
 
@@ -39,7 +41,7 @@ launch_role() {
 
   local py="" mode="full" seeds="" controls=1 device_policy="plan" threads=4
   local wandb_mode="" wandb_project="new_experiments" wandb_entity="" results_root=""
-  local stop_on_failure=0 preflight=1 dry_run=0
+  local stop_on_failure=0 preflight=1 dry_run=0 continue_batch=0
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --python) py="$2"; shift 2 ;;
@@ -53,6 +55,7 @@ launch_role() {
       --wandb-entity) wandb_entity="$2"; shift 2 ;;
       --results-root) results_root="$2"; shift 2 ;;
       --stop-on-failure) stop_on_failure=1; shift ;;
+      --continue-batch) continue_batch=1; shift ;;
       --skip-preflight) preflight=0; shift ;;
       --dry-run) dry_run=1; shift ;;
       -h|--help) usage; return 0 ;;
@@ -132,6 +135,23 @@ launch_role() {
     esac
     local -a extra=()
     [[ "$algo" == "dqn_ts" ]] && extra+=(--task-state)
+    local action="fresh" action_dir=""
+    if [[ "$continue_batch" -eq 1 ]]; then
+      local action_line
+      action_line="$("$py" "$repo_root/run_scripts/baseline/batch_action.py" --env "$env" --algo "$algo" \
+                       --seed "$seed" --mode "$mode" --root "$results_dir")"
+      action="${action_line%%$'\t'*}"
+      if [[ "$action" != "fresh" ]]; then action_dir="${action_line#*$'\t'}"; fi
+    fi
+    if [[ "$action" == "skip" ]]; then
+      echo "[$idx/$total] $env / $algo / seed $seed  skipped: already complete in $action_dir"
+      if [[ "$dry_run" -eq 0 ]]; then
+        printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$idx" "$env" "$algo" "$seed" "skip" "" "" "$action_dir" "" \
+          >> "$batch_dir/batch_status.tsv"
+      fi
+      continue
+    fi
+    [[ "$action" == "resume" ]] && extra+=(--resume "$action_dir")
     local stem
     stem="$batch_dir/logs/$(printf '%02d' "$idx")_${env}__${algo}__s${seed}"
     local -a cmd=("$py" "$repo_root/$script" --env "$env" --seed "$seed" --mode "$mode" "${extra[@]}"
@@ -144,7 +164,7 @@ launch_role() {
     fi
     local started
     started="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-    echo "[$idx/$total] $env / $algo / seed $seed  (started $started)"
+    echo "[$idx/$total] $env / $algo / seed $seed  (started $started${action_dir:+, resuming $action_dir})"
     if "${cmd[@]}" < /dev/null > "$stem.out" 2> "$stem.err"; then child_rc=0; else child_rc=$?; fi
     printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$idx" "$env" "$algo" "$seed" "$child_rc" "$started" \
       "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$stem.out" "$stem.err" >> "$batch_dir/batch_status.tsv"

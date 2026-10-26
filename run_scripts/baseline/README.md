@@ -80,7 +80,13 @@ Every directory name contains a fresh random suffix, so runs never overwrite eac
 
 ## Restart a failed or interrupted run
 
-Re-run the same entry point with the same `--env`, `--seed` and `--mode`, and `--resume`:
+After a crash or reboot, rerun the machine's launcher command with `--continue-batch`: planned
+runs that are already complete are skipped, unfinished runs with a restart checkpoint are
+resumed, and the rest start fresh (`run_scripts/baseline/batch_action.py` makes the decision).
+Without it the launcher always starts fresh runs, which the manifest would flag as duplicates.
+
+To resume one run by hand, re-run the same entry point with the same `--env`, `--seed` and
+`--mode`, and `--resume`:
 
 ```bash
 ~/tcg/bin/python agents/drqn/train_drqn.py --env colour --seed 3 --device cuda --require-gpu \
