@@ -1,5 +1,7 @@
 # Protocol v2 baseline runs: launch, restart and collection
 
+**Before launching, read [PRODUCTION_LAUNCH_v2.md](PRODUCTION_LAUNCH_v2.md)**: validated revision, the exact per-machine commands, the cloud preflight and the collection contract.
+
 The frozen protocol is [BASELINE_PROTOCOL.md](BASELINE_PROTOCOL.md); task changes are in
 [TASK_CHANGES_v2.md](TASK_CHANGES_v2.md). The resolved, machine-readable plan (every run's
 full configuration and config hash) is [baseline_plan.json](baseline_plan.json), written by

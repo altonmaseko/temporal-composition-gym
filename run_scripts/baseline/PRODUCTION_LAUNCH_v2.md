@@ -1,6 +1,6 @@
 # Protocol v2 baseline: production launch and collection contract
 
-Status: **ready to launch, subject to the cloud preflight on each machine** (section 7).
+Status: **ready to launch, subject to the cloud preflight on each machine** (sections 4 and 7). Validated code revision: `7d94a93`.
 All agreed comparisons and local checks are implemented; the local offline validation
 report is [validation/pipeline_validation_v2.json](validation/pipeline_validation_v2.json) and
 the task solvability report is [validation/task_validation_v2.json](validation/task_validation_v2.json).
@@ -39,7 +39,9 @@ tags `baseline, v2, full, <family>, <env>, <algo>, seed<n>`. Smoke/preflight run
 
 ```bash
 git clone --branch new_experiments https://github.com/altonmaseko/temporal-composition-gym.git ~/temporal-composition-gym
-cd ~/temporal-composition-gym && git checkout <commit from section 8>
+cd ~/temporal-composition-gym && git log -1 --oneline
+git diff --stat 7d94a93 HEAD -- agents temporal_comp_gym run_scripts/baseline requirements.txt setup.py \
+    ':(exclude)run_scripts/baseline/*.md' ':(exclude)run_scripts/baseline/validation'   # must print nothing
 python3 -m venv ~/tcg && ~/tcg/bin/python -m pip install --upgrade pip
 ~/tcg/bin/python -m pip install -r requirements.txt
 ~/tcg/bin/wandb login          # paste the API key once; stored by W&B in ~/.netrc, never read by this code
@@ -142,7 +144,51 @@ Drop the two `--exclude` options to also keep policy snapshots and restart check
 
 ## 8. Validation summary
 
-<!-- filled from validation/pipeline_validation_v2.json -->
+**Validated code revision: `7d94a93`** (branch `new_experiments`). Launch from that commit or any
+later commit that only changes documentation or the validation reports. Both reports were produced
+from `7d94a93`; their `dirty` flag is set only because the reports themselves had been rewritten
+(`changed_tracked_files` lists just `validation/task_validation_v2.json`).
+
+Local machine: Windows 11, Python 3.10.20, CPU only (no CUDA), W&B offline.
+
+**Pipeline validation** ([validation/pipeline_validation_v2.json](validation/pipeline_validation_v2.json)):
+115 of 115 checks passed in 14.5 minutes.
+
+| Section | What was shown |
+|---|---|
+| matrix (11 runs) | every environment/algorithm combination, including both DQN-TS controls, completed a labelled smoke run with real gradient updates, 3 evaluation points, 3 final-evaluation episodes, exact budget accounting (training-episode steps never exceed the budget; evaluation steps are separate), finite losses and returns, a restart checkpoint whose reloaded weights equal the final policy snapshot (plus replay for off-policy agents), and offline W&B records that, decoded, match the local files |
+| resume (5 algorithms) | DQN, PPO, Recurrent PPO, DRQN and QRM: injected failure recorded as `failed`; resumed run completed with restored + new steps = budget, the **same update count as the uninterrupted run** (875, 16, 16, 876, 876), no duplicated evaluation rows, and the same step-0 evaluation |
+| collision | a second seed and a second configuration got separate directories, run ids, W&B ids and config hashes; the second configuration started from an untrained policy (identical step-0 evaluation) with its full update count |
+| failure | a deliberate failure is `failed` in status and manifest, has no summary and a nonzero exit; removing `eval_final.csv`, the last evaluation point or `final_summary.json` makes the run unverified and uncounted; an evaluation with no episodes raises instead of producing zeros |
+| config | rejected: unknown override, seed override, pilot W&B project, tuning-range seed, a maintenance budget SB3 would round, an algorithm outside the plan, an impossible readiness range; `baseline_plan.json` matches the code |
+| envs | random rollouts in all three tasks: finite observations inside their spaces, finite rewards, well-formed events and termination info |
+| memory | projected full-run image replay: DQN/DQN-TS colour 4.24 GB (SB3 stores obs and next obs), DRQN colour 2.32 GB (frames + LSTM state), QRM-Cue colour 2.12 GB; smoke colour runs peaked at 0.5-0.6 GB RSS |
+| manifest | all 11 smoke combinations `complete` |
+| pytest | 75 semantic and pipeline tests passed |
+
+Settings that differ in smoke mode (recorded per run in the report under `smoke_vs_full`, and in each
+run's resolved config): budgets (4,000 / 3,000 / 4,096 env steps), 2 evaluation points with 2 periodic
+and 3 final episodes, checkpoints every half budget, training-log interval, maintenance episode limit
+600 steps, and shortened schedules: learning starts 500, target update 250, replay 5,000 frames, epsilon
+decay over 50% (DQN-family), PPO `n_steps` 512 and 2 epochs, DRQN colour 2 sequences of 16 steps with
+8-step burn-in, QRM batch 8. W&B group `baseline-v2-smoke`. Production settings are unchanged.
+
+**Task validation** ([validation/task_validation_v2.json](validation/task_validation_v2.json)), 200
+final-evaluation seeds per task, with the reward machine checked against the env on every step:
+
+| Task | Oracle success | Oracle mean return | Oracle p95 length / limit | Random success | Random mean return |
+|---|---|---|---|---|---|
+| Delivery | 100% | 80.0 | 46 / 500 | 0% | -49.5 |
+| Colour | 100% | 10.0 | 92 / 300 | 0% | -0.8 |
+| Maintenance | 100% | 1076.2 | 1,859 / 4,000 | 0% | -6,037.1 |
+
+**Throughput hint (local CPU only, smoke settings):** colour runs are the slowest (QRM-Cue ~76 env
+steps/s on this laptop's CPU, about 11 h per full run). They run on the GPU in production; the cloud
+preflight reports measured projections for each machine.
+
+**Readiness:** the agreed comparisons (45 main runs + 10 controls) and all local checks are
+implemented and passing, so the pipeline is ready for production **once each machine's cloud
+preflight passes** (section 7 lists what only the cloud can verify).
 
 ## 9. Baseline collection contract (what the analysis phase receives)
 

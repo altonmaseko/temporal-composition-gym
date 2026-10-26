@@ -1,0 +1,1349 @@
+{
+  "protocol_version": "v2",
+  "kind": "local offline pipeline validation (smoke settings, not production)",
+  "git": {
+    "rev": "7d94a93e45400c2d6973bf51bf5a3b61b2bf0443",
+    "branch": "new_experiments",
+    "dirty": true,
+    "changed_tracked_files": [
+      "run_scripts/baseline/validation/task_validation_v2.json"
+    ],
+    "diff_sha256": "26b866269abe87ef8fcd7bcf95d0aed8648fdc88601b78ec5d38c50f3baf231f"
+  },
+  "python": "3.10.20",
+  "device": "cpu",
+  "minutes": 14.5,
+  "passed": true,
+  "n_checks": 115,
+  "n_failed": 0,
+  "wandb_note": "W&B ran offline; records were decoded and checked locally. Online upload is not verified.",
+  "smoke_runs": {
+    "delivery/dqn": {
+      "seconds": 22.4,
+      "n_updates": 875,
+      "peak_rss_gb": 0.355,
+      "device": "cpu",
+      "smoke_vs_full": {
+        "algo.hyperparams.buffer_size": {
+          "full": 100000,
+          "smoke": 5000
+        },
+        "algo.hyperparams.exploration_fraction": {
+          "full": 0.2,
+          "smoke": 0.5
+        },
+        "algo.hyperparams.learning_starts": {
+          "full": 10000,
+          "smoke": 500
+        },
+        "algo.hyperparams.target_update_interval": {
+          "full": 2000,
+          "smoke": 250
+        },
+        "budget.env_steps": {
+          "full": 1000000,
+          "smoke": 4000
+        },
+        "checkpoint.every_steps": {
+          "full": 100000,
+          "smoke": 2000
+        },
+        "eval.every_steps": {
+          "full": 50000,
+          "smoke": 2000
+        },
+        "eval.final_episodes": {
+          "full": 200,
+          "smoke": 3
+        },
+        "eval.n_points": {
+          "full": 20,
+          "smoke": 2
+        },
+        "eval.periodic_episodes": {
+          "full": 50,
+          "smoke": 2
+        },
+        "logging.train_log_every_steps": {
+          "full": 5000,
+          "smoke": 400
+        },
+        "wandb.group": {
+          "full": "baseline-v2",
+          "smoke": "baseline-v2-smoke"
+        }
+      }
+    },
+    "colour/dqn": {
+      "seconds": 44.1,
+      "n_updates": 625,
+      "peak_rss_gb": 0.637,
+      "device": "cpu",
+      "smoke_vs_full": {
+        "algo.hyperparams.buffer_size": {
+          "full": 100000,
+          "smoke": 5000
+        },
+        "algo.hyperparams.exploration_fraction": {
+          "full": 0.2,
+          "smoke": 0.5
+        },
+        "algo.hyperparams.learning_starts": {
+          "full": 20000,
+          "smoke": 500
+        },
+        "algo.hyperparams.target_update_interval": {
+          "full": 10000,
+          "smoke": 250
+        },
+        "budget.env_steps": {
+          "full": 3000000,
+          "smoke": 3000
+        },
+        "checkpoint.every_steps": {
+          "full": 300000,
+          "smoke": 1500
+        },
+        "eval.every_steps": {
+          "full": 150000,
+          "smoke": 1500
+        },
+        "eval.final_episodes": {
+          "full": 200,
+          "smoke": 3
+        },
+        "eval.n_points": {
+          "full": 20,
+          "smoke": 2
+        },
+        "eval.periodic_episodes": {
+          "full": 50,
+          "smoke": 2
+        },
+        "logging.train_log_every_steps": {
+          "full": 15000,
+          "smoke": 300
+        },
+        "wandb.group": {
+          "full": "baseline-v2",
+          "smoke": "baseline-v2-smoke"
+        }
+      }
+    },
+    "maintenance/ppo": {
+      "seconds": 21.5,
+      "n_updates": 16,
+      "peak_rss_gb": 0.359,
+      "device": "cpu",
+      "smoke_vs_full": {
+        "algo.hyperparams.n_epochs": {
+          "full": 10,
+          "smoke": 2
+        },
+        "algo.hyperparams.n_steps": {
+          "full": 2048,
+          "smoke": 512
+        },
+        "budget.env_steps": {
+          "full": 2048000,
+          "smoke": 4096
+        },
+        "checkpoint.every_steps": {
+          "full": 204800,
+          "smoke": 2048
+        },
+        "env.kwargs.max_steps": {
+          "full": 4000,
+          "smoke": 600
+        },
+        "eval.every_steps": {
+          "full": 102400,
+          "smoke": 2048
+        },
+        "eval.final_episodes": {
+          "full": 100,
+          "smoke": 3
+        },
+        "eval.n_points": {
+          "full": 20,
+          "smoke": 2
+        },
+        "eval.periodic_episodes": {
+          "full": 20,
+          "smoke": 2
+        },
+        "logging.train_log_every_steps": {
+          "full": 10240,
+          "smoke": 409
+        },
+        "wandb.group": {
+          "full": "baseline-v2",
+          "smoke": "baseline-v2-smoke"
+        }
+      }
+    },
+    "delivery/dqn_ts": {
+      "seconds": 21.9,
+      "n_updates": 875,
+      "peak_rss_gb": 0.355,
+      "device": "cpu",
+      "smoke_vs_full": {
+        "algo.hyperparams.buffer_size": {
+          "full": 100000,
+          "smoke": 5000
+        },
+        "algo.hyperparams.exploration_fraction": {
+          "full": 0.2,
+          "smoke": 0.5
+        },
+        "algo.hyperparams.learning_starts": {
+          "full": 10000,
+          "smoke": 500
+        },
+        "algo.hyperparams.target_update_interval": {
+          "full": 2000,
+          "smoke": 250
+        },
+        "budget.env_steps": {
+          "full": 1000000,
+          "smoke": 4000
+        },
+        "checkpoint.every_steps": {
+          "full": 100000,
+          "smoke": 2000
+        },
+        "eval.every_steps": {
+          "full": 50000,
+          "smoke": 2000
+        },
+        "eval.final_episodes": {
+          "full": 200,
+          "smoke": 3
+        },
+        "eval.n_points": {
+          "full": 20,
+          "smoke": 2
+        },
+        "eval.periodic_episodes": {
+          "full": 50,
+          "smoke": 2
+        },
+        "logging.train_log_every_steps": {
+          "full": 5000,
+          "smoke": 400
+        },
+        "wandb.group": {
+          "full": "baseline-v2",
+          "smoke": "baseline-v2-smoke"
+        }
+      }
+    },
+    "colour/dqn_ts": {
+      "seconds": 45.7,
+      "n_updates": 625,
+      "peak_rss_gb": 0.636,
+      "device": "cpu",
+      "smoke_vs_full": {
+        "algo.hyperparams.buffer_size": {
+          "full": 100000,
+          "smoke": 5000
+        },
+        "algo.hyperparams.exploration_fraction": {
+          "full": 0.2,
+          "smoke": 0.5
+        },
+        "algo.hyperparams.learning_starts": {
+          "full": 20000,
+          "smoke": 500
+        },
+        "algo.hyperparams.target_update_interval": {
+          "full": 10000,
+          "smoke": 250
+        },
+        "budget.env_steps": {
+          "full": 3000000,
+          "smoke": 3000
+        },
+        "checkpoint.every_steps": {
+          "full": 300000,
+          "smoke": 1500
+        },
+        "eval.every_steps": {
+          "full": 150000,
+          "smoke": 1500
+        },
+        "eval.final_episodes": {
+          "full": 200,
+          "smoke": 3
+        },
+        "eval.n_points": {
+          "full": 20,
+          "smoke": 2
+        },
+        "eval.periodic_episodes": {
+          "full": 50,
+          "smoke": 2
+        },
+        "logging.train_log_every_steps": {
+          "full": 15000,
+          "smoke": 300
+        },
+        "wandb.group": {
+          "full": "baseline-v2",
+          "smoke": "baseline-v2-smoke"
+        }
+      }
+    },
+    "delivery/drqn": {
+      "seconds": 33.1,
+      "n_updates": 876,
+      "peak_rss_gb": 0.363,
+      "device": "cpu",
+      "smoke_vs_full": {
+        "algo.hyperparams.eps_fraction": {
+          "full": 0.2,
+          "smoke": 0.5
+        },
+        "algo.hyperparams.learning_starts": {
+          "full": 10000,
+          "smoke": 500
+        },
+        "algo.hyperparams.replay_frames": {
+          "full": 100000,
+          "smoke": 5000
+        },
+        "algo.hyperparams.target_update": {
+          "full": 2000,
+          "smoke": 250
+        },
+        "budget.env_steps": {
+          "full": 1000000,
+          "smoke": 4000
+        },
+        "checkpoint.every_steps": {
+          "full": 100000,
+          "smoke": 2000
+        },
+        "eval.every_steps": {
+          "full": 50000,
+          "smoke": 2000
+        },
+        "eval.final_episodes": {
+          "full": 200,
+          "smoke": 3
+        },
+        "eval.n_points": {
+          "full": 20,
+          "smoke": 2
+        },
+        "eval.periodic_episodes": {
+          "full": 50,
+          "smoke": 2
+        },
+        "logging.train_log_every_steps": {
+          "full": 5000,
+          "smoke": 400
+        },
+        "wandb.group": {
+          "full": "baseline-v2",
+          "smoke": "baseline-v2-smoke"
+        }
+      }
+    },
+    "colour/drqn": {
+      "seconds": 55.2,
+      "n_updates": 626,
+      "peak_rss_gb": 0.555,
+      "device": "cpu",
+      "smoke_vs_full": {
+        "algo.hyperparams.batch_size": {
+          "full": 4,
+          "smoke": 2
+        },
+        "algo.hyperparams.burn_in": {
+          "full": 32,
+          "smoke": 8
+        },
+        "algo.hyperparams.eps_fraction": {
+          "full": 0.2,
+          "smoke": 0.5
+        },
+        "algo.hyperparams.learning_starts": {
+          "full": 20000,
+          "smoke": 500
+        },
+        "algo.hyperparams.replay_frames": {
+          "full": 100000,
+          "smoke": 5000
+        },
+        "algo.hyperparams.target_update": {
+          "full": 10000,
+          "smoke": 250
+        },
+        "algo.hyperparams.train_len": {
+          "full": 96,
+          "smoke": 16
+        },
+        "budget.env_steps": {
+          "full": 3000000,
+          "smoke": 3000
+        },
+        "checkpoint.every_steps": {
+          "full": 300000,
+          "smoke": 1500
+        },
+        "eval.every_steps": {
+          "full": 150000,
+          "smoke": 1500
+        },
+        "eval.final_episodes": {
+          "full": 200,
+          "smoke": 3
+        },
+        "eval.n_points": {
+          "full": 20,
+          "smoke": 2
+        },
+        "eval.periodic_episodes": {
+          "full": 50,
+          "smoke": 2
+        },
+        "logging.train_log_every_steps": {
+          "full": 15000,
+          "smoke": 300
+        },
+        "wandb.group": {
+          "full": "baseline-v2",
+          "smoke": "baseline-v2-smoke"
+        }
+      }
+    },
+    "maintenance/recurrent_ppo": {
+      "seconds": 29.0,
+      "n_updates": 16,
+      "peak_rss_gb": 0.385,
+      "device": "cpu",
+      "smoke_vs_full": {
+        "algo.hyperparams.n_epochs": {
+          "full": 10,
+          "smoke": 2
+        },
+        "algo.hyperparams.n_steps": {
+          "full": 2048,
+          "smoke": 512
+        },
+        "budget.env_steps": {
+          "full": 2048000,
+          "smoke": 4096
+        },
+        "checkpoint.every_steps": {
+          "full": 204800,
+          "smoke": 2048
+        },
+        "env.kwargs.max_steps": {
+          "full": 4000,
+          "smoke": 600
+        },
+        "eval.every_steps": {
+          "full": 102400,
+          "smoke": 2048
+        },
+        "eval.final_episodes": {
+          "full": 100,
+          "smoke": 3
+        },
+        "eval.n_points": {
+          "full": 20,
+          "smoke": 2
+        },
+        "eval.periodic_episodes": {
+          "full": 20,
+          "smoke": 2
+        },
+        "logging.train_log_every_steps": {
+          "full": 10240,
+          "smoke": 409
+        },
+        "wandb.group": {
+          "full": "baseline-v2",
+          "smoke": "baseline-v2-smoke"
+        }
+      }
+    },
+    "delivery/qrm": {
+      "seconds": 20.0,
+      "n_updates": 876,
+      "peak_rss_gb": 0.34,
+      "device": "cpu",
+      "smoke_vs_full": {
+        "algo.hyperparams.batch_size": {
+          "full": 32,
+          "smoke": 8
+        },
+        "algo.hyperparams.eps_fraction": {
+          "full": 0.2,
+          "smoke": 0.5
+        },
+        "algo.hyperparams.learning_starts": {
+          "full": 10000,
+          "smoke": 500
+        },
+        "algo.hyperparams.replay_frames": {
+          "full": 100000,
+          "smoke": 5000
+        },
+        "algo.hyperparams.target_update": {
+          "full": 2000,
+          "smoke": 250
+        },
+        "budget.env_steps": {
+          "full": 1000000,
+          "smoke": 4000
+        },
+        "checkpoint.every_steps": {
+          "full": 100000,
+          "smoke": 2000
+        },
+        "eval.every_steps": {
+          "full": 50000,
+          "smoke": 2000
+        },
+        "eval.final_episodes": {
+          "full": 200,
+          "smoke": 3
+        },
+        "eval.n_points": {
+          "full": 20,
+          "smoke": 2
+        },
+        "eval.periodic_episodes": {
+          "full": 50,
+          "smoke": 2
+        },
+        "logging.train_log_every_steps": {
+          "full": 5000,
+          "smoke": 400
+        },
+        "wandb.group": {
+          "full": "baseline-v2",
+          "smoke": "baseline-v2-smoke"
+        }
+      }
+    },
+    "colour/qrm_cue": {
+      "seconds": 34.9,
+      "n_updates": 626,
+      "peak_rss_gb": 0.509,
+      "device": "cpu",
+      "smoke_vs_full": {
+        "algo.hyperparams.batch_size": {
+          "full": 32,
+          "smoke": 8
+        },
+        "algo.hyperparams.eps_fraction": {
+          "full": 0.2,
+          "smoke": 0.5
+        },
+        "algo.hyperparams.learning_starts": {
+          "full": 20000,
+          "smoke": 500
+        },
+        "algo.hyperparams.replay_frames": {
+          "full": 100000,
+          "smoke": 5000
+        },
+        "algo.hyperparams.target_update": {
+          "full": 10000,
+          "smoke": 250
+        },
+        "budget.env_steps": {
+          "full": 3000000,
+          "smoke": 3000
+        },
+        "checkpoint.every_steps": {
+          "full": 300000,
+          "smoke": 1500
+        },
+        "eval.every_steps": {
+          "full": 150000,
+          "smoke": 1500
+        },
+        "eval.final_episodes": {
+          "full": 200,
+          "smoke": 3
+        },
+        "eval.n_points": {
+          "full": 20,
+          "smoke": 2
+        },
+        "eval.periodic_episodes": {
+          "full": 50,
+          "smoke": 2
+        },
+        "logging.train_log_every_steps": {
+          "full": 15000,
+          "smoke": 300
+        },
+        "wandb.group": {
+          "full": "baseline-v2",
+          "smoke": "baseline-v2-smoke"
+        }
+      }
+    },
+    "maintenance/ppo_rm": {
+      "seconds": 23.0,
+      "n_updates": 16,
+      "peak_rss_gb": 0.36,
+      "device": "cpu",
+      "smoke_vs_full": {
+        "algo.hyperparams.n_epochs": {
+          "full": 10,
+          "smoke": 2
+        },
+        "algo.hyperparams.n_steps": {
+          "full": 2048,
+          "smoke": 512
+        },
+        "budget.env_steps": {
+          "full": 2048000,
+          "smoke": 4096
+        },
+        "checkpoint.every_steps": {
+          "full": 204800,
+          "smoke": 2048
+        },
+        "env.kwargs.max_steps": {
+          "full": 4000,
+          "smoke": 600
+        },
+        "eval.every_steps": {
+          "full": 102400,
+          "smoke": 2048
+        },
+        "eval.final_episodes": {
+          "full": 100,
+          "smoke": 3
+        },
+        "eval.n_points": {
+          "full": 20,
+          "smoke": 2
+        },
+        "eval.periodic_episodes": {
+          "full": 20,
+          "smoke": 2
+        },
+        "logging.train_log_every_steps": {
+          "full": 10240,
+          "smoke": 409
+        },
+        "wandb.group": {
+          "full": "baseline-v2",
+          "smoke": "baseline-v2-smoke"
+        }
+      }
+    }
+  },
+  "checks": [
+    {
+      "section": "matrix delivery/dqn",
+      "check": "run exits 0 with one new run directory",
+      "ok": true,
+      "detail": "exit 0 in 22s"
+    },
+    {
+      "section": "matrix delivery/dqn",
+      "check": "learned (gradient updates > 0)",
+      "ok": true,
+      "detail": "875 updates"
+    },
+    {
+      "section": "matrix delivery/dqn",
+      "check": "artifacts complete",
+      "ok": true,
+      "detail": "3 eval points, 6 periodic + 3 final eval episodes"
+    },
+    {
+      "section": "matrix delivery/dqn",
+      "check": "budget accounting",
+      "ok": true,
+      "detail": "4000/4000 steps; 49 finished training episodes cover 3765 steps (rest = episode in progress); evaluation steps not counted"
+    },
+    {
+      "section": "matrix delivery/dqn",
+      "check": "finite losses and returns",
+      "ok": true,
+      "detail": "10 loss rows, 58 returns"
+    },
+    {
+      "section": "matrix delivery/dqn",
+      "check": "checkpoint saved and reloaded",
+      "ok": true,
+      "detail": "restart step 4000; reloaded weights equal the final snapshot: True; finite: True; replay saved: True"
+    },
+    {
+      "section": "matrix delivery/dqn",
+      "check": "offline W&B records (decoded; not proof of upload)",
+      "ok": true,
+      "detail": "18 history rows, 3 eval rows, summary matches local files"
+    },
+    {
+      "section": "matrix colour/dqn",
+      "check": "run exits 0 with one new run directory",
+      "ok": true,
+      "detail": "exit 0 in 44s"
+    },
+    {
+      "section": "matrix colour/dqn",
+      "check": "learned (gradient updates > 0)",
+      "ok": true,
+      "detail": "625 updates"
+    },
+    {
+      "section": "matrix colour/dqn",
+      "check": "artifacts complete",
+      "ok": true,
+      "detail": "3 eval points, 6 periodic + 3 final eval episodes"
+    },
+    {
+      "section": "matrix colour/dqn",
+      "check": "budget accounting",
+      "ok": true,
+      "detail": "3000/3000 steps; 10 finished training episodes cover 3000 steps (rest = episode in progress); evaluation steps not counted"
+    },
+    {
+      "section": "matrix colour/dqn",
+      "check": "finite losses and returns",
+      "ok": true,
+      "detail": "10 loss rows, 19 returns"
+    },
+    {
+      "section": "matrix colour/dqn",
+      "check": "checkpoint saved and reloaded",
+      "ok": true,
+      "detail": "restart step 3000; reloaded weights equal the final snapshot: True; finite: True; replay saved: True"
+    },
+    {
+      "section": "matrix colour/dqn",
+      "check": "offline W&B records (decoded; not proof of upload)",
+      "ok": true,
+      "detail": "18 history rows, 3 eval rows, summary matches local files"
+    },
+    {
+      "section": "matrix maintenance/ppo",
+      "check": "run exits 0 with one new run directory",
+      "ok": true,
+      "detail": "exit 0 in 21s"
+    },
+    {
+      "section": "matrix maintenance/ppo",
+      "check": "learned (gradient updates > 0)",
+      "ok": true,
+      "detail": "16 updates"
+    },
+    {
+      "section": "matrix maintenance/ppo",
+      "check": "artifacts complete",
+      "ok": true,
+      "detail": "3 eval points, 6 periodic + 3 final eval episodes"
+    },
+    {
+      "section": "matrix maintenance/ppo",
+      "check": "budget accounting",
+      "ok": true,
+      "detail": "4096/4096 steps; 6 finished training episodes cover 3600 steps (rest = episode in progress); evaluation steps not counted"
+    },
+    {
+      "section": "matrix maintenance/ppo",
+      "check": "finite losses and returns",
+      "ok": true,
+      "detail": "10 loss rows, 15 returns"
+    },
+    {
+      "section": "matrix maintenance/ppo",
+      "check": "checkpoint saved and reloaded",
+      "ok": true,
+      "detail": "restart step 4096; reloaded weights equal the final snapshot: True; finite: True; replay saved: True"
+    },
+    {
+      "section": "matrix maintenance/ppo",
+      "check": "offline W&B records (decoded; not proof of upload)",
+      "ok": true,
+      "detail": "18 history rows, 3 eval rows, summary matches local files"
+    },
+    {
+      "section": "matrix delivery/dqn_ts",
+      "check": "run exits 0 with one new run directory",
+      "ok": true,
+      "detail": "exit 0 in 22s"
+    },
+    {
+      "section": "matrix delivery/dqn_ts",
+      "check": "learned (gradient updates > 0)",
+      "ok": true,
+      "detail": "875 updates"
+    },
+    {
+      "section": "matrix delivery/dqn_ts",
+      "check": "artifacts complete",
+      "ok": true,
+      "detail": "3 eval points, 6 periodic + 3 final eval episodes"
+    },
+    {
+      "section": "matrix delivery/dqn_ts",
+      "check": "budget accounting",
+      "ok": true,
+      "detail": "4000/4000 steps; 38 finished training episodes cover 3964 steps (rest = episode in progress); evaluation steps not counted"
+    },
+    {
+      "section": "matrix delivery/dqn_ts",
+      "check": "finite losses and returns",
+      "ok": true,
+      "detail": "10 loss rows, 47 returns"
+    },
+    {
+      "section": "matrix delivery/dqn_ts",
+      "check": "checkpoint saved and reloaded",
+      "ok": true,
+      "detail": "restart step 4000; reloaded weights equal the final snapshot: True; finite: True; replay saved: True"
+    },
+    {
+      "section": "matrix delivery/dqn_ts",
+      "check": "offline W&B records (decoded; not proof of upload)",
+      "ok": true,
+      "detail": "18 history rows, 3 eval rows, summary matches local files"
+    },
+    {
+      "section": "matrix colour/dqn_ts",
+      "check": "run exits 0 with one new run directory",
+      "ok": true,
+      "detail": "exit 0 in 46s"
+    },
+    {
+      "section": "matrix colour/dqn_ts",
+      "check": "learned (gradient updates > 0)",
+      "ok": true,
+      "detail": "625 updates"
+    },
+    {
+      "section": "matrix colour/dqn_ts",
+      "check": "artifacts complete",
+      "ok": true,
+      "detail": "3 eval points, 6 periodic + 3 final eval episodes"
+    },
+    {
+      "section": "matrix colour/dqn_ts",
+      "check": "budget accounting",
+      "ok": true,
+      "detail": "3000/3000 steps; 10 finished training episodes cover 3000 steps (rest = episode in progress); evaluation steps not counted"
+    },
+    {
+      "section": "matrix colour/dqn_ts",
+      "check": "finite losses and returns",
+      "ok": true,
+      "detail": "10 loss rows, 19 returns"
+    },
+    {
+      "section": "matrix colour/dqn_ts",
+      "check": "checkpoint saved and reloaded",
+      "ok": true,
+      "detail": "restart step 3000; reloaded weights equal the final snapshot: True; finite: True; replay saved: True"
+    },
+    {
+      "section": "matrix colour/dqn_ts",
+      "check": "offline W&B records (decoded; not proof of upload)",
+      "ok": true,
+      "detail": "18 history rows, 3 eval rows, summary matches local files"
+    },
+    {
+      "section": "matrix delivery/drqn",
+      "check": "run exits 0 with one new run directory",
+      "ok": true,
+      "detail": "exit 0 in 33s"
+    },
+    {
+      "section": "matrix delivery/drqn",
+      "check": "learned (gradient updates > 0)",
+      "ok": true,
+      "detail": "876 updates"
+    },
+    {
+      "section": "matrix delivery/drqn",
+      "check": "artifacts complete",
+      "ok": true,
+      "detail": "3 eval points, 6 periodic + 3 final eval episodes"
+    },
+    {
+      "section": "matrix delivery/drqn",
+      "check": "budget accounting",
+      "ok": true,
+      "detail": "4000/4000 steps; 49 finished training episodes cover 3656 steps (rest = episode in progress); evaluation steps not counted"
+    },
+    {
+      "section": "matrix delivery/drqn",
+      "check": "finite losses and returns",
+      "ok": true,
+      "detail": "9 loss rows, 58 returns"
+    },
+    {
+      "section": "matrix delivery/drqn",
+      "check": "checkpoint saved and reloaded",
+      "ok": true,
+      "detail": "restart step 4000; reloaded weights equal the final snapshot: True; finite: True; replay saved: True"
+    },
+    {
+      "section": "matrix delivery/drqn",
+      "check": "offline W&B records (decoded; not proof of upload)",
+      "ok": true,
+      "detail": "18 history rows, 3 eval rows, summary matches local files"
+    },
+    {
+      "section": "matrix colour/drqn",
+      "check": "run exits 0 with one new run directory",
+      "ok": true,
+      "detail": "exit 0 in 55s"
+    },
+    {
+      "section": "matrix colour/drqn",
+      "check": "learned (gradient updates > 0)",
+      "ok": true,
+      "detail": "626 updates"
+    },
+    {
+      "section": "matrix colour/drqn",
+      "check": "artifacts complete",
+      "ok": true,
+      "detail": "3 eval points, 6 periodic + 3 final eval episodes"
+    },
+    {
+      "section": "matrix colour/drqn",
+      "check": "budget accounting",
+      "ok": true,
+      "detail": "3000/3000 steps; 10 finished training episodes cover 2915 steps (rest = episode in progress); evaluation steps not counted"
+    },
+    {
+      "section": "matrix colour/drqn",
+      "check": "finite losses and returns",
+      "ok": true,
+      "detail": "9 loss rows, 19 returns"
+    },
+    {
+      "section": "matrix colour/drqn",
+      "check": "checkpoint saved and reloaded",
+      "ok": true,
+      "detail": "restart step 3000; reloaded weights equal the final snapshot: True; finite: True; replay saved: True"
+    },
+    {
+      "section": "matrix colour/drqn",
+      "check": "offline W&B records (decoded; not proof of upload)",
+      "ok": true,
+      "detail": "18 history rows, 3 eval rows, summary matches local files"
+    },
+    {
+      "section": "matrix maintenance/recurrent_ppo",
+      "check": "run exits 0 with one new run directory",
+      "ok": true,
+      "detail": "exit 0 in 29s"
+    },
+    {
+      "section": "matrix maintenance/recurrent_ppo",
+      "check": "learned (gradient updates > 0)",
+      "ok": true,
+      "detail": "16 updates"
+    },
+    {
+      "section": "matrix maintenance/recurrent_ppo",
+      "check": "artifacts complete",
+      "ok": true,
+      "detail": "3 eval points, 6 periodic + 3 final eval episodes"
+    },
+    {
+      "section": "matrix maintenance/recurrent_ppo",
+      "check": "budget accounting",
+      "ok": true,
+      "detail": "4096/4096 steps; 6 finished training episodes cover 3600 steps (rest = episode in progress); evaluation steps not counted"
+    },
+    {
+      "section": "matrix maintenance/recurrent_ppo",
+      "check": "finite losses and returns",
+      "ok": true,
+      "detail": "10 loss rows, 15 returns"
+    },
+    {
+      "section": "matrix maintenance/recurrent_ppo",
+      "check": "checkpoint saved and reloaded",
+      "ok": true,
+      "detail": "restart step 4096; reloaded weights equal the final snapshot: True; finite: True; replay saved: True"
+    },
+    {
+      "section": "matrix maintenance/recurrent_ppo",
+      "check": "offline W&B records (decoded; not proof of upload)",
+      "ok": true,
+      "detail": "18 history rows, 3 eval rows, summary matches local files"
+    },
+    {
+      "section": "matrix delivery/qrm",
+      "check": "run exits 0 with one new run directory",
+      "ok": true,
+      "detail": "exit 0 in 20s"
+    },
+    {
+      "section": "matrix delivery/qrm",
+      "check": "learned (gradient updates > 0)",
+      "ok": true,
+      "detail": "876 updates"
+    },
+    {
+      "section": "matrix delivery/qrm",
+      "check": "artifacts complete",
+      "ok": true,
+      "detail": "3 eval points, 6 periodic + 3 final eval episodes"
+    },
+    {
+      "section": "matrix delivery/qrm",
+      "check": "budget accounting",
+      "ok": true,
+      "detail": "4000/4000 steps; 45 finished training episodes cover 3748 steps (rest = episode in progress); evaluation steps not counted"
+    },
+    {
+      "section": "matrix delivery/qrm",
+      "check": "finite losses and returns",
+      "ok": true,
+      "detail": "9 loss rows, 54 returns"
+    },
+    {
+      "section": "matrix delivery/qrm",
+      "check": "checkpoint saved and reloaded",
+      "ok": true,
+      "detail": "restart step 4000; reloaded weights equal the final snapshot: True; finite: True; replay saved: True"
+    },
+    {
+      "section": "matrix delivery/qrm",
+      "check": "offline W&B records (decoded; not proof of upload)",
+      "ok": true,
+      "detail": "18 history rows, 3 eval rows, summary matches local files"
+    },
+    {
+      "section": "matrix colour/qrm_cue",
+      "check": "run exits 0 with one new run directory",
+      "ok": true,
+      "detail": "exit 0 in 35s"
+    },
+    {
+      "section": "matrix colour/qrm_cue",
+      "check": "learned (gradient updates > 0)",
+      "ok": true,
+      "detail": "626 updates"
+    },
+    {
+      "section": "matrix colour/qrm_cue",
+      "check": "artifacts complete",
+      "ok": true,
+      "detail": "3 eval points, 6 periodic + 3 final eval episodes"
+    },
+    {
+      "section": "matrix colour/qrm_cue",
+      "check": "budget accounting",
+      "ok": true,
+      "detail": "3000/3000 steps; 10 finished training episodes cover 3000 steps (rest = episode in progress); evaluation steps not counted"
+    },
+    {
+      "section": "matrix colour/qrm_cue",
+      "check": "finite losses and returns",
+      "ok": true,
+      "detail": "9 loss rows, 19 returns"
+    },
+    {
+      "section": "matrix colour/qrm_cue",
+      "check": "checkpoint saved and reloaded",
+      "ok": true,
+      "detail": "restart step 3000; reloaded weights equal the final snapshot: True; finite: True; replay saved: True"
+    },
+    {
+      "section": "matrix colour/qrm_cue",
+      "check": "offline W&B records (decoded; not proof of upload)",
+      "ok": true,
+      "detail": "18 history rows, 3 eval rows, summary matches local files"
+    },
+    {
+      "section": "matrix maintenance/ppo_rm",
+      "check": "run exits 0 with one new run directory",
+      "ok": true,
+      "detail": "exit 0 in 23s"
+    },
+    {
+      "section": "matrix maintenance/ppo_rm",
+      "check": "learned (gradient updates > 0)",
+      "ok": true,
+      "detail": "16 updates"
+    },
+    {
+      "section": "matrix maintenance/ppo_rm",
+      "check": "artifacts complete",
+      "ok": true,
+      "detail": "3 eval points, 6 periodic + 3 final eval episodes"
+    },
+    {
+      "section": "matrix maintenance/ppo_rm",
+      "check": "budget accounting",
+      "ok": true,
+      "detail": "4096/4096 steps; 6 finished training episodes cover 3600 steps (rest = episode in progress); evaluation steps not counted"
+    },
+    {
+      "section": "matrix maintenance/ppo_rm",
+      "check": "finite losses and returns",
+      "ok": true,
+      "detail": "10 loss rows, 15 returns"
+    },
+    {
+      "section": "matrix maintenance/ppo_rm",
+      "check": "checkpoint saved and reloaded",
+      "ok": true,
+      "detail": "restart step 4096; reloaded weights equal the final snapshot: True; finite: True; replay saved: True"
+    },
+    {
+      "section": "matrix maintenance/ppo_rm",
+      "check": "offline W&B records (decoded; not proof of upload)",
+      "ok": true,
+      "detail": "18 history rows, 3 eval rows, summary matches local files"
+    },
+    {
+      "section": "resume delivery/dqn",
+      "check": "injected failure recorded",
+      "ok": true,
+      "detail": "RuntimeError: injected failure at step 3000 (--debug-fail-at-step)"
+    },
+    {
+      "section": "resume delivery/dqn",
+      "check": "resumed run completes with the uninterrupted run's update count",
+      "ok": true,
+      "detail": "restored 2000 + new 2000 = 4000; updates 875 vs uninterrupted 875; eval steps [0, 2000, 4000]"
+    },
+    {
+      "section": "resume delivery/dqn",
+      "check": "same seed+config -> same step-0 evaluation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "section": "resume maintenance/ppo",
+      "check": "injected failure recorded",
+      "ok": true,
+      "detail": "RuntimeError: injected failure at step 3000 (--debug-fail-at-step)"
+    },
+    {
+      "section": "resume maintenance/ppo",
+      "check": "resumed run completes with the uninterrupted run's update count",
+      "ok": true,
+      "detail": "restored 2048 + new 2048 = 4096; updates 16 vs uninterrupted 16; eval steps [0, 2048, 4096]"
+    },
+    {
+      "section": "resume maintenance/ppo",
+      "check": "same seed+config -> same step-0 evaluation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "section": "resume maintenance/recurrent_ppo",
+      "check": "injected failure recorded",
+      "ok": true,
+      "detail": "RuntimeError: injected failure at step 3000 (--debug-fail-at-step)"
+    },
+    {
+      "section": "resume maintenance/recurrent_ppo",
+      "check": "resumed run completes with the uninterrupted run's update count",
+      "ok": true,
+      "detail": "restored 2048 + new 2048 = 4096; updates 16 vs uninterrupted 16; eval steps [0, 2048, 4096]"
+    },
+    {
+      "section": "resume maintenance/recurrent_ppo",
+      "check": "same seed+config -> same step-0 evaluation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "section": "resume delivery/drqn",
+      "check": "injected failure recorded",
+      "ok": true,
+      "detail": "RuntimeError: injected failure at step 3000 (--debug-fail-at-step)"
+    },
+    {
+      "section": "resume delivery/drqn",
+      "check": "resumed run completes with the uninterrupted run's update count",
+      "ok": true,
+      "detail": "restored 2000 + new 2000 = 4000; updates 876 vs uninterrupted 876; eval steps [0, 2000, 4000]"
+    },
+    {
+      "section": "resume delivery/drqn",
+      "check": "same seed+config -> same step-0 evaluation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "section": "resume delivery/qrm",
+      "check": "injected failure recorded",
+      "ok": true,
+      "detail": "RuntimeError: injected failure at step 3000 (--debug-fail-at-step)"
+    },
+    {
+      "section": "resume delivery/qrm",
+      "check": "resumed run completes with the uninterrupted run's update count",
+      "ok": true,
+      "detail": "restored 2000 + new 2000 = 4000; updates 876 vs uninterrupted 876; eval steps [0, 2000, 4000]"
+    },
+    {
+      "section": "resume delivery/qrm",
+      "check": "same seed+config -> same step-0 evaluation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "section": "collision",
+      "check": "two seeds and two configs get separate run directories and identities",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "section": "collision",
+      "check": "second config starts fresh (nothing inherited)",
+      "ok": true,
+      "detail": "step-0 evaluation equals the first run's untrained policy; full update count from scratch"
+    },
+    {
+      "section": "collision",
+      "check": "no shared model directory",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "section": "failure",
+      "check": "deliberate failure -> state failed, no summary, nonzero exit",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "section": "failure",
+      "check": "manifest reports the failed run as failed (not complete, not zero)",
+      "ok": true,
+      "detail": "status is 'failed': RuntimeError: injected failure at step 500 (--debug-fail-at-step)"
+    },
+    {
+      "section": "failure",
+      "check": "missing metric (eval_final.csv removed) -> not verified, not counted",
+      "ok": true,
+      "detail": "final eval episodes None != 3"
+    },
+    {
+      "section": "failure",
+      "check": "missing metric (last evaluation point removed) -> not verified, not counted",
+      "ok": true,
+      "detail": "eval points 2 != 3"
+    },
+    {
+      "section": "failure",
+      "check": "missing metric (final_summary.json removed) -> not verified, not counted",
+      "ok": true,
+      "detail": "final_summary.json missing"
+    },
+    {
+      "section": "failure",
+      "check": "an evaluation with no episodes cannot produce a zero summary",
+      "ok": true,
+      "detail": "ValueError"
+    },
+    {
+      "section": "config",
+      "check": "rejects unknown override",
+      "ok": true,
+      "detail": "KeyError: \"override 'algo.hyperparams.nope': unknown key 'nope' (overrides may only change existing "
+    },
+    {
+      "section": "config",
+      "check": "rejects override of the seed",
+      "ok": true,
+      "detail": "KeyError: \"override 'seed.train_seed' is not allowed; use the dedicated option\""
+    },
+    {
+      "section": "config",
+      "check": "rejects pilot W&B project",
+      "ok": true,
+      "detail": "ValueError: W&B project 'temporal-composition-gym' is the pilot project; baseline runs must not log th"
+    },
+    {
+      "section": "config",
+      "check": "rejects tuning-range seed",
+      "ok": true,
+      "detail": "ValueError: seed 150 is outside the baseline training seed range range(1, 11)"
+    },
+    {
+      "section": "config",
+      "check": "rejects SB3 budget rounding",
+      "ok": true,
+      "detail": "ValueError: budget 2000000 is not a multiple of n_steps 2048 (SB3 would round it up)"
+    },
+    {
+      "section": "config",
+      "check": "rejects algorithm outside the plan",
+      "ok": true,
+      "detail": "ValueError: dqn is not part of the plan for maintenance"
+    },
+    {
+      "section": "config",
+      "check": "rejects env readiness range impossible",
+      "ok": true,
+      "detail": "ValueError: readiness_delay_range=(1, 4) must satisfy 1 <= min <= max <= max_stages-1 (3); otherwise r"
+    },
+    {
+      "section": "config",
+      "check": "baseline_plan.json matches the code",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "section": "envs",
+      "check": "delivery: finite, in-space observations and well-formed events",
+      "ok": true,
+      "detail": "78 random steps, 9 events"
+    },
+    {
+      "section": "envs",
+      "check": "colour: finite, in-space observations and well-formed events",
+      "ok": true,
+      "detail": "900 random steps, 22 events"
+    },
+    {
+      "section": "envs",
+      "check": "maintenance: finite, in-space observations and well-formed events",
+      "ok": true,
+      "detail": "6523 random steps, 7465 events"
+    },
+    {
+      "section": "memory",
+      "check": "projected full-run image replay allocation",
+      "ok": true,
+      "detail": "dqn/dqn_ts colour (SB3, obs + next_obs): 4.24 GB, drqn colour (frames + LSTM state): 2.32 GB, qrm_cue colour (frames): 2.12 GB",
+      "projected_gb": {
+        "dqn/dqn_ts colour (SB3, obs + next_obs)": 4.2356,
+        "drqn colour (frames + LSTM state)": 2.3247,
+        "qrm_cue colour (frames)": 2.1209
+      },
+      "smoke_peak_rss_gb": {
+        "colour/dqn": 0.637,
+        "colour/dqn_ts": 0.636,
+        "colour/drqn": 0.555,
+        "colour/qrm_cue": 0.509
+      }
+    },
+    {
+      "section": "manifest",
+      "check": "all 11 planned combinations complete (smoke, seed 1)",
+      "ok": true,
+      "detail": "{'complete': 11}"
+    },
+    {
+      "section": "pytest",
+      "check": "semantic + pipeline test suite",
+      "ok": true,
+      "detail": "75 passed in 312.15s (0:05:12)"
+    }
+  ]
+}
