@@ -225,6 +225,9 @@ def section_matrix(root, device):
 
 
 def section_resume(root, device, matrix):
+    # Own results root: these seed-1 runs repeat matrix runs and would otherwise (correctly)
+    # be counted as duplicates by the manifest check.
+    root = os.path.join(os.path.dirname(root), "resume_results")
     for env_key, algo in (("delivery", "dqn"), ("maintenance", "ppo"), ("maintenance", "recurrent_ppo"),
                           ("delivery", "drqn"), ("delivery", "qrm")):
         sec = f"resume {env_key}/{algo}"
