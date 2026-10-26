@@ -15,17 +15,12 @@ historical experiments, not completed reruns on this branch. Audit utilities and
 historical source snapshots are retained as code and reference material; their
 original result inputs and generated reports are available on `main`.
 
-Save fresh results using the existing phase-specific layout:
-
-- Baselines: `wandb_phase_3_baseline_exports/`
-- Hyperparameter tuning: `run_scripts/hyperparameter_tuning/results/` and
-  `run_scripts/hyperparameter_tuning/wandb_exports/`
-- Stress tests: `run_scripts/stress_testing/results/` and
-  `run_scripts/stress_testing/wandb_exports/`
-
-Use fresh checkpoint and log directories for the reruns. Record the exact code
-commit, configuration, seed, training budget, and completion status for each run.
-Keep results from different executions distinguishable within these directories.
+Baseline results (protocol v2) go to `run_scripts/baseline/results/v2/<full|smoke>/`, one isolated
+directory per run; see [run_scripts/baseline/README.md](run_scripts/baseline/README.md) for launching,
+restarting and collecting them, and [BASELINE_PROTOCOL.md](run_scripts/baseline/BASELINE_PROTOCOL.md)
+for the frozen protocol. Hyperparameter tuning and stress testing have not been redone yet; their
+scripts under `run_scripts/hyperparameter_tuning/` and `run_scripts/stress_testing/` are legacy pilot
+code and do not work with the protocol-v2 trainers.
 
 A benchmark suite of non-Markovian reinforcement learning environments designed to evaluate temporal composition and memory-augmented agents. The suite spans tabular, continuous-control, and image-based settings to test how agents handle delayed, history-dependent rewards across varying sensory modalities.
 

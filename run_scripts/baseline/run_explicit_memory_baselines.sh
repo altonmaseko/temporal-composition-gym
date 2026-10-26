@@ -1,31 +1,11 @@
-#!/bin/bash
-# ==============================================================================
-# SCRIPT 3: EXPLICIT MEMORY BASELINES (AUTOMATA MODELS)
-# Algorithms: QRM and PPO-RM
-# ==============================================================================
-echo "Starting Explicit Memory Baselines (Automata Models)..."
-
-# Array of seeds to ensure statistical significance
-SEEDS=(1 2 3)
-
-# ---------------------------------------------------------
-# 1. QRM (Handles Tabular environments)
-# ---------------------------------------------------------
-for seed in "${SEEDS[@]}"; do
-    echo "====================================================="
-    echo "Running QRM | Hazardous Delivery (Tabular) | Seed: $seed"
-    echo "====================================================="
-    python agents/qrm/train_qrm.py --env-id TemporalComp/HazardousDelivery-v0 --total-timesteps 1000000 --seed $seed
-done
-
-# ---------------------------------------------------------
-# 2. PPO-RM (Handles Continuous Control environments)
-# ---------------------------------------------------------
-for seed in "${SEEDS[@]}"; do
-    echo "====================================================="
-    echo "Running PPO-RM | Deferred Maintenance (Continuous) | Seed: $seed"
-    echo "====================================================="
-    python agents/ppo_rm/train_ppo_rm.py --env-id TemporalComp/DeferredMaintenance-v0 --timesteps 2000000 --seed $seed
-done
-
-echo "Script 3 (Explicit Memory Baselines) Complete!"
+#!/usr/bin/env bash
+# Protocol v2 -- EXPLICIT-MEMORY BASELINES: QRM (delivery), QRM-Cue (colour), PPO-RM (maintenance)
+# Runs only on the "explicit" machine, one training process at a time, seed-major order.
+#
+#   wandb login                          # once per machine; the code never reads the key
+#   bash run_scripts/baseline/run_explicit_memory_baselines.sh --python /path/to/env/bin/python
+#
+# Options: --help. Documentation: run_scripts/baseline/README.md
+set -Eeuo pipefail
+source "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/lib_launcher.sh"
+launch_role explicit "$@"

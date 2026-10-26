@@ -5,3 +5,7 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# Baseline run artifacts: keep CSV/JSON records, not checkpoints (multi-GB replay) or W&B caches
+run_scripts/baseline/results/**/checkpoints/
+run_scripts/baseline/results/**/wandb/

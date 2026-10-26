@@ -80,6 +80,39 @@ class FrameReplay:
         self._write_frame(next_obs, next_hidden)
         self.num_transitions_added += 1
 
+    # ------------------------------------------------------------------ persistence
+    _SCALARS = ("ptr", "size", "_episode_id", "_cur_t", "num_transitions_added")
+
+    def save(self, path):
+        """Write every array and counter to an uncompressed .npz (restart checkpoints)."""
+        arrays = {"obs": self.obs, "action": self.action, "reward": self.reward, "terminated": self.terminated,
+                  "truncated": self.truncated, "has_transition": self.has_transition, "episode": self.episode,
+                  "t": self.t}
+        arrays.update({f"extra__{k}": v for k, v in self.extras.items()})
+        if self.hidden is not None:
+            arrays["hidden"] = self.hidden
+        scalars = {k: getattr(self, k) for k in self._SCALARS}
+        scalars["_last"] = -1 if self._last is None else self._last
+        arrays["scalars"] = np.array([scalars[k] for k in self._SCALARS + ("_last",)], dtype=np.int64)
+        with open(path, "wb") as f:
+            np.savez(f, **arrays)
+
+    def load(self, path):
+        with np.load(path) as data:
+            for name in ("obs", "action", "reward", "terminated", "truncated", "has_transition", "episode", "t"):
+                if data[name].shape != getattr(self, name).shape:
+                    raise ValueError(f"replay array {name} has shape {data[name].shape}, expected {getattr(self, name).shape}")
+                getattr(self, name)[...] = data[name]
+            for k in self.extras:
+                self.extras[k][...] = data[f"extra__{k}"]
+            if self.hidden is not None:
+                self.hidden[...] = data["hidden"]
+            vals = data["scalars"].tolist()
+        for k, v in zip(self._SCALARS + ("_last",), vals):
+            setattr(self, k, int(v))
+        if self._last < 0:
+            self._last = None
+
     # ------------------------------------------------------------------ validity
     def valid_transition(self, idx):
         """Vectorised: slot idx starts a transition whose next frame is still stored."""

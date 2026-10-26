@@ -93,6 +93,18 @@ def env_kwargs(env_key, variant="main", overrides=None):
     return kwargs
 
 
+def make_env_from_kwargs(env_key, kwargs, debug_info=False):
+    """Build from a run's resolved env kwargs (JSON lists are fine where tuples are expected)."""
+    os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
+    kwargs = dict(kwargs)
+    assert "max_episode_steps" not in kwargs
+    kwargs["debug_info"] = debug_info
+    env = gym.make(ENV_IDS[env_key], **kwargs)
+    if env_key == "maintenance":
+        env = MaintenanceScaledObservation(env)
+    return env
+
+
 def make_env(env_key, variant="main", overrides=None, debug_info=False, render_mode=None):
     """Base environment every algorithm in `env_key` receives.
 
