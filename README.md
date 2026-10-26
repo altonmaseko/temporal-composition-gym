@@ -11,16 +11,18 @@ runs have not yet been performed.
 Historical result exports, Optuna databases, and generated audit results have been
 removed from this branch's current files. The original code and results remain
 available on `main` and in Git history. Existing Phase Stories describe those
-historical experiments, not completed reruns on this branch. Audit utilities and
-historical source snapshots are retained as code and reference material; their
-original result inputs and generated reports are available on `main`.
+historical experiments, not completed reruns on this branch. The baseline audit
+utilities and historical source snapshots under `output/analysis/baseline_audit/` are
+retained as code and reference material; their original result inputs and generated
+reports are available on `main`.
 
 Baseline results (protocol v2) go to `run_scripts/baseline/results/v2/<full|smoke>/`, one isolated
 directory per run; see [run_scripts/baseline/README.md](run_scripts/baseline/README.md) for launching,
 restarting and collecting them, and [BASELINE_PROTOCOL.md](run_scripts/baseline/BASELINE_PROTOCOL.md)
-for the frozen protocol. Hyperparameter tuning and stress testing have not been redone yet; their
-scripts under `run_scripts/hyperparameter_tuning/` and `run_scripts/stress_testing/` are legacy pilot
-code and do not work with the protocol-v2 trainers.
+for the frozen protocol. Hyperparameter tuning and stress testing have not been redone yet. The old
+pilot tuning and stress-testing scripts, and the old tuning audit, have been removed from this branch
+because they do not work with the protocol-v2 trainers; they remain available on `main` and in Git
+history. New tuning and stress-testing scripts will be written in later phases.
 
 A benchmark suite of non-Markovian reinforcement learning environments designed to evaluate temporal composition and memory-augmented agents. The suite spans tabular, continuous-control, and image-based settings to test how agents handle delayed, history-dependent rewards across varying sensory modalities.
 
