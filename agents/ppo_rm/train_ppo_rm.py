@@ -1,59 +1,20 @@
 import argparse
 import os
-import numpy as np
+import sys
+
 import gymnasium as gym
-import temporal_comp_gym
 from stable_baselines3 import PPO
 
-# Import our custom wrapper and RM logic
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from rm_wrapper import HazardousDeliveryRMWrapper
-from qrm.train_qrm import DeliveryRewardMachine
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
-class PPORMObservationWrapper(gym.Wrapper):
-    """
-    Wraps an environment that emits 'propositions' (like HazardousDeliveryRMWrapper).
-    It manages the Reward Machine state internally and appends it as a one-hot vector 
-    to the agent's observation. This allows standard on-policy PPO to be RM-aware.
-    """
-    def __init__(self, env, rm_class):
-        super().__init__(env)
-        self.rm = rm_class(self.env)
-        self.u = self.rm.get_initial_state()
-        
-        # Modify observation space to include the one-hot RM state
-        orig_shape = env.observation_space.shape[0]
-        new_shape = orig_shape + self.rm.num_states
-        
-        self.observation_space = gym.spaces.Box(
-            low=-np.inf, high=np.inf, shape=(new_shape,), dtype=np.float32
-        )
-        
-    def _get_obs(self, obs):
-        one_hot = np.zeros(self.rm.num_states, dtype=np.float32)
-        if self.u != -1: # -1 is terminal state
-            one_hot[self.u] = 1.0
-        return np.concatenate([obs, one_hot])
-        
-    def step(self, action):
-        obs, reward, terminated, truncated, info = self.env.step(action)
-        propositions = info.get('propositions', set())
-        
-        # Step the Reward Machine
-        next_u, rm_reward, rm_done = self.rm.step(self.u, propositions)
-        self.u = next_u
-        
-        # PPO-RM uses RM rewards instead of raw environment rewards!
-        new_obs = self._get_obs(obs)
-        final_done = terminated or rm_done
-        
-        return new_obs, rm_reward, final_done, truncated, info
-        
-    def reset(self, **kwargs):
-        obs, info = self.env.reset(**kwargs)
-        self.u = self.rm.get_initial_state()
-        return self._get_obs(obs), info
+from agents.common.env_factory import ENV_IDS, make_env  # noqa: E402
+from agents.reward_machines import RewardMachineWrapper, make_reward_machine  # noqa: E402
+
+# Protocol v2: PPO-RM = SB3 PPO on the base maintenance observation plus the reward
+# machine's task-state features [held codes (K), stage (S), ready]. The RM reward equals the
+# env reward on every step (checked by the wrapper), so there is no reward shaping.
 
 import glob
 import re
@@ -79,14 +40,14 @@ def load_latest_checkpoint_sb3(models_dir, env_id, algo_name):
 
 def main():
     parser = argparse.ArgumentParser(description="Train PPO-RM on Temporal Composition Gym")
-    parser.add_argument("--env-id", type=str, default="TemporalComp/HazardousDelivery-v0")
+    parser.add_argument("--env-id", type=str, default="TemporalComp/DeferredMaintenance-v0")
     parser.add_argument("--timesteps", type=int, default=100000)
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--learning-rate", type=float, default=0.00080869)
-    parser.add_argument("--n-steps", type=int, default=4096)
-    parser.add_argument("--batch-size", type=int, default=128)
+    parser.add_argument("--learning-rate", type=float, default=3e-4)
+    parser.add_argument("--n-steps", type=int, default=2048)
+    parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--clip-range", type=float, default=0.2)
-    parser.add_argument("--ent-coef", type=float, default=0.025738)
+    parser.add_argument("--ent-coef", type=float, default=0.0)
     args = parser.parse_args()
     
     import time
@@ -98,36 +59,13 @@ def main():
         config=vars(args)
     )
 
-    # Environment Setup
-    # 1. Base Environment
-    import json
-    env_kwargs = json.loads(os.environ.get("ENV_KWARGS", "{}"))
-    env = gym.make(args.env_id, **env_kwargs)
-    env = gym.wrappers.TimeLimit(env, max_episode_steps=1000)
-    # 2. Add Stats Tracker
-    env = gym.wrappers.RecordEpisodeStatistics(env)
-    # 3. Add RM Proposition Emitter & State Augmentation
-    if "HazardousDelivery" in args.env_id:
-        env = HazardousDeliveryRMWrapper(env)
-        env = PPORMObservationWrapper(env, DeliveryRewardMachine)
-    elif "DeferredMaintenance" in args.env_id:
-        from rm_wrapper import DeferredMaintenanceRMWrapper
-        env = DeferredMaintenanceRMWrapper(env)
-        
-        class MaintenanceRewardMachine:
-            def __init__(self, env):
-                self.num_states = 2
-            def get_initial_state(self):
-                return 0
-            def step(self, u, propositions):
-                if u == -1: return -1, 0.0, True
-                next_u = 1 if "is_ready" in propositions else u
-                reward = sum(float(p.split("_")[1]) for p in propositions if p.startswith("reward_"))
-                return next_u, reward, False
-                
-        env = PPORMObservationWrapper(env, MaintenanceRewardMachine)
-    else:
-        raise ValueError(f"Unsupported env_id for PPO-RM: {args.env_id}")
+    # Environment setup (protocol v2). Prompt 3 replaces checkpoints/W&B/evaluation below.
+    env_key = {v: k for k, v in ENV_IDS.items()}[args.env_id]
+    if env_key != "maintenance":
+        raise ValueError("PPO-RM is the explicit baseline for Deferred Maintenance only")
+    base = make_env(env_key)
+    env = gym.wrappers.RecordEpisodeStatistics(base)
+    env = RewardMachineWrapper(env, make_reward_machine(env_key, base), obs_mode="append", reward_mode="rm")
 
     # Initialize standard Stable Baselines 3 PPO!
     # Because the RM state is now part of the observation, PPO automatically learns temporal composition.
@@ -153,11 +91,11 @@ def main():
         model = PPO(
             policy="MlpPolicy",
             env=env,
-            learning_rate=args.learning_rate if hasattr(args, 'learning_rate') else 0.00080869,
-            n_steps=args.n_steps if hasattr(args, 'n_steps') else 4096,
-            batch_size=args.batch_size if hasattr(args, 'batch_size') else 128,
-            clip_range=args.clip_range if hasattr(args, 'clip_range') else 0.2,
-            ent_coef=args.ent_coef if hasattr(args, 'ent_coef') else 0.025738,
+            learning_rate=args.learning_rate,
+            n_steps=args.n_steps,
+            batch_size=args.batch_size,
+            clip_range=args.clip_range,
+            ent_coef=args.ent_coef,
             seed=args.seed,
             verbose=1,
             tensorboard_log=f"./runs/ppo_rm_{args.env_id.replace('/', '_')}"

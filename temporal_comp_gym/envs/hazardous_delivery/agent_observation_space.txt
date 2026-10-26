@@ -1,8 +1,9 @@
-# Hazardous Delivery Task: Agent Observation Space
+# Hazardous Delivery Task: Agent Observation Space (protocol v2)
 
 The observation space is a flat, 1D vector of floating-point numbers. Unlike traditional MiniGrid environments that provide a 3D ego-centric visual matrix, this environment is strictly designed as a partially-observable tabular/state-vector task to test Recurrent Neural Networks (RNNs) and memory-augmented agents.
 
 Depending on the environment configuration, the vector contains either 7, 8, or 9 values at each time step.
+**Protocol v2 main condition: 8 values** (health shown, delivered count hidden; decision D1).
 
 ## Core Vector (Always Present - 7 Values)
 
@@ -14,31 +15,45 @@ Depending on the environment configuration, the vector contains either 7, 8, or 
 4. **`Sensor Down` (float):** Object directly below (y+1)
 5. **`Sensor Left` (float):** Object directly left (x-1)
 6. **`Sensor Right` (float):** Object directly right (x+1)
-   *Purpose:* Acts as a local proximity scanner. It allows the agent to navigate safely around immediate hazards and locate objectives without seeing the whole map. 
-   
+   *Purpose:* Acts as a local proximity scanner. It allows the agent to navigate safely around immediate hazards and locate objectives without seeing the whole map.
+
 7. **`Current Square` (float):** The object occupying the square the agent is currently standing on.
    *Purpose:* Provides confirmation of the agent's current physical overlap (e.g., confirming it is standing on a health node).
 
 ### Sensor Values Mapping:
 The sensors (values 3-7) map the physical objects into the following discrete integers:
-* `0.0` = Safe / Empty Floor / Wall
+* `0.0` = Safe / Empty Floor / Wall (walls read the same as empty floor; use the coordinates)
 * `1.0` = Damage Square
 * `2.0` = Death Square (Lava)
-* `3.0` = Generic Package OR Destination (When `task_dependencies=False`)
+* `3.0` = Package OR Destination (the two are deliberately indistinguishable)
 * `4.0` = Level Goal
 
-*Note: If `task_dependencies=True`, the agent needs to know the exact identity of packages and destinations to sequence them. The mapping dynamically changes:*
-* `11.0, 12.0, 13.0, ...` = Package 1, Package 2, Package 3, etc.
-* `21.0, 22.0, 23.0, ...` = Destination 1, Destination 2, Destination 3, etc.
+`task_dependencies=True` (numbered packages/destinations) is not supported in protocol v2 and raises.
 
 ## Memory Toggles (Optional - up to 2 Values)
 
 These values are conditionally appended to the end of the vector. If toggled off before training, the agent is forced to use its own internal recurrent memory (like an LSTM cell) to track its history.
 
-8. **`Health State` (float):** The agent's current health score (e.g., 10.0). 
-   *Present only if `include_health_in_state=True`.*
+8. **`Health State` (float):** The agent's current health score (e.g., 10.0).
+   *Present only if `include_health_in_state=True` (v2 main condition: present).*
    *Purpose:* If hidden, the agent must actively remember how many damage squares it has stepped on.
 
 9. **`Inventory State` (float):** The total number of packages the agent has successfully delivered.
-   *Present only if `include_inventory_in_state=True`.*
+   *Present only if `include_inventory_in_state=True` (v2 main condition: absent).*
    *Purpose:* If hidden, the agent must explicitly memorize its delivery history to know when it is safe to enter the Level Goal.
+
+The number of packages currently carried is never part of the observation.
+
+## Info dictionary (protocol v2)
+
+* `info["events"]`: list of `(name, arg)` emitted from the transition itself: `package_contact`, `pickup`,
+  `destination_contact`, `delivery`, `goal_contact`, `lava`, `damage`, `heal`, `health_depleted`.
+* On the last step of an episode: `info["termination_cause"]` (`success`, `lava`, `damage_death`,
+  `premature_goal`, `timeout`) and `info["is_success"]`.
+* `info["debug"]` (hidden health/carried/delivered) only when `debug_info=True` (tests and oracles).
+
+## Episode limit and layouts
+
+* `max_steps=500`: reaching it truncates the episode (`truncated=True`, never `terminated`).
+* Layouts are drawn from the seeded env RNG. With `resample_unsolvable=True` (default), a layout in which
+  lava walls off any package, destination or the goal is redrawn from the same stream.

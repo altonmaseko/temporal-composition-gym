@@ -1,2 +1,7 @@
 # Local credentials
 /.env
+
+# Python / test caches
+__pycache__/
+*.pyc
+.pytest_cache/

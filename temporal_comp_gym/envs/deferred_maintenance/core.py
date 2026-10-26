@@ -10,8 +10,8 @@ from .objects import Rocket, PathBoundary, CodeZone, MaintenanceStation, StageEx
 
 # URL Override System for rendering icons
 ICON_URLS = {
-    "rocket": "",        
-    "code_zone": "",     
+    "rocket": "",
+    "code_zone": "",
     "station": "",
     "stage_start": "",
     "stage_exit": ""
@@ -36,36 +36,25 @@ VOCAB_COLORS_12 = [
 def get_color_hex(type_id):
     return VOCAB_COLORS_12[(type_id - 1) % 12]
 
-# ---------------------------------------------------------
-# CUSTOM_STAGES
-# ---------------------------------------------------------
-# To populate CUSTOM_STAGES, use a 2D array representing the grid:
-# 0 = Black Square (Dangerous Space)
-# 1 = White Square (Safe Path)
-# 4 = Stage Entry/Spawn Point
-# 5 = Stage Exit (Teleport to next stage)
-# "code_X"    = Code Zone of type X (e.g., "code_1", "code_2")
-# "station_X" = Maintenance Station of type X (e.g., "station_1")
-CUSTOM_STAGES = [
-    # Stage 1: Simple 3x10 path
-    [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [4, 1, "code_1", 1, "station_1", 1, 1, 1, 5, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ],
-    # Stage 2: Vertical winding 7x5
-    [
-        [0, 0, 0, 0, 0],
-        [0, 4, 1, 1, 0],
-        [0, 0, 0, 1, 0],
-        [0, "code_2", 1, 1, 0],
-        [0, 1, 0, 0, 0],
-        [0, 1, "station_2", 1, 0],
-        [0, 0, 0, 5, 0]
-    ]
-]
+# Cell type codes. They equal the pymunk collision types in objects.py and are what the
+# local-grid sensor reports.
+CELL_VOID = 0
+CELL_PATH = 2
+CELL_CODE = 3
+CELL_STATION = 4
+CELL_EXIT = 5
+CELL_ENTRY = 6
+CELL_BOUNDARY = 7
+SAFE_CELLS = {CELL_PATH, CELL_CODE, CELL_STATION, CELL_EXIT, CELL_ENTRY, CELL_BOUNDARY}
 
-CUSTOM_STAGES = []
+# Rocket shapes get their own query category so sensor queries never return the rocket.
+ROCKET_CATEGORY = 0b10
+SENSOR_FILTER = pymunk.ShapeFilter(mask=pymunk.ShapeFilter.ALL_MASKS() ^ ROCKET_CATEGORY)
+
+TERMINATION_CAUSES = ("success", "uncollected_codes_at_exit", "held_codes_at_final_exit", "timeout")
+
+# Hand-authored CUSTOM_STAGES were removed in protocol v2: every stage is generated from the
+# seeded episode schedule so that each episode is solvable by construction.
 
 _IMAGE_CACHE = {}
 
@@ -108,7 +97,17 @@ def get_icon(entity_type, color_hex="#FFFFFF", size=32):
     _IMAGE_CACHE[cache_key] = surf
     return surf
 
+
 class DeferredMaintenanceEnv(gym.Env):
+    """Deferred Maintenance task (protocol v2 semantics).
+
+    Episode structure. A seeded schedule is drawn at reset: a readiness stage r, and one
+    distinct code type for each of the first r stages ("collection stages"). Readiness
+    switches on when the rocket enters stage r. Every stage shows one station per station
+    type: the issued code types, plus every other type when distractor_stations=True. The
+    station layout never depends on which codes the rocket holds. Every issued code can
+    therefore be serviced in any stage from r on, so a perfect run is always possible.
+    """
     metadata = {"render_modes": ["human"], "render_fps": 60}
 
     def __init__(
@@ -116,22 +115,25 @@ class DeferredMaintenanceEnv(gym.Env):
         render_mode=None,                # 'human' for Pygame rendering, None for headless
         spatial_sensor_type='local_grid',# Type of micro-navigation sensor ('local_grid' or 'raycasts')
         gravity_scale=500.0,             # Strength of the constant downward physics gravity
-        path_complexity=0.5,               # Multiplier for the procedural random-walk length
+        path_complexity=0.5,             # Scales the minimum procedural random-walk length (max(10, 5*pc))
         max_active_requests=3,           # Maximum number of codes the agent can hold at once
-        duration_matching_mode=False,    # Legacy toggle for alternate durations
-        distractor_stations=False,       # Spawns stations that don't match any code
-        readiness_delay_range=(1, 3),    # Range of stages agent must traverse before readiness=1.0
+        duration_matching_mode=False,    # Not implemented in v2 (raises if True)
+        distractor_stations=False,       # If True, stations for code types not issued this episode also appear
+        readiness_delay_range=(1, 2),    # Inclusive [min, max] number of stages traversed before readiness=1.0
         tilt_speed=50000.0,              # Angular velocity scaling for rocket rotation
         enable_air_brakes=True,          # Enables holding DOWN to immediately zero out velocity
         required_hover_duration=2.0,     # Time (seconds) agent must hover over a station to service it
-        min_stage_width=10,              # Minimum grid width for auto-generated stages (ignored by CUSTOM_STAGES)
-        min_stage_height=10,             # Minimum grid height for auto-generated stages (ignored by CUSTOM_STAGES)
-        max_stages=4,                    # Maximum number of stages before final exit. Overrides CUSTOM_STAGES length.
-        max_code_types=3,                # Maximum number of unique code/station types allowed in the entire game
-        
+        min_stage_width=10,              # Minimum grid width for generated stages
+        min_stage_height=10,             # Minimum grid height for generated stages
+        max_stages=4,                    # Number of stages; exiting the last one ends the episode
+        max_code_types=3,                # Number of code/station types
+        codes_per_collection_stage=1,    # Code zones placed in each pre-readiness stage
+
         enforce_boundaries=True,         # If True, boundaries act as physical walls. If False, they are sensors.
         allow_duplicate_codes=False,     # If True, agent can collect multiple codes of the same type in its inventory
-        
+        max_steps=4000,          # Episode limit (truncation); >= 2x the oracle's p95 length (1,859). None disables it
+        debug_info=False,                # If True, info["debug"] exposes hidden task state (tests/oracles only)
+
         # --- REWARDS & PENALTIES ---
         reward_service_station=100.0,
         reward_perfect_completion=1000.0,
@@ -142,13 +144,31 @@ class DeferredMaintenanceEnv(gym.Env):
         penalty_touch_boundary=-5.0
     ):
         super().__init__()
+        if spatial_sensor_type not in ("local_grid", "raycasts"):
+            raise ValueError("spatial_sensor_type must be 'local_grid' or 'raycasts'")
+        if duration_matching_mode:
+            raise NotImplementedError("duration_matching_mode is not implemented in protocol v2")
+        if max_stages < 2:
+            raise ValueError("max_stages must be >= 2")
+        lo, hi = int(readiness_delay_range[0]), int(readiness_delay_range[1])
+        if not (1 <= lo <= hi <= max_stages - 1):
+            raise ValueError(
+                f"readiness_delay_range={readiness_delay_range} must satisfy 1 <= min <= max <= max_stages-1 "
+                f"({max_stages - 1}); otherwise readiness could never switch on before the final exit")
+        if hi * codes_per_collection_stage > max_code_types:
+            raise ValueError("readiness max * codes_per_collection_stage exceeds max_code_types (codes must be distinct)")
+        if hi * codes_per_collection_stage > max_active_requests:
+            raise ValueError("readiness max * codes_per_collection_stage exceeds max_active_requests (codes could not all be held)")
+        if codes_per_collection_stage < 1:
+            raise ValueError("codes_per_collection_stage must be >= 1")
+
         self.render_mode = render_mode
         self.spatial_sensor_type = spatial_sensor_type
         self.gravity_scale = gravity_scale
         self.max_active_requests = max_active_requests
         self.duration_matching_mode = duration_matching_mode
         self.distractor_stations = distractor_stations
-        self.readiness_delay_range = readiness_delay_range
+        self.readiness_delay_range = (lo, hi)
         self.tilt_speed = tilt_speed
         self.enable_air_brakes = enable_air_brakes
         self.path_complexity = path_complexity
@@ -157,9 +177,12 @@ class DeferredMaintenanceEnv(gym.Env):
         self.min_stage_height = min_stage_height
         self.max_stages = max_stages
         self.max_code_types = max_code_types
+        self.codes_per_collection_stage = codes_per_collection_stage
         self.enforce_boundaries = enforce_boundaries
         self.allow_duplicate_codes = allow_duplicate_codes
-        
+        self.max_steps = max_steps
+        self.debug_info = debug_info
+
         self.reward_service_station = reward_service_station
         self.reward_perfect_completion = reward_perfect_completion
         self.penalty_premature_service = penalty_premature_service
@@ -167,12 +190,13 @@ class DeferredMaintenanceEnv(gym.Env):
         self.penalty_off_path = penalty_off_path
         self.penalty_leftover_codes = penalty_leftover_codes
         self.penalty_touch_boundary = penalty_touch_boundary
-        
+
         self.global_code_types = list(range(1, max_code_types + 1))
         self._prev_brake_engaged = False
-        
+        self.dt = 1 / 60.0
+
         self.action_space = spaces.Box(low=-1.0, high=1.0, shape=(2,), dtype=np.float32)
-        
+
         micro_nav_size = 9 if self.spatial_sensor_type == 'local_grid' else 8
         self.observation_space = spaces.Dict({
             'pos_x': spaces.Box(-np.inf, np.inf, shape=(), dtype=np.float32),
@@ -187,189 +211,253 @@ class DeferredMaintenanceEnv(gym.Env):
             'readiness': spaces.Box(0.0, 1.0, shape=(), dtype=np.float32),
             'station_radar': spaces.Box(-np.inf, np.inf, shape=(2 * max_code_types,), dtype=np.float32),
         })
-        
+
         self.screen_width = 800
         self.screen_height = 600
         self.physics_width = 500
         self.cell_size = 50
         self.screen = None
         self.clock = None
-        
-        self.space = pymunk.Space()
-        self.space.gravity = (0, self.gravity_scale)
-        
+
+        self.space = None
         self.held_codes = []
         self.uncollected_codes = 0
         self.pending_code_removals = []
         self.reached_exit = False
-        
+
         self.score = 0.0
         self.stages_traversed = 0
         self.readiness = 0.0
-        self.readiness_target = np.random.randint(*self.readiness_delay_range) if self.readiness_delay_range[1] > self.readiness_delay_range[0] else self.readiness_delay_range[0]
-        
+        self.readiness_target = lo
+        self.issued_codes = []
+        self.stage_code_types = {}
+        self.station_types = []
+        self.serviced_codes = []
+        self.step_count = 0
+
         self.hover_timer = 0.0
         self.hovering_station_id = None
         self.touching_floor_code = 0.0
         self.rocket = None
         self.entities = []
-        
-    def _generate_procedural_stage(self):
-        length = max(10, 5 * self.path_complexity)
-        grid_dict = {}
-        curr = (0, 0)
-        grid_dict[curr] = 4 # Entry
-        
-        path_coords = [curr]
+        self.shape_to_entity = {}
+        self.cell_types = {}
+        self.path_cells = []
+        self.path_index = {}
+        self.stage_layout = None
+
+    # ------------------------------------------------------------------ generation
+    def _random_walk(self, length):
+        rng = self.np_random
         moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-        
+        curr = (0, 0)
+        coords = [curr]
+        visited = {curr}
         for _ in range(length):
-            np.random.shuffle(moves)
-            for m in moves:
-                nxt = (curr[0] + m[0], curr[1] + m[1])
-                if nxt not in grid_dict:
+            moved = False
+            for i in rng.permutation(4):
+                nxt = (curr[0] + moves[i][0], curr[1] + moves[i][1])
+                if nxt not in visited:
                     curr = nxt
-                    grid_dict[curr] = 1 
-                    path_coords.append(curr)
+                    visited.add(curr)
+                    coords.append(curr)
+                    moved = True
                     break
-                    
-        safe_tiles = [k for k, v in grid_dict.items() if v == 1]
-        np.random.shuffle(safe_tiles)
-        
-        num_codes = max(1, self.path_complexity)
-        chosen_types = [np.random.choice(self.global_code_types) for _ in range(num_codes)]
-        
-        for c_type in chosen_types:
-            if safe_tiles: grid_dict[safe_tiles.pop()] = f"code_{c_type}"
-            
-        stations_per_code = max(1, 4 - self.stages_traversed)
-        for c_type in chosen_types:
-            for _ in range(stations_per_code):
-                if safe_tiles: grid_dict[safe_tiles.pop()] = f"station_{c_type}"
-            
-        grid_dict[path_coords[-1]] = 5
-        
-        min_x = min(x for x, y in grid_dict.keys())
-        max_x = max(x for x, y in grid_dict.keys())
-        min_y = min(y for x, y in grid_dict.keys())
-        max_y = max(y for x, y in grid_dict.keys())
-        
+            if not moved:
+                break
+        return coords
+
+    @staticmethod
+    def _cheb(a, b):
+        return max(abs(a[0] - b[0]), abs(a[1] - b[1]))
+
+    def _generate_procedural_stage(self, stage_index):
+        """Return (stage_array, path_coords) for one stage of the episode schedule.
+
+        Interactables (stations and codes) sit on interior path tiles, at least two cells
+        (Chebyshev) from each other and from the exit, so hovering on one never touches
+        another or the exit. The walk is redrawn (longer every 20 attempts) until they fit.
+        """
+        rng = self.np_random
+        codes = list(self.stage_code_types.get(stage_index, []))
+        items = [("station", t) for t in self.station_types] + [("code", t) for t in codes]
+        base_length = max(10, int(5 * self.path_complexity))
+        for attempt in range(400):
+            coords = self._random_walk(base_length + 2 * (attempt // 20))
+            if len(coords) < len(items) + 2:
+                continue
+            exit_c = coords[-1]
+            interior = coords[1:-1]
+            placed = []
+            for idx in rng.permutation(len(interior)):
+                if len(placed) == len(items):
+                    break
+                tile = interior[idx]
+                if self._cheb(tile, exit_c) < 2:
+                    continue
+                if any(self._cheb(tile, p) < 2 for p, _ in placed):
+                    continue
+                placed.append((tile, items[len(placed)]))
+            if len(placed) == len(items):
+                break
+        else:
+            raise RuntimeError("could not generate a stage layout")
+
+        grid_dict = {c: 1 for c in coords}
+        grid_dict[coords[0]] = 4
+        grid_dict[exit_c] = 5
+        for tile, (kind, t) in placed:
+            grid_dict[tile] = f"{kind}_{t}"
+
+        min_x = min(x for x, y in grid_dict)
+        max_x = max(x for x, y in grid_dict)
+        min_y = min(y for x, y in grid_dict)
+        max_y = max(y for x, y in grid_dict)
         grid_w = max_x - min_x + 1
         grid_h = max_y - min_y + 1
-        
         cols = max(grid_w + 2, self.min_stage_width)
         rows = max(grid_h + 2, self.min_stage_height)
-        
         off_x = (cols - grid_w) // 2 - min_x
         off_y = (rows - grid_h) // 2 - min_y
-        
         stage_array = [[0 for _ in range(cols)] for _ in range(rows)]
-        
         for (x, y), val in grid_dict.items():
             stage_array[y + off_y][x + off_x] = val
-            
-        return stage_array
+        # +1 for the boundary ring added in generate_stage
+        path = [(x + off_x + 1, y + off_y + 1) for x, y in coords]
+        return stage_array, path
 
     def generate_stage(self):
         for ent in self.entities:
             if ent.body in self.space.bodies:
                 self.space.remove(ent.body, ent.shape)
         self.entities.clear()
-        
-        # Determine layout
-        if self.stages_traversed < len(CUSTOM_STAGES):
-            stage_layout = CUSTOM_STAGES[self.stages_traversed]
-        else:
-            stage_layout = self._generate_procedural_stage()
-            
-        # Add visual boundary wrapping (9s) tightly around the layout
+        self.shape_to_entity = {}
+        self.cell_types = {}
+
+        stage_layout, path = self._generate_procedural_stage(self.stages_traversed)
         cols = len(stage_layout[0])
         rows = len(stage_layout)
         bordered_layout = [[9] * (cols + 2)]
         for row in stage_layout:
             bordered_layout.append([9] + list(row) + [9])
         bordered_layout.append([9] * (cols + 2))
-        stage_layout = bordered_layout
-            
+        self.stage_layout = bordered_layout
+        self.path_cells = path
+        self.path_index = {c: i for i, c in enumerate(path)}
+        self._path_centers = np.array(
+            [((c + 0.5) * self.cell_size, (r + 0.5) * self.cell_size) for c, r in path], dtype=np.float64)
+
         spawn_pos = (self.cell_size * 1.5, self.screen_height // 2)
-        
-        for row_idx, row in enumerate(stage_layout):
+        for row_idx, row in enumerate(bordered_layout):
             for col_idx, val in enumerate(row):
                 x = col_idx * self.cell_size
                 y = row_idx * self.cell_size
                 rect = (x, y, self.cell_size, self.cell_size)
-                
+                ent = None
+                ctype = CELL_VOID
                 if val == 1:
-                    self.entities.append(PathBoundary(self.space, rect))
+                    ent = PathBoundary(self.space, rect); ctype = CELL_PATH
                 elif isinstance(val, str) and val.startswith("station_"):
-                    type_id = int(val.split("_")[1])
-                    self.entities.append(MaintenanceStation(self.space, rect, color_code=type_id))
+                    ent = MaintenanceStation(self.space, rect, color_code=int(val.split("_")[1])); ctype = CELL_STATION
                 elif isinstance(val, str) and val.startswith("code_"):
-                    type_id = int(val.split("_")[1])
                     self.uncollected_codes += 1
-                    self.entities.append(CodeZone(self.space, rect, color_code=type_id))
+                    ent = CodeZone(self.space, rect, color_code=int(val.split("_")[1])); ctype = CELL_CODE
                 elif val == 4:
-                    self.entities.append(StageEntry(self.space, rect))
-                    spawn_pos = (x + self.cell_size/2, y + self.cell_size/2)
+                    ent = StageEntry(self.space, rect); ctype = CELL_ENTRY
+                    spawn_pos = (x + self.cell_size / 2, y + self.cell_size / 2)
                 elif val == 5:
-                    self.entities.append(StageExit(self.space, rect))
+                    ent = StageExit(self.space, rect); ctype = CELL_EXIT
                 elif val == 9:
-                    self.entities.append(StageBoundary(self.space, rect, is_solid=self.enforce_boundaries))
-        
+                    ent = StageBoundary(self.space, rect, is_solid=self.enforce_boundaries); ctype = CELL_BOUNDARY
+                if ent is not None:
+                    self.entities.append(ent)
+                    self.shape_to_entity[ent.shape] = ent
+                self.cell_types[(col_idx, row_idx)] = ctype
+
         if self.rocket is None:
             self.rocket = Rocket(self.space, spawn_pos)
+            self.rocket.shape.filter = pymunk.ShapeFilter(categories=ROCKET_CATEGORY)
         else:
             self.rocket.body.position = spawn_pos
             self.rocket.body.velocity = (0, 0)
             self.rocket.body.angular_velocity = 0
             self.rocket.body.angle = 0
+        self.hovering_station_id = None
+        self.hover_timer = 0.0
+
+    # ------------------------------------------------------------------ gym API
+    def _debug(self):
+        return {
+            "held_codes": list(self.held_codes),
+            "serviced_codes": list(self.serviced_codes),
+            "issued_codes": list(self.issued_codes),
+            "readiness_target": int(self.readiness_target),
+            "stage": int(self.stages_traversed),
+            "uncollected_codes": int(self.uncollected_codes),
+        }
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
+        rng = self.np_random
+        # A fresh physics space per episode, so no solver/contact state leaks across episodes.
+        self.space = pymunk.Space()
+        self.space.gravity = (0, self.gravity_scale)
+
+        lo, hi = self.readiness_delay_range
+        self.readiness_target = int(rng.integers(lo, hi + 1))
+        n_issued = self.readiness_target * self.codes_per_collection_stage
+        self.issued_codes = [int(t) + 1 for t in rng.choice(self.max_code_types, size=n_issued, replace=False)]
+        cps = self.codes_per_collection_stage
+        self.stage_code_types = {s: self.issued_codes[s * cps:(s + 1) * cps] for s in range(self.readiness_target)}
+        self.station_types = list(self.global_code_types) if self.distractor_stations else sorted(self.issued_codes)
+
         self.held_codes = []
+        self.serviced_codes = []
         self.uncollected_codes = 0
         self.pending_code_removals = []
         self.reached_exit = False
-        
         self.score = 0.0
         self.stages_traversed = 0
         self.readiness = 0.0
-        self.readiness_target = np.random.randint(*self.readiness_delay_range) if self.readiness_delay_range[1] > self.readiness_delay_range[0] else self.readiness_delay_range[0]
+        self.step_count = 0
         self.hover_timer = 0.0
         self.hovering_station_id = None
         self.touching_floor_code = 0.0
         self._prev_brake_engaged = False
-        
-        if self.rocket is not None:
-            if self.rocket.body in self.space.bodies:
-                self.space.remove(self.rocket.body, self.rocket.shape)
-            self.rocket = None
-            
+        self.rocket = None
+        self.entities = []
         self.generate_stage()
-        
+
         if self.render_mode == "human":
             self.render()
-            
-        return self._get_obs(), {}
-        
+
+        info = {"events": []}
+        if self.debug_info:
+            info["debug"] = self._debug()
+        return self._get_obs(), info
+
+    def _cell_of(self, pos):
+        return (int(math.floor(pos[0] / self.cell_size)), int(math.floor(pos[1] / self.cell_size)))
+
     def step(self, action):
-        thrust = np.clip(action[0], -1.0, 1.0)
-        torque_input = np.clip(action[1], -1.0, 1.0)
-        
+        action = np.asarray(action, dtype=np.float64)
+        thrust = float(np.clip(action[0], -1.0, 1.0))
+        torque_input = float(np.clip(action[1], -1.0, 1.0))
+
         brake_engaged = (thrust < -0.5)
-        
+
         if self.enable_air_brakes and brake_engaged and not self._prev_brake_engaged:
             self.rocket.body.velocity = (0.0, self.rocket.body.velocity.y)
             self.rocket.body.angular_velocity = 0.0
-            
+
         self._prev_brake_engaged = brake_engaged
-            
+
         if thrust > 0:
             self.rocket.apply_thrust(thrust * 2000.0)
-            
+
         max_angle = math.pi / 2.0
         current_angle = self.rocket.body.angle
-        
+
         if abs(torque_input) > 0.05:
             self.rocket.apply_rotation(torque_input * self.tilt_speed)
             self.rocket.body.angular_velocity *= 0.85
@@ -377,7 +465,7 @@ class DeferredMaintenanceEnv(gym.Env):
             restoring_torque = -current_angle * (self.tilt_speed * 0.8)
             self.rocket.apply_rotation(restoring_torque)
             self.rocket.body.angular_velocity *= 0.85
-            
+
             if abs(current_angle) < 0.05 and abs(self.rocket.body.angular_velocity) < 0.1:
                 self.rocket.body.angle = 0.0
                 self.rocket.body.angular_velocity = 0.0
@@ -388,165 +476,181 @@ class DeferredMaintenanceEnv(gym.Env):
         elif self.rocket.body.angle < -max_angle:
             self.rocket.body.angle = -max_angle
             self.rocket.body.angular_velocity = max(self.rocket.body.angular_velocity, 0.0)
-            
-        self.space.step(1/60.0)
-        
+
+        self.space.step(self.dt)
+        self.step_count += 1
+
         reward = 0.0
         terminated = False
-        
-        # --- CONTINUOUS SHAPE QUERY FOR ROBUST TRIGGER OVERLAPS ---
+        events = []
+        cause = None
+
         touching_station_id = None
         touching_code_id = None
         touching_boundary = False
-        
-        for info in self.space.shape_query(self.rocket.shape):
-            shape = info.shape
-            ent = next((e for e in self.entities if hasattr(e, 'shape') and e.shape == shape), None)
-            if ent:
-                if isinstance(ent, MaintenanceStation):
-                    touching_station_id = ent.color_code
-                elif isinstance(ent, CodeZone):
-                    touching_code_id = ent.color_code
-                    if len(self.held_codes) < self.max_active_requests:
-                        can_collect = True
-                        if not self.allow_duplicate_codes and ent.color_code in self.held_codes:
-                            can_collect = False
-                            
-                        if can_collect:
-                            self.held_codes.append(ent.color_code)
-                            if ent not in self.pending_code_removals:
-                                self.pending_code_removals.append(ent)
-                elif isinstance(ent, StageExit):
-                    self.reached_exit = True
-                elif isinstance(ent, StageBoundary):
-                    touching_boundary = True
-                    
-        self.touching_floor_code = touching_station_id or touching_code_id or 0.0
+        reached_exit = False
+
+        for q in self.space.shape_query(self.rocket.shape):
+            ent = self.shape_to_entity.get(q.shape)
+            if ent is None:
+                continue
+            if isinstance(ent, MaintenanceStation):
+                touching_station_id = ent.color_code
+            elif isinstance(ent, CodeZone):
+                touching_code_id = ent.color_code
+                if ent in self.pending_code_removals:
+                    continue
+                if len(self.held_codes) < self.max_active_requests and (
+                        self.allow_duplicate_codes or ent.color_code not in self.held_codes):
+                    self.held_codes.append(ent.color_code)
+                    self.pending_code_removals.append(ent)
+                    events.append(("code_collected", int(ent.color_code)))
+            elif isinstance(ent, StageExit):
+                reached_exit = True
+            elif isinstance(ent, StageBoundary):
+                touching_boundary = True
+
+        self.touching_floor_code = float(touching_station_id or touching_code_id or 0.0)
 
         if touching_boundary:
             reward += self.penalty_touch_boundary
-            self.score += self.penalty_touch_boundary
+            events.append(("boundary_contact", None))
 
         if touching_station_id is not None:
             if self.hovering_station_id != touching_station_id:
                 self.hovering_station_id = touching_station_id
                 self.hover_timer = 0.0
-                
-            self.hover_timer += 1/60.0
-            
-            if self.hover_timer >= self.required_hover_duration:
-                if self.readiness == 1.0 and self.hovering_station_id in self.held_codes:
+            self.hover_timer += self.dt
+            # small tolerance so 2.0 s means exactly 120 steps at 60 Hz
+            if self.hover_timer >= self.required_hover_duration - 1e-9:
+                k = int(self.hovering_station_id)
+                events.append(("service_attempt", k))
+                if self.readiness == 1.0 and k in self.held_codes:
                     reward += self.reward_service_station
-                    self.score += reward
-                    self.held_codes.remove(self.hovering_station_id)
+                    self.held_codes.remove(k)
+                    self.serviced_codes.append(k)
+                elif self.readiness < 1.0:
+                    reward += self.penalty_premature_service
                 else:
-                    if self.readiness < 1.0:
-                        reward += self.penalty_premature_service
-                        self.score += self.penalty_premature_service
-                    elif self.hovering_station_id not in self.held_codes:
-                        reward += self.penalty_wrong_station
-                        self.score += self.penalty_wrong_station
+                    reward += self.penalty_wrong_station
                 self.hover_timer = 0.0
         else:
             self.hovering_station_id = None
             self.hover_timer = 0.0
-                
-        info = self.space.point_query_nearest(self.rocket.body.position, 0, pymunk.ShapeFilter(mask=pymunk.ShapeFilter.ALL_MASKS()))
-        safe_types = {2, 3, 4, 5, 6, 7} # include 7 (boundary) so we don't double penalize with off-path
-        if info is None or info.shape.collision_type not in safe_types:
-            reward += self.penalty_off_path
-            self.score += self.penalty_off_path
 
-        # Process Code Collections (turn them physically into white squares)
+        if self.cell_types.get(self._cell_of(self.rocket.body.position), CELL_VOID) not in SAFE_CELLS:
+            reward += self.penalty_off_path
+            events.append(("off_path", None))
+
+        # Collected code zones turn into plain path tiles.
         for ent in self.pending_code_removals:
             if ent in self.entities:
                 if ent.body in self.space.bodies:
                     self.space.remove(ent.body, ent.shape)
                 self.entities.remove(ent)
-                self.entities.append(PathBoundary(self.space, ent.rect))
+                self.shape_to_entity.pop(ent.shape, None)
+                tile = PathBoundary(self.space, ent.rect)
+                self.entities.append(tile)
+                self.shape_to_entity[tile.shape] = tile
+                self.cell_types[(ent.rect[0] // self.cell_size, ent.rect[1] // self.cell_size)] = CELL_PATH
                 self.uncollected_codes -= 1
         self.pending_code_removals.clear()
 
-        # Process Stage Exit
-        if self.reached_exit:
-            self.reached_exit = False
-            
+        if reached_exit:
             if self.uncollected_codes > 0:
+                events.append(("stage_exit_incomplete", int(self.stages_traversed)))
                 reward += self.penalty_leftover_codes
-                self.score += reward
                 terminated = True
+                cause = "uncollected_codes_at_exit"
             else:
+                events.append(("stage_exit", int(self.stages_traversed)))
                 self.stages_traversed += 1
                 if self.stages_traversed >= self.max_stages:
+                    events.append(("final_exit", None))
                     if len(self.held_codes) > 0:
                         reward += self.penalty_leftover_codes
+                        cause = "held_codes_at_final_exit"
                     else:
                         reward += self.reward_perfect_completion
-                    self.score += reward
+                        cause = "success"
                     terminated = True
                 else:
-                    if self.stages_traversed >= self.readiness_target:
-                        self.readiness = 1.0 
+                    if self.stages_traversed >= self.readiness_target and self.readiness < 1.0:
+                        self.readiness = 1.0
+                        events.append(("readiness_on", None))
                     self.generate_stage()
+
+        # score is the running sum of step rewards (each reward counted once)
+        self.score += reward
+
+        truncated = False
+        if not terminated and self.max_steps is not None and self.step_count >= self.max_steps:
+            truncated = True
+            cause = "timeout"
 
         if self.render_mode == "human":
             self.render()
-            
-        return self._get_obs(), reward, terminated, False, {}
-        
+
+        info = {"events": events}
+        if terminated or truncated:
+            info["termination_cause"] = cause
+            info["is_success"] = cause == "success"
+        if self.debug_info:
+            info["debug"] = self._debug()
+        return self._get_obs(), float(reward), terminated, truncated, info
+
+    def waypoint(self):
+        """Offset from the rocket to the centre of the next path tile towards the exit."""
+        pos = np.array([self.rocket.body.position.x, self.rocket.body.position.y])
+        idx = self.path_index.get(self._cell_of(pos))
+        if idx is None:
+            idx = int(np.argmin(((self._path_centers - pos) ** 2).sum(axis=1)))
+        target = self._path_centers[min(idx + 1, len(self._path_centers) - 1)]
+        return target - pos
+
     def _get_obs(self):
         obs = {}
-        obs['pos_x'] = float(self.rocket.body.position.x)
-        obs['pos_y'] = float(self.rocket.body.position.y)
+        pos = self.rocket.body.position
+        obs['pos_x'] = float(pos.x)
+        obs['pos_y'] = float(pos.y)
         obs['vel_x'] = float(self.rocket.body.velocity.x)
         obs['vel_y'] = float(self.rocket.body.velocity.y)
         obs['angle'] = float(self.rocket.body.angle)
         obs['ang_vel'] = float(self.rocket.body.angular_velocity)
-        
-        # Raycasts for micro_nav (agent perceives objects exactly the same way around it)
-        ray_filter = pymunk.ShapeFilter(mask=pymunk.ShapeFilter.ALL_MASKS())
-        
+
         if self.spatial_sensor_type == 'local_grid':
+            # Cell type of the 3x3 neighbourhood (same codes as the collision types).
             grid = []
             for dy in [-1, 0, 1]:
                 for dx in [-1, 0, 1]:
-                    pt = self.rocket.body.position + pymunk.Vec2d(dx * self.cell_size, dy * self.cell_size)
-                    res = self.space.point_query_nearest(pt, 0, ray_filter)
-                    if res and res.shape != self.rocket.shape:
-                        grid.append(float(res.shape.collision_type))
-                    else:
-                        grid.append(0.0)
+                    cell = self._cell_of((pos.x + dx * self.cell_size, pos.y + dy * self.cell_size))
+                    grid.append(float(self.cell_types.get(cell, CELL_VOID)))
             obs['micro_nav'] = grid
         else:
             ray_distances = []
             for i in range(8):
                 angle = i * (2 * math.pi / 8)
                 direction = pymunk.Vec2d(1, 0).rotated(angle)
-                start = self.rocket.body.position
-                end = start + direction * 150.0 # 150px sensor range
-                
-                res = self.space.segment_query_first(start, end, 1, ray_filter)
-                if res and res.shape != self.rocket.shape:
-                    ray_distances.append(res.alpha) # 0.0 to 1.0 based on distance
-                else:
-                    ray_distances.append(1.0)
+                end = pos + direction * 150.0 # 150px sensor range
+                res = self.space.segment_query_first(pos, end, 1, SENSOR_FILTER)
+                ray_distances.append(float(res.alpha) if res else 1.0)
             obs['micro_nav'] = ray_distances
-            
-        obs['macro_nav'] = [0.0, 0.0]
+
+        obs['macro_nav'] = [float(v) for v in self.waypoint()]
         obs['floor_code'] = float(self.touching_floor_code)
-        obs['readiness'] = self.readiness
-        
+        obs['readiness'] = float(self.readiness)
+
         radar = []
         for v in self.global_code_types:
-            station = next((e for e in self.entities if isinstance(e, MaintenanceStation) and e.color_code == v), None)
-            if station:
-                dx = station.body.position.x - self.rocket.body.position.x
-                dy = station.body.position.y - self.rocket.body.position.y
-                radar.extend([dx, dy])
-            else:
-                radar.extend([-99.0, -99.0])
-        obs['station_radar'] = radar
-        
+            best = None
+            for e in self.entities:
+                if isinstance(e, MaintenanceStation) and e.color_code == v:
+                    d = (e.body.position.x - pos.x, e.body.position.y - pos.y)
+                    if best is None or d[0] ** 2 + d[1] ** 2 < best[0] ** 2 + best[1] ** 2:
+                        best = d
+            radar.extend(best if best is not None else [-99.0, -99.0])
+        obs['station_radar'] = [float(v) for v in radar]
+
         return obs
 
     def render(self):

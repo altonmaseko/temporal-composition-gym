@@ -1,5 +1,12 @@
 import argparse
 import os
+import sys
+
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+from agents.common.env_factory import ENV_IDS, make_env  # noqa: E402
 import gymnasium as gym
 import temporal_comp_gym
 from sb3_contrib import RecurrentPPO
@@ -71,9 +78,10 @@ def main():
 
     env_settings = config[args.env]
     import json
-    env_kwargs = json.loads(os.environ.get("ENV_KWARGS", "{}"))
-    env = gym.make(args.env, **env_kwargs)
-    env = gym.wrappers.TimeLimit(env, max_episode_steps=1000)
+    # Protocol v2: frozen baseline environment from the shared factory. Each environment
+    # truncates internally, so no extra TimeLimit is added. (Prompt 3 replaces the rest.)
+    env_key = {v: k for k, v in ENV_IDS.items()}[args.env]
+    env = make_env(env_key)
     
     # Wrapper for tracking episode stats
     env = gym.wrappers.RecordEpisodeStatistics(env)

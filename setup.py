@@ -12,5 +12,6 @@ setup(
         "numpy",
         "pytablericons",
         "Pillow",
+        "requests",
     ],
 )

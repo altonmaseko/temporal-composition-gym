@@ -1,5 +1,15 @@
 # Reinforcement Learning Agents
 
+> **Protocol v2 status (Prompt 2).** The memory mechanisms are corrected and tested:
+> - `common/` — environment factory with the frozen v2 settings, seed sets, encoders (RGB NatureCNN, MLP), frame-based replay.
+> - `reward_machines/` — event-driven reward machines for all three tasks (delivery carry/deliver RM, maintenance held-codes RM, colour cue-recording RM for QRM-Cue) and the `RewardMachineWrapper`.
+> - `drqn/drqn_core.py`, `qrm/qrm_core.py` — corrected DRQN and QRM / QRM-Cue learners.
+> - `rm_wrapper.py` is retired (importing it raises).
+>
+> The SB3 trainers below now build their environments through `common/env_factory.py`, but their
+> checkpointing, W&B logging and evaluation are still the pilot versions; Prompt 3 replaces them.
+> The configurations shown further down are historical. See `run_scripts/baseline/BASELINE_PROTOCOL.md`.
+
 This directory contains the training scripts for the algorithmic baselines used to solve the Temporal Composition Gym environments. All scripts are designed to be run from the command line and support dynamically swapping environments via arguments.
 
 ---

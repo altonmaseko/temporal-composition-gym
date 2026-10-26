@@ -1,14 +1,15 @@
-Sequential Colour Navigation Task: Agent Observation Space
-=========================================================
+Sequential Colour Navigation Task: Agent Observation Space (protocol v2)
+=========================================================================
 
 The agent receives a visual observation at every time step. To ensure the environment strictly tests temporal memory and visual processing, the agent does NOT receive any explicit internal state variables (like its coordinates, the current phase, or the target sequence).
 
 Observation Shape and Type
 --------------------------
 * Type: 3D NumPy array (Box space)
-* Shape: (84, 84, 3) 
+* Shape: (84, 84, 3)
 * Data Type: np.uint8 (integers from 0 to 255)
-* Format: RGB (Red, Green, Blue) image frame.
+* Format: RGB (Red, Green, Blue) image frame. Keep RGB: converting to grey would make colours
+  harder to tell apart, and the task is decided by colour.
 
 What the Agent Sees (By Phase)
 ------------------------------
@@ -16,25 +17,42 @@ Because this task relies on temporal composition, the exact meaning of the RGB a
 
 1. Phase 1: Memorisation
    * Observation: A completely solid-coloured 84x84x3 image.
-   * Purpose: Represents a single colour from the sequence the agent must memorise. The agent must process this solid colour through its CNN and store it in its internal recurrent memory (e.g., LSTM) because directional actions have no physical effect during this phase.
+   * Each colour is shown for `frames_per_colour` (default 5) consecutive observations, starting with the
+     reset observation. Directional actions have no effect in this phase.
 
 2. Phase 2: Retention (Delay)
    * Observation: A completely solid black 84x84x3 image (all RGB values are 0).
-   * Purpose: Acts as a blank buffer between the memorisation and navigation phases. The agent must retain the memorised sequence through this visually empty period without forgetting it.
+   * Lasts `retention_delay_steps` observations.
 
 3. Phase 3: Navigation
    * Observation: A top-down 84x84x3 visual representation of the navigation room.
-   * Purpose: The agent must use this spatial view to navigate towards the correct wall.
    * Visual Elements in this frame:
      - Background: Solid black.
      - Agent: A white square representing the agent's current position.
-     - Walls: Four distinct coloured rectangles bordering the edges of the frame (Top, Bottom, Left, Right). 
-   * Note: The rendering engine scales the physical room dimensions down to precisely fit this 84x84 window, ensuring the agent always sees the entire room, itself, and all four walls at once.
+     - Walls: Four distinct coloured rectangles bordering the edges of the frame (Top, Bottom, Left, Right).
+   * Touching the target wall re-centres the agent in a newly randomised room; touching another wall
+     costs `penalty_severity` and re-centres the agent in the same room.
+
+Info dictionary (protocol v2)
+-----------------------------
+* info["events"]: (name, arg) tuples emitted on the step whose resulting observation first shows them:
+  - ("cue", colour_id) for every cue item, including the first one (in the reset info) and repeated colours
+  - ("delay_start", None), ("nav_start", None)
+  - ("wall_touch", colour_id) for the wall actually touched, then ("room_reset", None) after a correct,
+    non-final wall
+  colour_id is the colour's index in the vocabulary. The navigation target is never reported.
+* On the last step: info["termination_cause"] ("success", "wrong_wall_death" when hard_death_mode, "timeout")
+  and info["is_success"].
+* info["debug"] (sequence, progress, target, wall colours) only when debug_info=True (tests and oracles).
+
+Episode limit
+-------------
+* max_steps=300 (truncation). The oracle needs at most 92 steps at the baseline settings.
 
 Observation Noise Wrapper
 -------------------------
 If the environment is wrapped with the `GaussianNoiseWrapper` and `observation_noise_level` is set above 0.0:
 * Random Gaussian noise is applied to every pixel in the 84x84x3 array across all phases.
-* The intensity of the noise scales with the `observation_noise_level` parameter.
+* The noise comes from the wrapper's own generator (reseeded on reset(seed=...)), so it never changes
+  the sequence or room layouts.
 * The final pixel values are clipped back to the valid 0-255 range.
-* Purpose: To evaluate the robustness of the agent's visual feature extractor and memory retention under imperfect, noisy conditions.

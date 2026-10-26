@@ -1,0 +1,142 @@
+{
+  "protocol_version": "v2",
+  "git_rev": "b1f1f167ce517e5794a76eeb45e66c9bff87128a",
+  "git_dirty": true,
+  "python": "3.10.20",
+  "platform": "Windows-10-10.0.22621-SP0",
+  "eval_seed_block": "final",
+  "environments": {
+    "delivery": {
+      "env_kwargs": {
+        "grid_size": 10,
+        "percent_death_squares": 0.05,
+        "percent_damage_squares": 0.05,
+        "randomise_start": true,
+        "randomise_goal": true,
+        "num_packages": 3,
+        "carrying_capacity": 1,
+        "health_regeneration_nodes": 2,
+        "task_dependencies": false,
+        "include_health_in_state": true,
+        "include_inventory_in_state": false,
+        "max_steps": 500,
+        "resample_unsolvable": true
+      },
+      "oracle": {
+        "episodes": 200,
+        "success_rate": 1.0,
+        "return_mean": 79.98,
+        "return_std": 0.17204650534085256,
+        "length_p50": 32.0,
+        "length_p95": 46.0,
+        "length_max": 57,
+        "causes": {
+          "success": 200
+        }
+      },
+      "random": {
+        "episodes": 200,
+        "success_rate": 0.0,
+        "return_mean": -49.55,
+        "return_std": 4.085033659592048,
+        "length_p50": 17.5,
+        "length_p95": 149.14999999999995,
+        "length_max": 274,
+        "causes": {
+          "lava": 149,
+          "premature_goal": 47,
+          "damage_death": 4
+        }
+      },
+      "horizon": 500,
+      "oracle_p95_over_horizon": 0.092
+    },
+    "colour": {
+      "env_kwargs": {
+        "sequence_length_range": [
+          3,
+          5
+        ],
+        "retention_delay_steps": 2,
+        "allow_consecutive_duplicates": false,
+        "colour_vocabulary_size": 6,
+        "randomise_wall_colors": true,
+        "hard_death_mode": false,
+        "infinite_mode": false,
+        "reward_density": "sparse",
+        "frames_per_colour": 5,
+        "max_steps": 300
+      },
+      "oracle": {
+        "episodes": 200,
+        "success_rate": 1.0,
+        "return_mean": 10.0,
+        "return_std": 0.0,
+        "length_p50": 74.0,
+        "length_p95": 92.0,
+        "length_max": 92,
+        "causes": {
+          "success": 200
+        }
+      },
+      "random": {
+        "episodes": 200,
+        "success_rate": 0.0,
+        "return_mean": -0.835,
+        "return_std": 0.7535084604700865,
+        "length_p50": 300.0,
+        "length_p95": 300.0,
+        "length_max": 300,
+        "causes": {
+          "timeout": 200
+        }
+      },
+      "horizon": 300,
+      "oracle_p95_over_horizon": 0.30666666666666664
+    },
+    "maintenance": {
+      "env_kwargs": {
+        "max_stages": 4,
+        "readiness_delay_range": [
+          1,
+          2
+        ],
+        "max_code_types": 3,
+        "max_active_requests": 3,
+        "codes_per_collection_stage": 1,
+        "distractor_stations": true,
+        "required_hover_duration": 2.0,
+        "spatial_sensor_type": "local_grid",
+        "gravity_scale": 500.0,
+        "max_steps": 4000
+      },
+      "oracle": {
+        "episodes": 200,
+        "success_rate": 1.0,
+        "return_mean": 1076.2410000000004,
+        "return_std": 48.98041975116223,
+        "length_p50": 1411.5,
+        "length_p95": 1859.0,
+        "length_max": 2202,
+        "causes": {
+          "success": 200
+        }
+      },
+      "random": {
+        "episodes": 200,
+        "success_rate": 0.0,
+        "return_mean": -6037.084000000268,
+        "return_std": 2374.8232737079975,
+        "length_p50": 4000.0,
+        "length_p95": 4000.0,
+        "length_max": 4000,
+        "causes": {
+          "timeout": 169,
+          "uncollected_codes_at_exit": 31
+        }
+      },
+      "horizon": 4000,
+      "oracle_p95_over_horizon": 0.46475
+    }
+  }
+}

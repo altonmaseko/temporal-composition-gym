@@ -1,9 +1,27 @@
+from collections import deque
+
 import gymnasium as gym
 from minigrid.minigrid_env import MiniGridEnv
 from minigrid.core.mission import MissionSpace
 from minigrid.core.grid import Grid
 from .objects import DeathSquare, DamageSquare, HealthNode, Package, Destination, LevelGoal, CachedIcon, blend_icon
 import pytablericons as pt
+
+# Event names emitted in info["events"] (protocol v2, section 3.2). Each event is a
+# (name, arg) tuple produced from the transition itself, never inferred from rewards.
+EV_PACKAGE_CONTACT = "package_contact"
+EV_PICKUP = "pickup"
+EV_DESTINATION_CONTACT = "destination_contact"
+EV_DELIVERY = "delivery"
+EV_GOAL_CONTACT = "goal_contact"
+EV_LAVA = "lava"
+EV_DAMAGE = "damage"
+EV_HEAL = "heal"
+EV_HEALTH_DEPLETED = "health_depleted"
+
+TERMINATION_CAUSES = ("success", "lava", "damage_death", "premature_goal", "timeout")
+
+
 class HazardousDeliveryCoreEnv(MiniGridEnv):
     def __init__(
         self,
@@ -23,9 +41,22 @@ class HazardousDeliveryCoreEnv(MiniGridEnv):
         penalty_damage=-1.0, # Negative reward applied each time the agent steps on a damage square
         penalty_premature_goal=-50.0, # Large negative terminal reward for entering the Goal square before deliveries are complete
         penalty_death_square=-50.0, # Large negative terminal reward for stepping into a death square hazard
-        max_steps=500,
+        max_steps=500, # Episode limit; reaching it truncates (never terminates) the episode
+        resample_unsolvable=True, # Regenerate layouts where lava walls off an objective (seeded, deterministic)
+        max_layout_attempts=200,
+        debug_info=False, # If True, info["debug"] exposes hidden task state (tests/oracles only)
         **kwargs
     ):
+        if task_dependencies:
+            # Ordered deliveries are not part of the v2 baseline; the reward machine and the
+            # counterfactual rules have not been validated for them.
+            raise NotImplementedError("task_dependencies=True is not supported in protocol v2")
+        if carrying_capacity < 1:
+            raise ValueError("carrying_capacity must be >= 1")
+        self.resample_unsolvable = resample_unsolvable
+        self.max_layout_attempts = max_layout_attempts
+        self.debug_info = debug_info
+        self.layout_attempts = 0
         self.grid_size = grid_size
         self.percent_death_squares = percent_death_squares
         self.percent_damage_squares = percent_damage_squares
@@ -64,13 +95,60 @@ class HazardousDeliveryCoreEnv(MiniGridEnv):
         self.agent_icon = CachedIcon(pt.OutlineIcon.TRUCK_DELIVERY, "#FFFFFF", custom_path=None)
         
     def _gen_grid(self, width, height):
+        # Layouts are drawn from self.np_random, so a seeded reset is reproducible. When
+        # resampling is enabled, a layout is redrawn (from the same stream) until every
+        # package, destination and the goal is reachable without crossing lava.
+        for attempt in range(1, self.max_layout_attempts + 1):
+            self.agent_pos = (-1, -1)
+            self.agent_dir = -1
+            self._gen_grid_once(width, height)
+            self.layout_attempts = attempt
+            if not self.resample_unsolvable or self.layout_is_solvable():
+                return
+        raise RuntimeError(f"no solvable layout after {self.max_layout_attempts} attempts")
+
+    def layout_is_solvable(self):
+        """True if all objectives are reachable from the start without entering lava.
+
+        Damage squares are passable (they cost health, not access). The goal is terminal,
+        so paths may end on it but not pass through it.
+        """
+        start = tuple(int(v) for v in self.agent_pos)
+        targets = []
+        for i in range(self.grid.width):
+            for j in range(self.grid.height):
+                cell = self.grid.get(i, j)
+                if cell is not None and cell.type in ("package", "destination", "goal"):
+                    targets.append((i, j))
+        seen = {start}
+        queue = deque([start])
+        while queue:
+            x, y = queue.popleft()
+            for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                nxt = (x + dx, y + dy)
+                if nxt in seen:
+                    continue
+                cell = self.grid.get(*nxt)
+                if cell is not None and cell.type in ("wall", "lava"):
+                    continue
+                seen.add(nxt)
+                if cell is None or cell.type != "goal":
+                    queue.append(nxt)
+        return all(t in seen for t in targets)
+
+    def _gen_grid_once(self, width, height):
         self.grid = Grid(width, height)
         self.grid.wall_rect(0, 0, width, height)
-        
+
         num_inner = (width - 2) * (height - 2)
         num_death = int(num_inner * self.percent_death_squares)
         num_damage = int(num_inner * self.percent_damage_squares)
-        
+
+        if not self.randomise_start:
+            # Reserve the fixed start cell before placing objects (place_obj skips agent_pos).
+            self.agent_pos = (1, 1)
+            self.agent_dir = 0
+
         if self.randomise_goal:
             self.place_obj(LevelGoal())
         else:
@@ -95,17 +173,24 @@ class HazardousDeliveryCoreEnv(MiniGridEnv):
             
         if self.randomise_start:
             self.place_agent()
-        else:
-            self.agent_pos = (1, 1)
-            self.agent_dir = 0
-            
+
+    def _task_state(self):
+        return {
+            "health": int(self.health),
+            "carried": int(self.carried_packages),
+            "delivered": int(self.delivered_packages),
+            "num_packages": int(self.num_packages),
+        }
+
     def step(self, action):
         self.step_count += 1
-        
+
         reward = 0.0
         terminated = False
         truncated = False
-        
+        events = []
+        cause = None
+
         x, y = self.agent_pos
         if action == 0:
             y -= 1
@@ -122,68 +207,82 @@ class HazardousDeliveryCoreEnv(MiniGridEnv):
             
         curr_cell = self.grid.get(self.agent_pos[0], self.agent_pos[1])
         
+        # Cell effects apply to the cell the agent occupies after the move. As before, an agent
+        # that bumps into a wall stays on its cell and the cell's effect applies again.
         if curr_cell is not None:
             if curr_cell.type == 'lava':
+                events.append((EV_LAVA, None))
                 reward = self.penalty_death_square
                 terminated = True
-                
+                cause = "lava"
+
             elif curr_cell.type == 'damage':
+                events.append((EV_DAMAGE, None))
                 reward = self.penalty_damage
                 self.health -= 1
                 if self.health <= 0:
+                    events.append((EV_HEALTH_DEPLETED, None))
                     terminated = True
                     reward += self.penalty_death_square
-                    
+                    cause = "damage_death"
+
             elif curr_cell.type == 'health':
+                events.append((EV_HEAL, None))
                 self.health = self.max_health
                 self.grid.set(self.agent_pos[0], self.agent_pos[1], None)
-                
+
             elif curr_cell.type == 'package':
-                # Check sequential order if task_dependencies is enabled
-                can_pickup = True
-                if self.task_dependencies:
-                    # The next required package sequence number is (carried + delivered + 1)
-                    if curr_cell.seq_id != (self.carried_packages + self.delivered_packages + 1):
-                        can_pickup = False
-                        
-                if can_pickup and self.carried_packages < self.carrying_capacity:
+                events.append((EV_PACKAGE_CONTACT, None))
+                if self.carried_packages < self.carrying_capacity:
                     self.carried_packages += 1
                     self.grid.set(self.agent_pos[0], self.agent_pos[1], None)
-                    
+                    events.append((EV_PICKUP, None))
+
             elif curr_cell.type == 'destination':
-                can_deliver = True
-                if self.task_dependencies:
-                    # The next required destination sequence number is (delivered + 1)
-                    if curr_cell.seq_id != (self.delivered_packages + 1):
-                        can_deliver = False
-                        
-                if can_deliver and self.carried_packages > 0:
+                events.append((EV_DESTINATION_CONTACT, None))
+                if self.carried_packages > 0:
                     self.carried_packages -= 1
                     self.delivered_packages += 1
                     reward = self.reward_delivery
                     self.grid.set(self.agent_pos[0], self.agent_pos[1], None)
-                    
+                    events.append((EV_DELIVERY, None))
+
             elif curr_cell.type == 'goal':
+                events.append((EV_GOAL_CONTACT, None))
+                terminated = True
                 if self.delivered_packages >= self.num_packages:
                     reward = self.reward_task_completion
-                    terminated = True
+                    cause = "success"
                 else:
                     reward = self.penalty_premature_goal
-                    terminated = True
-                    
-        if self.step_count >= self.max_steps:
+                    cause = "premature_goal"
+
+        # The limit truncates only episodes that did not terminate on this step.
+        if not terminated and self.step_count >= self.max_steps:
             truncated = True
-            
+            cause = "timeout"
+
         obs = self.gen_obs()
-        info = {}
-        
-        return obs, reward, terminated, truncated, info
+        info = {"events": events}
+        if terminated or truncated:
+            info["termination_cause"] = cause
+            info["is_success"] = cause == "success"
+        if self.debug_info:
+            info["debug"] = self._task_state()
+
+        return obs, float(reward), terminated, truncated, info
 
     def reset(self, *, seed=None, options=None):
         self.health = self.max_health
         self.carried_packages = 0
         self.delivered_packages = 0
-        return super().reset(seed=seed, options=options)
+        obs, info = super().reset(seed=seed, options=options)
+        info = dict(info)
+        info["events"] = []
+        info["layout_attempts"] = self.layout_attempts
+        if self.debug_info:
+            info["debug"] = self._task_state()
+        return obs, info
 
     def append_legend(self, img, tile_size):
         from PIL import Image, ImageDraw, ImageFont

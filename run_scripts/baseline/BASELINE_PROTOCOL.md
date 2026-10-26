@@ -402,3 +402,9 @@ from pytest).
 | Date | Version | Change | Reason |
 |---|---|---|---|
 | 2026-10-26 | v2 | Protocol frozen; D1–D4 accepted; DQN-TS controls added to the run plan (55 runs total) | Researcher sign-off after Phase 1 audit |
+| 2026-10-26 | v2 | Maintenance episode limit set to **4,000** steps (was provisional 3,000) | Rule in §3.1: ≥ 2× oracle p95 length; measured p95 = 1,859 steps on the 200 final-eval seeds |
+| 2026-10-26 | v2 | `readiness_delay_range` is inclusive; baseline value written `(1, 2)` | Same target set {1, 2} as the frozen plan; makes min/max explicit and validated |
+| 2026-10-26 | v2 | Colour and maintenance step-limit parameter named `max_steps` | `gym.make` consumes `max_episode_steps` and would bypass the env's own limit and `timeout` cause |
+| 2026-10-26 | v2 | Maintenance baseline observation is the fixed-scaled 28-value vector (radar as present/dx/dy) | Replaces the −99 sentinel; still identical for PPO, RecurrentPPO and PPO-RM (PPO-RM: 28 + 8) |
+| 2026-10-26 | v2 | DRQN colour: half of sampled sequences aligned to the episode start (`episode_start_fraction=0.5`); gradients also flow through burn-in frames | Trains the cue-to-wall dependencies with exact zero initial state; loss still only on trained positions |
+| 2026-10-26 | v2 | Maintenance stages always contain one station per station type; codes appear one per pre-readiness stage with distinct types | Implements the §5 solvability fix and D2 without letting the layout reveal held codes |
