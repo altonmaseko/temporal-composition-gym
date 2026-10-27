@@ -1,7 +1,13 @@
+import os
+import sys
+
 import gymnasium as gym
 import pygame
 import numpy as np
-import temporal_comp_gym
+
+# Import the gym from this checkout, so the script works from any working directory.
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import temporal_comp_gym  # noqa: E402,F401
 
 def main():
     print("Initializing Deferred Maintenance Task for manual testing...")

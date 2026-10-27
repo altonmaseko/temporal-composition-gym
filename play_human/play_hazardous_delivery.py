@@ -1,11 +1,17 @@
-import gymnasium as gym
-import temporal_comp_gym
-import pygame
+import os
 import sys
 
+import gymnasium as gym
+import pygame
+
+# Import the gym from this checkout, so the script works from any working directory.
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import temporal_comp_gym  # noqa: E402,F401
+
 def play():
-    # Initialize the environment with human rendering and sequence dependencies
-    env = gym.make('TemporalComp/HazardousDelivery-v0', render_mode='human', task_dependencies=True)
+    # Standard task settings. Ordered deliveries (task_dependencies=True) are not supported
+    # in protocol v2 and would raise NotImplementedError.
+    env = gym.make('TemporalComp/HazardousDelivery-v0', render_mode='human')
     obs, info = env.reset()
     
     # Render once to spawn the pygame window
