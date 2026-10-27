@@ -10,6 +10,8 @@ All scripts follow a standard game loop pattern: initialize, reset, poll events,
 
 This script handles discrete grid movement. Because grid movement in Minigrid is absolute (one press equals one tile), the script relies on the Pygame `KEYDOWN` event queue, ensuring that holding a key doesn't cause the agent to zoom uncontrollably across the map in a single frame.
 
+> **Currently broken (protocol v2).** The script creates the environment with `task_dependencies=True` (numbered, ordered deliveries). Protocol v2 no longer supports that option, so `gym.make` raises `NotImplementedError` and the script stops before the window opens. It will run again once that argument is removed from line 8 of the script (a code change, not made here). Without it, the game is the protocol v2 task: any package can go to any destination.
+
 ### Key Bindings
 *   **Arrow Keys**: Map directly to discrete actions `0` (Up), `1` (Down), `2` (Left), and `3` (Right).
 *   **[R]**: Allows the user to manually trigger an `env.reset()`.
@@ -47,10 +49,12 @@ while running:
 Unlike Hazardous Delivery, this environment operates in a continuous physics space (`pymunk`). Therefore, the script uses `pygame.key.get_pressed()` to poll the continuous *state* of the keys every frame, allowing the user to hold down keys to apply continuous physics forces like thrust and torque.
 
 ### Key Bindings
-*   **W / UP**: Thrust (Y-axis = `1.0`)
-*   **S / DOWN**: Air Brakes (Y-axis = `-1.0`)
-*   **A / LEFT**: Rotate Counter-Clockwise (X-axis/Torque = `1.0`)
-*   **D / RIGHT**: Rotate Clockwise (X-axis/Torque = `-1.0`)
+*   **W / UP**: Thrust along the rocket's nose (`action[0] = 1.0`)
+*   **S / DOWN**: Air Brakes (`action[0] = -1.0`). Only the first frame of a press has an effect: horizontal speed and spin are set to zero, and gravity keeps acting.
+*   **A / LEFT**: Torque `action[1] = 1.0`. On screen this tilts the rocket **clockwise** (nose to the right), so thrust then pushes it right.
+*   **D / RIGHT**: Torque `action[1] = -1.0`. On screen this tilts the rocket **counter-clockwise** (nose to the left).
+
+The script's comments and printed help call A "Rotate Left" and D "Rotate Right". That follows Pymunk's maths convention, but the stage is drawn with y pointing down, so on screen the directions are mirrored as described above. Releasing both keys lets the rocket level itself.
 
 ### Core Execution Loop
 ```python

@@ -1,9 +1,11 @@
 # Hazardous Delivery Task: Agent Observation Space (protocol v2)
 
-The observation space is a flat, 1D vector of floating-point numbers. Unlike traditional MiniGrid environments that provide a 3D ego-centric visual matrix, this environment is strictly designed as a partially-observable tabular/state-vector task to test Recurrent Neural Networks (RNNs) and memory-augmented agents.
+The observation space is a flat, 1D vector of float32 values. Unlike traditional MiniGrid environments that provide a 3D ego-centric visual matrix, this environment is strictly designed as a partially-observable tabular/state-vector task to test Recurrent Neural Networks (RNNs) and memory-augmented agents.
 
 Depending on the environment configuration, the vector contains either 7, 8, or 9 values at each time step.
 **Protocol v2 main condition: 8 values** (health shown, delivered count hidden; decision D1).
+This setting is passed explicitly by agents/common/env_factory.py. The wrapper's own defaults are unchanged,
+so a plain gym.make("TemporalComp/HazardousDelivery-v0") still returns 9 values.
 
 ## Core Vector (Always Present - 7 Values)
 
@@ -18,23 +20,25 @@ Depending on the environment configuration, the vector contains either 7, 8, or 
    *Purpose:* Acts as a local proximity scanner. It allows the agent to navigate safely around immediate hazards and locate objectives without seeing the whole map.
 
 7. **`Current Square` (float):** The object occupying the square the agent is currently standing on.
-   *Purpose:* Provides confirmation of the agent's current physical overlap (e.g., confirming it is standing on a health node).
+   *Purpose:* Confirms what the agent is standing on. Used-up objects (picked-up packages, completed
+   destinations, consumed health nodes) are removed, so this reads 0.0 straight after a pickup, delivery or heal.
 
 ### Sensor Values Mapping:
-The sensors (values 3-7) map the physical objects into the following discrete integers:
-* `0.0` = Safe / Empty Floor / Wall (walls read the same as empty floor; use the coordinates)
+The sensors (values 3-7) map the physical objects into the following discrete values:
+* `0.0` = Empty Floor / Wall / Health Node (walls and health nodes read the same as empty floor)
 * `1.0` = Damage Square
 * `2.0` = Death Square (Lava)
 * `3.0` = Package OR Destination (the two are deliberately indistinguishable)
 * `4.0` = Level Goal
 
-`task_dependencies=True` (numbered packages/destinations) is not supported in protocol v2 and raises.
+`task_dependencies=True` (numbered packages/destinations, sensor values 11+, 21+) is not supported in
+protocol v2 and raises NotImplementedError, so those values never occur.
 
 ## Memory Toggles (Optional - up to 2 Values)
 
-These values are conditionally appended to the end of the vector. If toggled off before training, the agent is forced to use its own internal recurrent memory (like an LSTM cell) to track its history.
+These values are conditionally appended to the end of the vector. If toggled off, the agent must use its own internal memory (like an LSTM cell) to track its history.
 
-8. **`Health State` (float):** The agent's current health score (e.g., 10.0).
+8. **`Health State` (float):** The agent's current health (starts at 10; 0 only in the final observation of a damage death).
    *Present only if `include_health_in_state=True` (v2 main condition: present).*
    *Purpose:* If hidden, the agent must actively remember how many damage squares it has stepped on.
 
@@ -44,16 +48,23 @@ These values are conditionally appended to the end of the vector. If toggled off
 
 The number of packages currently carried is never part of the observation.
 
+## Actions
+
+Discrete(4): 0 = UP (y-1), 1 = DOWN (y+1), 2 = LEFT (x-1), 3 = RIGHT (x+1). Only walls block movement.
+
 ## Info dictionary (protocol v2)
 
-* `info["events"]`: list of `(name, arg)` emitted from the transition itself: `package_contact`, `pickup`,
+* `info["events"]`: list of `(name, None)` tuples emitted from the transition itself: `package_contact`, `pickup`,
   `destination_contact`, `delivery`, `goal_contact`, `lava`, `damage`, `heal`, `health_depleted`.
+  Reset returns an empty list.
+* Reset also returns `info["layout_attempts"]` (number of layout draws before an accepted one).
 * On the last step of an episode: `info["termination_cause"]` (`success`, `lava`, `damage_death`,
-  `premature_goal`, `timeout`) and `info["is_success"]`.
-* `info["debug"]` (hidden health/carried/delivered) only when `debug_info=True` (tests and oracles).
+  `premature_goal`, `timeout`) and `info["is_success"]` (True only for `success`).
+* `info["debug"]` (hidden health/carried/delivered/num_packages) only when `debug_info=True` (tests and oracles).
 
 ## Episode limit and layouts
 
-* `max_steps=500`: reaching it truncates the episode (`truncated=True`, never `terminated`).
-* Layouts are drawn from the seeded env RNG. With `resample_unsolvable=True` (default), a layout in which
+* `max_steps=500`: reaching it truncates the episode (`truncated=True`, cause `timeout`) unless the episode
+  terminated on that same step. No TimeLimit wrapper is added by gym.make.
+* Layouts are drawn from the seeded env RNG (`reset(seed=...)`). With `resample_unsolvable=True` (default), a layout in which
   lava walls off any package, destination or the goal is redrawn from the same stream.

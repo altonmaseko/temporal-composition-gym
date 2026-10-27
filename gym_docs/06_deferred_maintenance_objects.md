@@ -1,23 +1,27 @@
 # Deferred Maintenance Environment: Object Models and Physics Entities
 
-Unlike the grid-based *Hazardous Delivery* task, the **Deferred Maintenance** environment operates in a continuous, 2D physics space powered by `pymunk`. Consequently, the objects in this environment are not tile-based grid entities, but rather physical bodies with properties like mass, friction, momentum, and continuous coordinate tracking.
+Unlike the grid-based *Hazardous Delivery* task, the **Deferred Maintenance** environment operates in a continuous, 2D physics space powered by `pymunk`. The agent is a physical body with mass, friction and momentum. The level itself is still laid out on a grid of 50-pixel cells, and each cell is a static `pymunk` body.
 
 All physics entities for this environment are defined in:
 > 📁 [`temporal_comp_gym/envs/deferred_maintenance/objects.py`](../temporal_comp_gym/envs/deferred_maintenance/objects.py)
+
+> **Protocol v2 note.** `objects.py` itself did not change in protocol v2. What changed is how the engine uses these objects (see [`07_deferred_maintenance_core.md`](07_deferred_maintenance_core.md)): every stage is now generated from a seeded schedule with exactly one station per station type, collected code zones are replaced by path tiles, the off-path check and the local-grid sensor read a per-stage map of cell types instead of querying shapes, and the rocket's shape is excluded from sensor queries.
 
 ---
 
 ## 1. The Agent (`Rocket`)
 
-The primary actor in this environment is the `Rocket`. It is a dynamic physical body that responds to external forces, gravity, and torques.
+The primary actor in this environment is the `Rocket`. It is a dynamic physical body that responds to thrust, torque and gravity.
 
 ### Physical Properties
-The rocket is instantiated with a specific mass and size (20x40 bounding box). It possesses basic elasticity (bounciness) and friction to interact realistically with solid walls and boundaries.
+The rocket has mass 1.0 and a 20×40 pixel box shape. It has some elasticity (bounciness, 0.3) and friction (0.5), which matter when it hits solid stage boundaries.
 
 ### Movement and Behaviors
-Instead of teleporting between discrete grid cells, the rocket is piloted by applying continuous physical forces. 
-*   **`apply_thrust`**: Pushes the rocket "forward" relative to its current local orientation.
-*   **`apply_rotation`**: Spins the rocket around its center of mass by applying torque.
+Instead of moving between discrete grid cells, the rocket is piloted by applying continuous physical forces.
+*   **`apply_thrust`**: Pushes the rocket along its own "up" axis (towards its nose), so thrust direction follows the rocket's current tilt.
+*   **`apply_rotation`**: Sets the torque on the body, spinning it around its centre of mass.
+
+How actions map to these calls (thrust scale, air brakes, auto-levelling, the ±90° tilt limit) is handled by the core engine.
 
 ```python
 class Rocket:
@@ -31,29 +35,32 @@ class Rocket:
         self.shape = pymunk.Poly.create_box(self.body, (self.width, self.height))
         self.shape.elasticity = 0.3
         self.shape.friction = 0.5
-        self.shape.collision_type = 1 # Collision ID for Rocket
+        self.shape.collision_type = 1 # Rocket
         
         space.add(self.body, self.shape)
         
     def apply_thrust(self, force_magnitude):
-        # Applies upward force in the local coordinate system
         self.body.apply_force_at_local_point((0, -force_magnitude), (0, 0))
         
     def apply_rotation(self, torque):
-        # Spins the body
         self.body.torque = torque
 ```
+
+After creating the rocket, the engine puts its shape in its own query category, so sensor queries (raycasts) never hit the rocket itself.
 
 ---
 
 ## 2. Static Zones and Objectives
 
-The rest of the environment is composed of static bodies—entities that do not move but dictate the spatial rules and objectives of the level. Most of these objects are configured as **sensors** (`self.shape.sensor = True`). A sensor shape detects when the `Rocket` overlaps with it (triggering game logic and rewards in the core engine) but does not cause a physical bounce or collision response.
+The rest of the environment is made of static, cell-sized bodies. All of them except a solid `StageBoundary` are **sensors** (`self.shape.sensor = True`): the rocket can overlap them without any physical bounce. The engine detects overlaps by querying the rocket's shape against the space on every step and then applies the task rules.
 
-All static zones are instantiated using a `rect` parameter `(x, y, width, height)` to define their bounding box.
+All static zones are created from a `rect` parameter `(x, y, width, height)` that defines their cell.
 
 ### Logic-Driven Zones (`CodeZone` & `MaintenanceStation`)
-These are the core objects driving the temporal composition task. The agent must visit specific zones based on matching `color_code` properties to pick up maintenance codes and deliver them to their respective stations.
+These are the core objects of the task. Each carries a `color_code` (its type, `1` to `max_code_types`).
+
+*   **`CodeZone`**: A maintenance code to collect. The rocket collects it the first time any part of the rocket overlaps it (no hovering needed). At the end of that step the zone is removed and replaced by a plain `PathBoundary` tile. Codes appear only in the stages before readiness, one distinct type per stage at the default settings.
+*   **`MaintenanceStation`**: Where a held code is serviced. The rocket must overlap the station continuously for `required_hover_duration` seconds (2.0 s = 120 steps by default). Stations are never removed. Every stage contains exactly one station of each station type; with `distractor_stations=True` (the protocol v2 main condition) that is all `max_code_types` types, so the stations on screen never reveal which codes the rocket holds.
 
 ```python
 class CodeZone:
@@ -61,29 +68,34 @@ class CodeZone:
         x, y, w, h = rect
         self.body = pymunk.Body(body_type=pymunk.Body.STATIC)
         self.body.position = (x + w/2, y + h/2)
-        
         self.shape = pymunk.Poly.create_box(self.body, (w, h))
-        self.shape.sensor = True          # Detects overlap without physical collision
-        self.shape.collision_type = 3     # Collision ID for Code Zone
-        
-        self.color_code = color_code      # Crucial for sequential logic matching
+        self.shape.sensor = True
+        self.shape.collision_type = 3 # Code Zone
+        self.color_code = color_code
         space.add(self.body, self.shape)
         self.rect = rect
 
 class MaintenanceStation:
     def __init__(self, space, rect, color_code):
-        # ... structurally identical to CodeZone ...
-        self.shape.collision_type = 4     # Collision ID for Station
+        x, y, w, h = rect
+        self.body = pymunk.Body(body_type=pymunk.Body.STATIC)
+        self.body.position = (x + w/2, y + h/2)
+        self.shape = pymunk.Poly.create_box(self.body, (w, h))
+        self.shape.sensor = True
+        self.shape.collision_type = 4 # Station
         self.color_code = color_code
-        # ...
+        space.add(self.body, self.shape)
+        self.rect = rect
 ```
+
+Code zones and stations are always placed at least two cells apart (Chebyshev distance) from each other and from the exit, so the rocket can never touch two of them, or one of them and the exit, at the same time. They can be next to the entry.
 
 ### Stage Navigation (`StageEntry`, `StageExit`, & `PathBoundary`)
 These zones manage the spatial flow of the agent.
 
-*   **`StageEntry`**: Defines the designated starting area or spawn point for the rocket.
-*   **`StageExit`**: Represents the goal area the agent must reach to complete the level.
-*   **`PathBoundary`**: Represents a designated "safe zone" or required pathway. Straying outside these zones likely results in penalties or episode termination.
+*   **`StageEntry`**: The first cell of the stage's path. The rocket spawns at its centre at the start of every stage, with zero velocity and an upright angle.
+*   **`StageExit`**: The last cell of the path. Touching it ends the stage: the rocket moves on to the next stage, or the episode ends (on the last stage, or if a code in this stage was left uncollected).
+*   **`PathBoundary`**: An ordinary path cell (the "safe" route between entry and exit). Leaving the path for an empty (void) cell costs `-0.1` per step; it never ends the episode.
 
 ```python
 class StageExit:
@@ -91,36 +103,44 @@ class StageExit:
         x, y, w, h = rect
         self.body = pymunk.Body(body_type=pymunk.Body.STATIC)
         self.body.position = (x + w/2, y + h/2)
-        
         self.shape = pymunk.Poly.create_box(self.body, (w, h))
         self.shape.sensor = True
-        self.shape.collision_type = 5 # Collision ID for Exit
-        # ...
+        self.shape.collision_type = 5 # Exit
+        space.add(self.body, self.shape)
+        self.rect = rect
 ```
 
+`StageEntry` and `PathBoundary` are built the same way, with collision types 6 and 2.
+
 ### Physical Walls (`StageBoundary`)
-Unlike the sensors, the `StageBoundary` can act as a solid, physical wall to keep the rocket contained within the play area.
+A ring of `StageBoundary` cells surrounds every stage. With `enforce_boundaries=True` (the default) they are solid walls the rocket bounces off; with `False` they are sensors the rocket can pass through. Either way, every step on which the rocket overlaps a boundary costs `-5`.
 
 ```python
 class StageBoundary:
     def __init__(self, space, rect, is_solid=True):
-        # ...
-        # If is_solid is True, sensor becomes False, making it a physical barrier
-        self.shape.sensor = not is_solid 
-        self.shape.collision_type = 7 # Collision ID for Boundary
-        # ...
+        x, y, w, h = rect
+        self.body = pymunk.Body(body_type=pymunk.Body.STATIC)
+        self.body.position = (x + w/2, y + h/2)
+        self.shape = pymunk.Poly.create_box(self.body, (w, h))
+        self.shape.sensor = not is_solid
+        self.shape.collision_type = 7 # Boundary
+        space.add(self.body, self.shape)
+        self.rect = rect
 ```
 
 ---
 
-## 3. Collision Type Mapping Reference
+## 3. Collision Type and Cell Type Reference
 
-To process game logic efficiently, `pymunk` relies on integer collision types to route collision callbacks (e.g., instructing the engine what to do when object Type 1 touches object Type 5). Here is the definitive mapping used across the Deferred Maintenance environment:
+The engine does not register `pymunk` collision callbacks; it identifies overlapping objects by their Python class. The integer collision types now serve a second purpose: they are the **cell-type codes** that the engine stores for every cell of a stage and that the `local_grid` sensor reports (see [`08_deferred_maintenance_wrappers.md`](08_deferred_maintenance_wrappers.md)).
 
-*   **`1`** - Rocket (The Agent)
-*   **`2`** - Path Boundary (Safe Zone)
-*   **`3`** - Code Zone (Task Pickup)
-*   **`4`** - Maintenance Station (Task Dropoff / Action)
-*   **`5`** - Stage Exit (Level Goal)
-*   **`6`** - Stage Entry (Spawn Point)
-*   **`7`** - Stage Boundary (Walls)
+| Code | Object | Appears in the local-grid sensor? |
+|---|---|---|
+| `0` | Empty void (no object) | yes |
+| `1` | Rocket (the agent) | no (only objects of the level are mapped) |
+| `2` | Path Boundary (safe path, including collected code zones) | yes |
+| `3` | Code Zone (not yet collected) | yes |
+| `4` | Maintenance Station | yes |
+| `5` | Stage Exit | yes |
+| `6` | Stage Entry | yes |
+| `7` | Stage Boundary (walls) | yes |

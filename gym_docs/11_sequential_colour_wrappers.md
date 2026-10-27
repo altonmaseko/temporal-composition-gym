@@ -1,6 +1,6 @@
 # Sequential Colour Environment: Observation Space and Wrappers
 
-Unlike state-vector environments designed for tabular reinforcement learning, the **Sequential Colour** task is fundamentally a visual challenge. The agent receives no explicit internal state variables—no spatial coordinates, no phase indicators, and no target sequence strings. It must derive all task context entirely from a continuous stream of pixels.
+Unlike the state-vector environments, the **Sequential Colour** task is a visual challenge. The agent receives no explicit internal state variables: no spatial coordinates, no phase indicator and no target sequence. It must derive all task context from a stream of pixels.
 
 The details of the visual observation space and its modifications are governed by:
 > 📁 [`temporal_comp_gym/envs/sequential_colour/agent_observation_space.txt`](../temporal_comp_gym/envs/sequential_colour/agent_observation_space.txt)
@@ -8,64 +8,86 @@ The details of the visual observation space and its modifications are governed b
 
 ---
 
+## What Changed in Protocol v2
+
+*   **The observation itself did not change.** It is still the raw 84×84 RGB frame, and the baselines receive it unwrapped (no noise, no resizing, no greyscale).
+*   **The noise wrapper now uses its own seeded generator.** Before, `GaussianNoiseWrapper` drew noise from NumPy's global random state, so noise was not reproducible and could interfere with other code using the global state. Adding noise now never changes the sequence or the rooms.
+*   **`info` changed, not the observation.** Every step now reports `events`, and the last step reports `termination_cause` and `is_success`; see [`10_sequential_colour_core.md`](10_sequential_colour_core.md). The target colour is never in `info` during training or evaluation.
+
+---
+
 ## 1. The Raw Observation Space
 
-The raw observation passed from the core engine to the agent is a 3D NumPy array representing an RGB image frame. It is explicitly sized to be compatible with standard Convolutional Neural Network (CNN) architectures.
+The observation produced by the core engine is a 3D NumPy array representing an RGB image. It is sized to be compatible with standard Convolutional Neural Network (CNN) architectures.
 
 *   **Type**: `gym.spaces.Box`
 *   **Shape**: `(84, 84, 3)`
 *   **Data Type**: `np.uint8` (Integer values from 0 to 255)
-*   **Format**: RGB (Red, Green, Blue)
+*   **Format**: RGB (Red, Green, Blue). The baselines keep all three channels: the task is decided by colour, and converting to grey would make colours harder to tell apart.
+
+`gym.make("TemporalComp/SequentialColour-v0")` returns the core engine with only Gymnasium's standard `PassiveEnvChecker` and `OrderEnforcing` wrappers. No observation wrapper is applied, and the baseline factory (`agents/common/env_factory.py`) adds none either.
 
 ### What the Agent Sees (By Phase)
-Because this task revolves around temporal composition, the exact meaning and layout of the 84x84 RGB array shifts dynamically depending on the current temporal phase of the episode:
+The meaning of the 84×84 RGB array depends on the current phase:
 
 **Phase 1: Memorisation**
-*   **Visual**: A completely solid-colored 84x84x3 image.
-*   **Context**: Represents a single color from the sequence. The agent must process this solid color visually and push it into its recurrent memory (e.g., LSTM/GRU).
+*   **Visual**: A solid-coloured 84×84×3 image in the current cue colour.
+*   **Timing**: Each colour stays for `frames_per_colour` observations (default 5), starting with the reset observation. Two identical colours in a row (only possible with `allow_consecutive_duplicates=True`) look like one long cue; the agent can only tell them apart by counting frames.
+*   **Context**: The agent must store each colour in its recurrent memory (e.g., LSTM/GRU). Actions have no effect.
 
 **Phase 2: Retention (Delay)**
-*   **Visual**: A completely solid black image (all RGB values are strictly `0`).
-*   **Context**: Acts as a sensory deprivation buffer. The agent must successfully retain the memorized sequence without any visual cues or prompts.
+*   **Visual**: A solid black image (all values `0`).
+*   **Timing**: `retention_delay_steps` observations (default 2).
+*   **Context**: The agent must hold the sequence with no visual input. Actions have no effect.
 
 **Phase 3: Navigation**
-*   **Visual**: A top-down visual representation of the physical room, scaled precisely to fit the 84x84 window.
-*   **Context**: The agent (rendered as a white square) must use this spatial view to identify the four coloured boundaries and physically navigate towards the correct target wall.
+*   **Visual**: A top-down view of the room scaled to fit the 84×84 frame: black background, four coloured walls about 5 pixels thick, and the agent as a white square of about 5 pixels in the centre.
+*   **Context**: The agent must move to the wall showing the current target colour. After a correct, non-final wall the agent is re-centred in a room with new wall colours; after a wrong wall it is re-centred in the same room. Nothing in the frame says which colour is the target or how far through the sequence the agent is.
 
 ---
 
 ## 2. The Observation Wrapper (`GaussianNoiseWrapper`)
 
-To evaluate the robustness of the agent's visual feature extractor and its ability to maintain memory under imperfect, noisy conditions, the raw image can be modified using the `GaussianNoiseWrapper`.
-
-### Wrapper Implementation
-When initialized with an `observation_noise_level > 0.0`, the wrapper intercepts the clean 84x84x3 frame and injects random Gaussian noise before passing the tensor to the agent.
+To evaluate the robustness of an agent's visual features and memory under noisy conditions, the image can be distorted with the `GaussianNoiseWrapper`. It is not part of the protocol v2 baselines and is never applied automatically; you wrap the environment yourself:
 
 ```python
-import gymnasium as gym
-import numpy as np
+from temporal_comp_gym.envs.sequential_colour import GaussianNoiseWrapper
+env = GaussianNoiseWrapper(gym.make("TemporalComp/SequentialColour-v0"), observation_noise_level=0.1)
+```
 
+### Wrapper Implementation
+When initialized with an `observation_noise_level > 0.0`, the wrapper adds random Gaussian noise to every observation (in all phases) before passing it to the agent.
+
+```python
 class GaussianNoiseWrapper(gym.ObservationWrapper):
+    """Adds pixel noise from the wrapper's own seeded generator.
+
+    The generator is independent of the environment's RNG, so adding noise never changes
+    sequences or room layouts. It is reseeded whenever reset() receives a seed.
+    """
+
     def __init__(self, env, observation_noise_level=0.0):
         super().__init__(env)
         self.noise_level = observation_noise_level
-        
+        self._noise_rng = np.random.default_rng()
+
+    def reset(self, *, seed=None, options=None):
+        if seed is not None:
+            self._noise_rng = np.random.default_rng([int(seed), 0x5EED])
+        return super().reset(seed=seed, options=options)
+
     def observation(self, obs):
         if self.noise_level > 0.0:
-            # 1. Generate Gaussian noise scaled to the maximum pixel range (255)
-            noise = np.random.normal(0, self.noise_level * 255, obs.shape)
-            
-            # 2. Add noise to the clean observation
-            # 3. Clip the resulting values to ensure they remain valid 8-bit RGB integers
+            noise = self._noise_rng.normal(0, self.noise_level * 255, obs.shape)
             noisy_obs = np.clip(obs + noise, 0, 255).astype(np.uint8)
-            
             return noisy_obs
-            
-        # Return clean observation if noise is explicitly disabled
         return obs
 ```
 
 ### Noise Logic Breakdown
-1.  **`np.random.normal`**: Generates a matrix of random noise centered at 0. The spread (standard deviation) is calculated by multiplying the `noise_level` scalar by the maximum pixel value `255`.
-2.  **`obs + noise`**: The random noise matrix is added pixel-by-pixel to the clean RGB frame, distorting the image.
-3.  **`np.clip(..., 0, 255)`**: Because adding random noise can push pixel values below 0 or above 255 (which would crash the `np.uint8` conversion or cause severe graphical artifacting due to integer overflow), the tensor is strictly clamped back to the valid 8-bit color range.
+1.  **Own generator**: The wrapper keeps a private NumPy generator. `reset(seed=s)` reseeds it from `s`, so the same seed gives the same noise. Before the first seeded reset (or if reset is never given a seed) it starts from an unseeded generator, so the noise is not reproducible in that case.
+2.  **`normal(0, noise_level × 255)`**: Generates one noise value per pixel and channel, centred at 0, with a standard deviation of `noise_level × 255`.
+3.  **`obs + noise`**: The noise is added to the clean RGB frame.
+4.  **`np.clip(..., 0, 255)`**: The result is clamped to the valid 8-bit range before converting back to `np.uint8`, so values never wrap around.
+
+At `observation_noise_level = 0.0` (the default) the wrapper returns the frame unchanged.

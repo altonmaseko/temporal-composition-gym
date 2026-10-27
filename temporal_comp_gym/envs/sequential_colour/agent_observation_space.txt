@@ -10,28 +10,35 @@ Observation Shape and Type
 * Data Type: np.uint8 (integers from 0 to 255)
 * Format: RGB (Red, Green, Blue) image frame. Keep RGB: converting to grey would make colours
   harder to tell apart, and the task is decided by colour.
+* No observation wrapper is applied by gym.make or by the baseline factory; the baselines see this raw frame.
 
 What the Agent Sees (By Phase)
 ------------------------------
 Because this task relies on temporal composition, the exact meaning of the RGB array changes depending on the current phase of the episode:
 
 1. Phase 1: Memorisation
-   * Observation: A completely solid-coloured 84x84x3 image.
+   * Observation: A completely solid-coloured 84x84x3 image in the current cue colour.
    * Each colour is shown for `frames_per_colour` (default 5) consecutive observations, starting with the
      reset observation. Directional actions have no effect in this phase.
+   * Sequence length is drawn from `sequence_length_range` (default 3-5) over `colour_vocabulary_size`
+     colours (default 6: red, green, blue, yellow, magenta, cyan); by default no colour repeats back-to-back.
 
 2. Phase 2: Retention (Delay)
    * Observation: A completely solid black 84x84x3 image (all RGB values are 0).
-   * Lasts `retention_delay_steps` observations.
+   * Lasts `retention_delay_steps` observations (default 2). Actions have no effect.
 
 3. Phase 3: Navigation
    * Observation: A top-down 84x84x3 visual representation of the navigation room.
    * Visual Elements in this frame:
      - Background: Solid black.
-     - Agent: A white square representing the agent's current position.
-     - Walls: Four distinct coloured rectangles bordering the edges of the frame (Top, Bottom, Left, Right).
-   * Touching the target wall re-centres the agent in a newly randomised room; touching another wall
-     costs `penalty_severity` and re-centres the agent in the same room.
+     - Agent: A white square (about 5 px) representing the agent's current position; it starts in the centre.
+     - Walls: Four coloured rectangles (about 5 px thick) bordering the edges of the frame (Top, Bottom, Left, Right).
+       In the v2 main condition the four colours are distinct and exactly one is the current target.
+   * Actions: Discrete(4), 0 = UP, 1 = DOWN, 2 = LEFT, 3 = RIGHT; each moves the agent half a block.
+     Moving straight from the centre touches a wall on the 13th step.
+   * Touching the target wall re-centres the agent in a newly coloured room for the next target (or ends the
+     episode with +10 after the last colour); touching another wall costs `penalty_severity` (-1) and
+     re-centres the agent in the same room, with the same target.
 
 Info dictionary (protocol v2)
 -----------------------------
@@ -43,16 +50,20 @@ Info dictionary (protocol v2)
   colour_id is the colour's index in the vocabulary. The navigation target is never reported.
 * On the last step: info["termination_cause"] ("success", "wrong_wall_death" when hard_death_mode, "timeout")
   and info["is_success"].
-* info["debug"] (sequence, progress, target, wall colours) only when debug_info=True (tests and oracles).
+* info["debug"] (phase, sequence, progress, target, wall colours) only when debug_info=True (tests and oracles).
 
 Episode limit
 -------------
-* max_steps=300 (truncation). The oracle needs at most 92 steps at the baseline settings.
+* max_steps=300 (truncation, cause "timeout"; never at the same time as termination).
+* A perfect episode takes 5L + 2 + 13L steps for a sequence of length L: 56, 74 or 92 steps.
+  The scripted oracle's longest episode on the 200 final-evaluation seeds is 92 steps.
 
 Observation Noise Wrapper
 -------------------------
-If the environment is wrapped with the `GaussianNoiseWrapper` and `observation_noise_level` is set above 0.0:
-* Random Gaussian noise is applied to every pixel in the 84x84x3 array across all phases.
+If the environment is wrapped with the `GaussianNoiseWrapper` and `observation_noise_level` is set above 0.0
+(not part of the v2 baselines; it is never applied automatically):
+* Random Gaussian noise (standard deviation observation_noise_level x 255) is applied to every pixel in the
+  84x84x3 array across all phases.
 * The noise comes from the wrapper's own generator (reseeded on reset(seed=...)), so it never changes
   the sequence or room layouts.
 * The final pixel values are clipped back to the valid 0-255 range.

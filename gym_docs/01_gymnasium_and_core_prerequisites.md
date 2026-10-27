@@ -1,18 +1,39 @@
 # Core Prerequisites and Foundational Libraries
 
-The `temporal_composition_gym` benchmark is built on top of several foundational libraries that provide the infrastructure for reinforcement learning environments, physics simulation, and visual rendering. 
+The `temporal_composition_gym` benchmark is built on top of several foundational libraries that provide the infrastructure for reinforcement learning environments, physics simulation, and visual rendering.
 
 ## Foundational Libraries
 
-As listed in `setup.py`, the core dependencies include:
+There are two dependency lists:
 
-*   **Gymnasium**: The standard API for reinforcement learning environments. It provides the core `Env` class that our environments inherit from, defining the standard interface (`reset`, `step`, `render`) that RL agents use to interact with the environment.
-*   **Minigrid**: A lightweight, fast gridworld environment library built on top of Gymnasium. It provides a flexible grid system, objects, and rendering utilities that we leverage for our grid-based tasks.
-*   **Pygame**: A set of Python modules designed for writing video games. In this benchmark, `pygame` is used for handling window rendering, processing user inputs (like keyboard events when playing manually), and drawing graphics efficiently.
-*   **Pymunk**: A 2D physics library for Python. It is used to simulate complex, realistic physical interactions (like collisions, gravity, and kinematics) within the continuous-space environments.
-*   **NumPy**: The fundamental package for scientific computing in Python. It is extensively used for representing states, observations, actions, and performing fast numerical operations across the benchmark.
-*   **Pillow**: A Python Imaging Library (PIL) fork, used for image processing and handling visual assets.
-*   **PyTablerIcons**: A library providing access to Tabler Icons, used for rendering specific visual elements or icons within the environments.
+*   **[`setup.py`](../setup.py)** lists what the environments themselves need (unpinned): `gymnasium`, `minigrid`, `pygame`, `pymunk`, `numpy`, `pytablericons`, `Pillow` and `requests`.
+*   **[`requirements.txt`](../requirements.txt)** pins the complete protocol v2 environment, including the training and testing stack. It was taken from the `temporal_gym` conda environment (Python 3.10). Install from it on every machine that runs experiments, so all machines use the same versions.
+
+### Environment libraries
+
+*   **Gymnasium** (1.3.0): The standard API for reinforcement learning environments. It provides the core `Env` class our environments inherit from and the `reset`/`step`/`render` interface agents use.
+*   **Minigrid** (3.1.0): A lightweight gridworld library built on Gymnasium. Hazardous Delivery is built on its grid, objects and rendering.
+*   **Pygame** (2.6.1): Window rendering, keyboard input for the human-play scripts, and drawing. Sequential Colour also uses it to draw the agent's observation frame. `pygame-ce` must not be installed alongside it, because both use the `pygame` import name.
+*   **Pymunk** (7.3.0): A 2D physics library, used for the rocket and level in Deferred Maintenance.
+*   **NumPy** (2.2.6): Arrays for observations, actions and all numerical work, and the seeded random generators.
+*   **Pillow** (12.3.0): Image handling for icons.
+*   **PyTablerIcons** (1.0.1): The icon set used when rendering the environments for humans.
+*   **Requests**: Fetches icon images when an icon URL is configured in an environment's `ICON_URLS` (empty by default).
+
+### Training, logging and testing libraries (pinned in `requirements.txt` only)
+
+*   **PyTorch** (2.14.0): The custom DRQN and QRM learners, and the backend of Stable-Baselines3.
+*   **Stable-Baselines3** (2.9.0) and **sb3-contrib** (2.9.0): DQN, PPO and Recurrent PPO.
+*   **Weights & Biases** (`wandb` 0.30.0): Experiment tracking. Authentication is through `wandb login` only; the code never reads an API key.
+*   **psutil**: Records RAM, disk and memory use in run metadata.
+*   **pytest** (9.1.1): The automated test suite (see [`13_automated_test_suites.md`](13_automated_test_suites.md)).
+
+On the development PC, always use the project interpreter (see `AGENTS.md`):
+
+```bash
+D:\miniconda3\envs\temporal_gym\python.exe -m pip install -r requirements.txt
+D:\miniconda3\envs\temporal_gym\python.exe -m pip install -e .
+```
 
 ## The Standard Gymnasium Reinforcement Learning Loop
 
@@ -22,26 +43,30 @@ To understand how `temporal_composition_gym` environments work, it is essential 
 
 An **Environment** encapsulates the rules, dynamics, and state of the world. Agents do not interact with the environment's internal state directly; instead, they observe it through an `Observation Space` and act on it through an `Action Space`.
 
-*   **Action Space** (`env.action_space`): Defines the valid actions an agent can take. For example, a discrete space of 4 actions (up, down, left, right) or a continuous space for applying forces in specific directions.
-*   **Observation Space** (`env.observation_space`): Defines the format and bounds of the observations the agent receives. This could be a 1D array of internal state variables or a 3D array representing pixel data.
+*   **Action Space** (`env.action_space`): Defines the valid actions an agent can take. Here: 4 discrete moves (up, down, left, right) in Hazardous Delivery and Sequential Colour, and 2 continuous values (thrust, rotation) in Deferred Maintenance.
+*   **Observation Space** (`env.observation_space`): Defines the format and bounds of the observations the agent receives. Here: a short vector (Hazardous Delivery, Deferred Maintenance) or an 84×84 RGB image (Sequential Colour).
 
 ### 2. The RL Loop (`reset` and `step`)
 
 The interaction between an agent and the environment follows a continuous loop:
 
-1.  **Initialize**: The environment is initialized to a starting state using `reset()`.
-2.  **Act and Observe**: The agent chooses an action, and the environment advances by one timestep using `step(action)`. 
-3.  **Feedback**: `step()` returns the new observation, the reward, whether the episode has terminated or truncated, and an additional info dictionary.
+1.  **Initialize**: The environment is initialized to a starting state using `reset()`. Passing `seed=` makes the episode reproducible.
+2.  **Act and Observe**: The agent chooses an action, and the environment advances by one timestep using `step(action)`.
+3.  **Feedback**: `step()` returns the new observation, the reward, whether the episode has terminated or truncated, and an info dictionary.
 
-Here is a concrete code example of this standard loop in action:
+*   **Terminated** means the task itself ended the episode (success or failure).
+*   **Truncated** means the episode hit its time limit.
+
+All three environments enforce their own step limit internally (`max_steps`: 500, 300 and 4,000 steps), and the two flags are never both `True`.
+
+Here is the loop with one of this benchmark's environments:
 
 ```python
 import gymnasium as gym
-import numpy as np
+import temporal_comp_gym  # registers the TemporalComp/... environments
 
 # 1. Create the environment
-# (In practice, you would initialize one of the temporal_composition_gym environments)
-env = gym.make("CartPole-v1")
+env = gym.make("TemporalComp/HazardousDelivery-v0")
 
 # 2. Reset the environment to start a new episode
 # Returns the initial observation and an info dictionary
@@ -62,33 +87,39 @@ while not done:
     total_reward += reward
     
     # An episode ends if it either reaches a terminal state (terminated)
-    # or hits a predetermined time limit (truncated)
+    # or hits the environment's step limit (truncated)
     done = terminated or truncated
 
 print(f"Episode finished with total reward: {total_reward}")
+print(info["termination_cause"], info["is_success"])
 
 # 4. Clean up
 env.close()
 ```
 
-When you examine the implementations of the environments in `temporal_composition_gym`, you will see this exact structure. The complex physics and temporal rules are embedded inside the custom `reset()` and `step()` methods of our environment classes.
+When you examine the implementations of the environments in `temporal_composition_gym`, you will see this exact structure. The physics and temporal rules are embedded inside the custom `reset()` and `step()` methods of the environment classes.
+
+### 3. The `info` Dictionary in This Benchmark
+
+Every `reset()` and `step()` of all three environments returns `info["events"]`: a list of `(name, argument)` pairs describing what happened on that transition (for example `("pickup", None)` or `("wall_touch", 2)`). The last step of an episode also carries `info["termination_cause"]` and `info["is_success"]`. The reward machines used by the explicit-memory agents read only these events. With `debug_info=True` an environment also adds `info["debug"]` with hidden task state; this is for tests and scripted oracles only, never for training. Each environment's events are listed in its `agent_observation_space.txt` and in docs 04, 07 and 10.
 
 ## Environment Configurations and Display Adjustments
 
-Based on the project's developer notes, there are a few important details to keep in mind when modifying or interacting with the environments:
+The project's developer notes ([`notes.txt`](../notes.txt)) give a few practical tips. They are summarised here, corrected where the code has changed:
 
 ### Game Parameters
-The core logic and parameters for each specific game or environment are encapsulated within the `__init__` method of its main class. You can find these environment definitions in the `core.py` file located within each respective environment's directory. 
+Each environment's parameters are the keyword arguments of its main class's `__init__` in its `core.py`:
 
 > 📁 `temporal_comp_gym/envs/<env_name>/core.py`
-> *Tip: If you need to change the difficulty, grid size, physics parameters, or reward scaling, look for the `__init__` method in the corresponding environment's core file.*
+
+They can be passed to `gym.make(...)`, for example `gym.make("TemporalComp/HazardousDelivery-v0", num_packages=2)`. The protocol v2 experiments do not use the code defaults implicitly: [`agents/common/env_factory.py`](../agents/common/env_factory.py) passes the frozen main-condition settings explicitly, and those differ from the code defaults in places (see [`02_package_architecture_and_registration.md`](02_package_architecture_and_registration.md)). Change settings for your own experiments through `gym.make` arguments rather than by editing the defaults in `core.py`, which would change the baseline configuration.
 
 ### Adjusting Visual Display Speed
-When running tests or observing a trained agent visually, the display rendering speed might be too fast to see what is happening clearly. You can adjust the frame rate manually during tests.
+The files in `tests/` are now automated checks with no display. The visual demos that open a window and play random actions live in `tests/visual/` (`demo_<env_name>.py`); pytest does not collect them.
 
-> 📁 [`tests/test_<env_name>.py`](../tests/)
-> *Tip: Adjust the `time.sleep(x)` value within the main test loop of the respective test file to slow down or speed up the visual rendering.*
+> 📁 [`tests/visual/`](../tests/visual/)
+> *Tip: Adjust the `time.sleep(x)` value in the loop of the respective `demo_<env_name>.py` file to slow down or speed up the rendering.*
 
 ### Playing the Games Manually
-To better understand the task constraints and physics of a particular environment, you can play the games yourself. 
-*   **Tip:** Run the human-playable scripts located in the `play_human` directory for hands-on visual testing. This is an excellent way to debug logic and get an intuitive feel for the temporal composition tasks before training an agent.
+To better understand the task constraints and physics of a particular environment, you can play the games yourself.
+*   **Tip:** Run the human-playable scripts in the `play_human` directory (see [`12_human_interaction_loops.md`](12_human_interaction_loops.md)). This is a good way to get an intuitive feel for the tasks before training an agent.
