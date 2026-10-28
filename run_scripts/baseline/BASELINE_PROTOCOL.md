@@ -416,6 +416,7 @@ from pytest).
 | 2026-10-28 | v2 | Diagnostic seed ranges reserved and first used: training seeds **401–499**, env/episode seeds **6,000,000+** (exploration noise in behaviour rollouts, no-learning plumbing checks in `analysis/baseline_v2/`) | Baseline analysis (Prompt 1) needs seeds outside the baseline, tuning, stress and final-test ranges; no results or protocol settings change |
 | 2026-10-28 | v3 | Protocol v3 defined (decisions D5–D9, section 12): maintenance γ = 0.999; secondary noisy evaluation; extra logging. Selected with `--protocol v3`; v2 stays the default and its configs and hashes are unchanged (`baseline_plan.json` check passes, manifest 55/55) | Evidence in `analysis/baseline_v2/REPORT.md` and `analysis/diagnostics_v3/MEMO.md` |
 | 2026-10-28 | v2/v3 | Extra per-episode columns `stage_exits` (maintenance) and `wall_touches` (colour) in training and evaluation CSVs, and `stage_exits_mean` / `wall_touches_mean` in `eval_points*.csv`; empty where not applicable. `final_summary.json` gains `protocol_version` and `final_eval_noisy` (null for v2) | Logging only; collected v2 results are unaffected |
+| 2026-10-28 | v3 | D10: phase order tuning -> stress tests -> optional seed expansion. The stress test's default-difficulty level is the tuned RQ1 comparison and uses the final-comparison seeds (training 301-399, episode seeds 5,000,000+); the other stress levels use the stress seeds (201-299 / 4,000,000+). No separate final-comparison phase (section 13) | Saves a full 55-run phase; the default-level runs are identical to a separate final comparison |
 
 ## 12. Protocol v3 (decisions accepted 2026-10-28)
 
@@ -462,3 +463,33 @@ tuned final comparison, stress testing) use v3. v2 and v3 results are reported s
 - **Tuning (next phase):** starts from v3. Tuning training seeds 101–199, validation episode seeds
   3,000,000+; tuned final comparison training seeds 301–399, episode seeds 5,000,000+. Selection uses the
   greedy headline (D5); the noisy evaluation is reported but not optimised.
+
+## 13. Phase order after protocol v3 (decision D10, accepted 2026-10-28)
+
+- **D10 — ACCEPTED: tuning → stress tests → seed expansion (only if time allows).** There is no
+  separate tuned final-comparison phase.
+  1. **Tuning** (`run_scripts/tuning/TUNING_PROTOCOL.md`): selects one learner configuration per cell
+     on tuning seeds 101–199 and validation episode seeds 3,000,000+. Tuning results are never
+     reported as the RQ1 comparison.
+  2. **Stress tests (RQ2), whose default-difficulty level is the RQ1 comparison.** Every algorithm
+     runs with its tuned configuration (`selected_configs.json`), at the full v3 budget, on the
+     protocol v3 tasks. The **default-difficulty level** (the v3 main condition) uses the
+     **final-comparison seeds**: training seeds 301–399 and episode seeds 5,000,000+, five training
+     seeds (301–305) per cell, as in the baseline. It is reported twice: as the tuned RQ1 comparison
+     (sample efficiency of explicit vs implicit memory) and as the first point of every RQ2
+     degradation curve. **Harder levels** use the stress seeds: training seeds 201–299 and episode
+     seeds 4,000,000+. The default level is run once and never re-run under stress seeds.
+  3. **Seed expansion (optional):** the pre-registered expansion rule (section 6.3, seeds added to every
+     algorithm of an environment together) applies to the tuned default-level comparison and, time
+     permitting, to stress levels. Expansion seeds come from the same range as the runs they extend
+     (306+ for the default level, the next unused stress seeds otherwise). The v2 baseline is not
+     expanded: every cell is at about 0% success, so the rule cannot trigger.
+- **Why:** the default-difficulty stress runs are the same experiment as a separate tuned final
+  comparison (tuned settings, full budget, fresh seeds), so running it once saves a full 55-run phase.
+  Using the final-comparison seed range keeps the RQ1 evidence on seeds that were never used for
+  tuning or for selecting stress settings.
+- **Still to be designed (stress phase):** the difficulty parameters and levels per environment
+  (proposal section 4.3.3: delivery packages/capacity/grid size; colour retention delay, sequence
+  length and repeated colours; maintenance readiness delay, active requests and distractors), the
+  per-level seed count, and the cost cap. The difficulty scale must be fixed before any stress result
+  is seen.
