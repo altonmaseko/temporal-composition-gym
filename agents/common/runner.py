@@ -32,7 +32,7 @@ import torch
 
 from agents.common import baseline_plan as plan
 from agents.common.env_factory import make_env_from_kwargs
-from agents.common.evaluation import DRQNPolicy, QRMPolicy, SB3Policy, evaluate
+from agents.common.evaluation import DRQNPolicy, EpsilonPolicy, QRMPolicy, SB3Policy, evaluate
 from agents.common.run_io import RunDirectory, collect_metadata, read_json, utc_iso, write_json_atomic
 from agents.common.seeding import RunRNG, eval_episode_seeds, seed_torch
 from agents.common.tracking import EpisodeStats, MetricsLogger, finish_wandb, init_wandb, wandb_id_for
@@ -117,6 +117,8 @@ class Trainer:
         self.restored_steps = 0
         self.eval_env = build_env(cfg)
         self.last_eval = None
+        self.secondary = ev.get("secondary")            # protocol v3 noisy evaluation (D5)
+        self.final_noisy_rows = None
         self.fail_at_step = None                    # test aid: --debug-fail-at-step
 
     # -- hooks
@@ -142,14 +144,29 @@ class Trainer:
         t = time.time()
         rows = evaluate(self.eval_env, self.eval_policy(), self.periodic_seeds)
         s = self.logger.eval_point(idx, step, rows, self.n_updates())
+        noisy = ""
+        if self.secondary:
+            nrows = evaluate(self.eval_env, self.noisy_policy(), self.periodic_seeds, self.secondary["rng_offset"])
+            ns = self.logger.eval_point(idx, step, nrows, self.n_updates(), kind="noisy")
+            noisy = f" | noisy success={ns['success_rate']:.3f} return={ns['return_mean']:.2f}"
         self.logger.resources(step, self.replay_frames())
         self.last_eval = s
         print(f"[eval {idx}/{len(self.eval_steps) - 1}] step={step} success={s['success_rate']:.3f} "
-              f"return={s['return_mean']:.2f} updates={self.n_updates()} ({time.time() - t:.0f}s)", flush=True)
+              f"return={s['return_mean']:.2f}{noisy} updates={self.n_updates()} ({time.time() - t:.0f}s)", flush=True)
 
     def final_eval(self):
         rows = evaluate(self.eval_env, self.eval_policy(), self.final_seeds)
-        return rows, self.logger.final(self.global_step, rows)
+        summary = self.logger.final(self.global_step, rows)
+        if self.secondary:
+            self.final_noisy_rows = evaluate(self.eval_env, self.noisy_policy(), self.final_seeds,
+                                             self.secondary["rng_offset"])
+            self.final_noisy_summary = self.logger.final(self.global_step, self.final_noisy_rows, kind="noisy")
+        return rows, summary
+
+    def noisy_policy(self):
+        """v3 secondary evaluation policy: epsilon for value-based agents (overridden for PPO)."""
+        return EpsilonPolicy(self.eval_policy(), self.eval_env.action_space.n,
+                             self.secondary["value_based_epsilon"])
 
     def progress_state(self):
         return {"global_step": self.global_step, "next_eval": self.next_eval, "next_ckpt": self.next_ckpt,
@@ -191,6 +208,9 @@ class SB3Trainer(Trainer):
         algo = self.cfg["algo"]["name"]
         self.cls = classes[algo]
         self.off_policy = self.cls is DQN
+        if self.off_policy and self.cfg["protocol_version"] != "v2":
+            from agents.common.sb3_extras import LoggedDQN   # v3: also logs q_mean and grad_norm
+            self.cls = LoggedDQN
         self.recurrent = algo == "recurrent_ppo"
         cfg = self.cfg
         self.venv = DummyVecEnv([lambda: build_env(cfg)])
@@ -221,6 +241,11 @@ class SB3Trainer(Trainer):
 
     def eval_policy(self):
         return SB3Policy(self.model, recurrent=self.recurrent)
+
+    def noisy_policy(self):
+        if self.off_policy:
+            return super().noisy_policy()
+        return SB3Policy(self.model, recurrent=self.recurrent, deterministic=False)
 
     def save_checkpoint(self, step):
         self.model.save(os.path.join(self.rd.ckpt_dir, f"policy_step{step:09d}.zip"))
@@ -474,10 +499,14 @@ def run(cfg, args):
             problems.append(f"periodic evaluations {n_points} != {cfg['eval']['n_points'] + 1}")
         if len(rows) != cfg["eval"]["final_episodes"]:
             problems.append(f"final evaluation episodes {len(rows)} != {cfg['eval']['final_episodes']}")
+        if trainer.secondary and len(trainer.final_noisy_rows or []) != cfg["eval"]["final_episodes"]:
+            problems.append("secondary (noisy) final evaluation incomplete")
         if problems:
             raise RuntimeError("verification failed: " + "; ".join(problems))
         final = {"global_step": steps_done, "n_updates": trainer.n_updates(), "train_episodes": logger.episodes,
                  "final_eval": summary, "last_periodic_eval": trainer.last_eval, "config_hash": cfg_hash,
+                 "protocol_version": cfg["protocol_version"],
+                 "final_eval_noisy": getattr(trainer, "final_noisy_summary", None),
                  "run_id": identity["run_id"], "completed_utc": utc_iso()}
         write_json_atomic(rd.file("final_summary.json"), final)
         rd.update_status(state="complete", env_steps_done=steps_done, final_eval_done=True,
@@ -511,6 +540,8 @@ def build_parser(script_algo, description, task_state_flag=False):
     p = argparse.ArgumentParser(description=description, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--env", choices=envs, required=True)
     p.add_argument("--seed", type=int, required=True, help="training seed (baseline: 1-5, expansion 6-10)")
+    p.add_argument("--protocol", choices=plan.PROTOCOLS, default="v2",
+                   help="v2 = frozen baseline protocol (default); v3 = decisions D5-D9 (BASELINE_PROTOCOL.md section 12)")
     p.add_argument("--mode", choices=("full", "smoke"), default="full",
                    help="smoke = reduced pipeline check; outputs are labelled and kept apart")
     if task_state_flag:
@@ -542,7 +573,8 @@ def cli(script_algo, description, argv=None, task_state_flag=False):
     if task_state_flag and args.task_state:
         algo = "dqn_ts"
     overrides = dict(plan.parse_override(o) for o in args.overrides)
-    cfg = plan.resolve_config(args.env, algo, args.seed, args.mode, overrides, args.wandb_project, args.wandb_entity)
+    cfg = plan.resolve_config(args.env, algo, args.seed, args.mode, overrides, args.wandb_project, args.wandb_entity,
+                              protocol_version=args.protocol)
     if args.wandb_mode is None:
         args.wandb_mode = "online" if args.mode == "full" else "offline"
     if args.print_config:

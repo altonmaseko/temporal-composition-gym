@@ -413,3 +413,52 @@ from pytest).
 | 2026-10-26 | v2 | Device policy: colour runs on CUDA (fail rather than fall back), delivery and maintenance on CPU; device recorded per run and excluded from the config hash | Image runs need a GPU; the others are simulator-bound |
 | 2026-10-26 | v2 | Restart checkpoints every 10% (SB3 at rollout boundaries); resume = episode-boundary restart (see run_scripts/baseline/README.md) | Exact continuation of physics/episode state is not claimed |
 | 2026-10-26 | v2 | Smoke mode (labelled, `results/v2/smoke`, W&B group `baseline-v2-smoke`): budgets 4,000 / 3,000 / 4,096; 2 eval points; maintenance limit 600 steps; shortened warm-up/schedules | Pipeline checks only; never part of the manifest |
+| 2026-10-28 | v2 | Diagnostic seed ranges reserved and first used: training seeds **401–499**, env/episode seeds **6,000,000+** (exploration noise in behaviour rollouts, no-learning plumbing checks in `analysis/baseline_v2/`) | Baseline analysis (Prompt 1) needs seeds outside the baseline, tuning, stress and final-test ranges; no results or protocol settings change |
+| 2026-10-28 | v3 | Protocol v3 defined (decisions D5–D9, section 12): maintenance γ = 0.999; secondary noisy evaluation; extra logging. Selected with `--protocol v3`; v2 stays the default and its configs and hashes are unchanged (`baseline_plan.json` check passes, manifest 55/55) | Evidence in `analysis/baseline_v2/REPORT.md` and `analysis/diagnostics_v3/MEMO.md` |
+| 2026-10-28 | v2/v3 | Extra per-episode columns `stage_exits` (maintenance) and `wall_touches` (colour) in training and evaluation CSVs, and `stage_exits_mean` / `wall_touches_mean` in `eval_points*.csv`; empty where not applicable. `final_summary.json` gains `protocol_version` and `final_eval_noisy` (null for v2) | Logging only; collected v2 results are unaffected |
+
+## 12. Protocol v3 (decisions accepted 2026-10-28)
+
+Protocol v2 is frozen: its 55 baseline runs (`results/v2/full`, commit `10334db`) are the reported
+record of the untuned default protocol. They are valid but all cells sit at about 0% success. The
+analysis (`analysis/baseline_v2/REPORT.md`) found no pipeline defect, and the diagnostics
+(`analysis/diagnostics_v3/MEMO.md`, training seed 401 and episode seeds 6,000,000+) traced the floor
+to causes unrelated to memory. Protocol v3 makes the minimal evidence-based corrections, each
+applied identically to every algorithm in the affected environment. All later phases (tuning, the
+tuned final comparison, stress testing) use v3. v2 and v3 results are reported separately.
+
+- **D5 — ACCEPTED: the greedy evaluation stays the headline metric.** v3 adds a pre-registered
+  *secondary* evaluation with training-time action noise, reported next to it (never instead of
+  it): ε = 0.05 for DQN, DQN-TS, DRQN, QRM and QRM-Cue (the greedy Q-values are still computed every
+  step, so recurrent state advances), and stochastic action sampling for PPO, Recurrent PPO and
+  PPO-RM. It uses the same episode seeds as the headline. Its randomness comes from a per-episode
+  generator seeded by the episode seed, with torch's RNG forked and restored, so it is reproducible,
+  paired across algorithms, and isolated from training. Files: `eval_points_noisy.csv`,
+  `eval_periodic_noisy.csv`, `eval_final_noisy.csv`; W&B prefixes `eval_noisy/` and
+  `final_eval_noisy/`. Reason: frozen greedy policies loop in 100% of delivery rollouts, so the greedy
+  headline alone hides what the learners can do. Changing the headline after seeing results would not
+  be defensible.
+- **D6 — ACCEPTED: maintenance γ = 0.999 for PPO, Recurrent PPO and PPO-RM.** At 60 control steps per
+  simulated second, γ = 0.99 looks about 1.7 s ahead. Under it, even the oracle's discounted return
+  (−4.9) is no better than hovering; at γ = 0.999 it is +287. The diagnostic probe showed the expected
+  change in behaviour (no resting on the boundary, more stage exits) but no services yet at a quarter of
+  the budget. This is a correction of the objective, not tuning.
+- **D7 — ACCEPTED: colour keeps the sparse reward.** Dense reward was considered but not tested (no
+  GPU probe was run, for time and cost). The write-up states this as a limitation.
+- **D8 — ACCEPTED: no reward shaping and no action repeat in maintenance.** If no method services
+  codes within the budget under v3, that is reported as a result.
+- **D9 — ACCEPTED: budgets unchanged** (delivery 1,000,000; colour 3,000,000; maintenance 2,048,000), so
+  v2 and v3 are directly comparable.
+- **Extra logging (v3):** SB3 DQN and DQN-TS log `q_mean` and `grad_norm` per update round
+  (`agents/common/sb3_extras.py`; the update itself is unchanged, checked by test). Every protocol logs
+  per-episode `stage_exits` (maintenance) and `wall_touches` (colour).
+- **Unchanged:** tasks and env settings (no delivery changes; the delivery probe showed that chain
+  length and lava are not the barrier), observations, reward machines, hyperparameters other than
+  maintenance γ, seeds and seed ranges, evaluation cadence and episode counts, and the output contract
+  (`PRODUCTION_LAUNCH_v2.md` section 9) plus the files above.
+- **Implementation:** `agents/common/baseline_plan.py` (`resolve_config(..., protocol_version="v3")`,
+  `PROTOCOLS`), runner flag `--protocol v3`, results under `results/v3/...`, W&B group `<phase>-v3`.
+  Tests: `tests/test_protocol_v3.py`.
+- **Tuning (next phase):** starts from v3. Tuning training seeds 101–199, validation episode seeds
+  3,000,000+; tuned final comparison training seeds 301–399, episode seeds 5,000,000+. Selection uses the
+  greedy headline (D5); the noisy evaluation is reported but not optimised.

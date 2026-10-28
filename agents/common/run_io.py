@@ -33,16 +33,22 @@ RECORDED_ENV_VARS = ("CUDA_VISIBLE_DEVICES", "OMP_NUM_THREADS", "MKL_NUM_THREADS
                      "PYTHONHASHSEED", "BASELINE_MACHINE_ROLE", "BASELINE_BATCH_ID")
 
 CSV_FIELDS = {
-    "train_episodes": ["global_step", "episode", "return_raw", "return_rm", "length", "success", "cause", "progress"],
+    "train_episodes": ["global_step", "episode", "return_raw", "return_rm", "length", "success", "cause", "progress",
+                       "stage_exits", "wall_touches"],
     "train_updates": ["global_step", "n_updates", "epsilon", "loss", "q_mean", "grad_norm", "extra_json"],
     "resources": ["global_step", "wall_time_s", "env_steps_per_s", "rss_gb", "gpu_mem_alloc_gb",
                   "gpu_mem_max_gb", "replay_frames"],
     "eval_periodic": ["eval_index", "global_step", "episode_seed", "return_raw", "length", "success", "cause",
-                      "progress"],
+                      "progress", "stage_exits", "wall_touches"],
     "eval_points": ["eval_index", "global_step", "n_episodes", "return_mean", "return_std", "return_min",
-                    "return_max", "success_rate", "length_mean", "progress_mean", "causes_json", "n_updates"],
-    "eval_final": ["global_step", "episode_seed", "return_raw", "length", "success", "cause", "progress"],
+                    "return_max", "success_rate", "length_mean", "progress_mean", "causes_json", "n_updates",
+                    "stage_exits_mean", "wall_touches_mean"],
+    "eval_final": ["global_step", "episode_seed", "return_raw", "length", "success", "cause", "progress",
+                   "stage_exits", "wall_touches"],
 }
+# Protocol v3 secondary ("noisy") evaluation: same columns as the headline evaluation files.
+for _name in ("eval_periodic", "eval_points", "eval_final"):
+    CSV_FIELDS[f"{_name}_noisy"] = list(CSV_FIELDS[_name])
 
 
 def utc_now():

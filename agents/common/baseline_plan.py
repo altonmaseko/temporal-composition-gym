@@ -176,9 +176,40 @@ def _jsonable(x):
     return x
 
 
+# --------------------------------------------------------------------------- protocol versions
+# v2: the frozen baseline protocol (results in results/v2). Its resolved configs and config
+#     hashes must never change.
+# v3: decisions D5-D9 (BASELINE_PROTOCOL.md section 12). Same tasks, budgets, seeds and
+#     hyperparameters as v2 except: maintenance gamma 0.999 for PPO, Recurrent PPO and PPO-RM
+#     (D6), and a pre-registered secondary "training-noise" evaluation next to the greedy
+#     headline (D5). Extra episode/learner logging needs no config entry.
+PROTOCOLS = ("v2", "v3")
+V3_MAINTENANCE_GAMMA = 0.999
+V3_SECONDARY_EVAL = {
+    "name": "noisy",
+    "value_based_epsilon": 0.05,
+    "rule": ("secondary evaluation with training-time action noise: epsilon 0.05 for DQN, DQN-TS, DRQN, "
+             "QRM and QRM-Cue (Q-values still computed every step, so recurrent state advances); "
+             "stochastic action sampling for PPO, Recurrent PPO and PPO-RM. Random numbers come from a "
+             "per-episode generator seeded by the episode seed, isolated from training streams. "
+             "The greedy evaluation remains the headline (D5)."),
+    "rng_offset": 7_000,
+}
+
+
+def _apply_protocol(cfg, protocol_version):
+    if protocol_version == "v2":
+        return
+    if cfg["env"]["key"] == "maintenance":
+        cfg["algo"]["hyperparams"]["gamma"] = V3_MAINTENANCE_GAMMA
+    cfg["eval"]["secondary"] = dict(V3_SECONDARY_EVAL)
+
+
 def resolve_config(env_key, algo, seed, mode="full", overrides=None, wandb_project=DEFAULT_WANDB_PROJECT,
-                   wandb_entity=None):
+                   wandb_entity=None, protocol_version=PROTOCOL_VERSION):
     """The complete resolved configuration of one run (JSON-able dict)."""
+    if protocol_version not in PROTOCOLS:
+        raise ValueError(f"unknown protocol version {protocol_version!r}; expected one of {PROTOCOLS}")
     if algo not in ALGORITHMS:
         raise KeyError(f"unknown algorithm {algo!r}")
     if env_key not in ALGORITHMS[algo]["envs"]:
@@ -204,7 +235,7 @@ def resolve_config(env_key, algo, seed, mode="full", overrides=None, wandb_proje
         hp = _smoke_hyperparams(algo, env_key, hp)
 
     cfg = {
-        "protocol_version": PROTOCOL_VERSION,
+        "protocol_version": protocol_version,
         "phase": PHASE,
         "mode": mode,
         "env": {"key": env_key, "id": ENV_IDS[env_key], "variant": "main", "kwargs": _jsonable(ekw)},
@@ -225,8 +256,9 @@ def resolve_config(env_key, algo, seed, mode="full", overrides=None, wandb_proje
         "logging": {"train_log_every_steps": max(1, int(budget // log_points))},
         "overrides": {},
         "wandb": {"project": wandb_project, "entity": wandb_entity,
-                  "group": f"{PHASE}-{PROTOCOL_VERSION}" + ("-smoke" if mode == "smoke" else "")},
+                  "group": f"{PHASE}-{protocol_version}" + ("-smoke" if mode == "smoke" else "")},
     }
+    _apply_protocol(cfg, protocol_version)
     for key, value in (overrides or {}).items():
         if key.split(".")[0] in ("protocol_version", "phase", "mode", "seed", "wandb", "overrides"):
             raise KeyError(f"override {key!r} is not allowed; use the dedicated option")

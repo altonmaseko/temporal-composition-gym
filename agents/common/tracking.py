@@ -30,6 +30,7 @@ class EpisodeStats(gym.Wrapper):
 
     def _reset_counters(self):
         self.ret_raw, self.ret_rm, self.length, self.progress = 0.0, 0.0, 0, 0
+        self.stage_exits, self.wall_touches = 0, 0
         self._held, self._ready = [], False
         self._has_rm = False
 
@@ -40,6 +41,10 @@ class EpisodeStats(gym.Wrapper):
 
     def _count(self, events, info):
         for name, arg in events:
+            if name == "stage_exit":
+                self.stage_exits += 1
+            elif name == "wall_touch":
+                self.wall_touches += 1
             if self.env_key == "delivery" and name == "delivery":
                 self.progress += 1
             elif self.env_key == "colour" and name == "room_reset":
@@ -71,6 +76,9 @@ class EpisodeStats(gym.Wrapper):
                 "length": self.length, "success": bool(info.get("is_success", False)),
                 "cause": info.get("termination_cause"), "progress": self.progress,
                 "terminated": bool(terminated), "truncated": bool(truncated),
+                # protocol v3 extra logging (None where the event does not exist in the task)
+                "stage_exits": self.stage_exits if self.env_key == "maintenance" else None,
+                "wall_touches": self.wall_touches if self.env_key == "colour" else None,
             }
         return obs, reward, terminated, truncated, info
 
@@ -80,8 +88,13 @@ def summarise(rows):
     causes = {}
     for x in rows:
         causes[x["cause"]] = causes.get(x["cause"], 0) + 1
+    def _mean(key):
+        vals = [x.get(key) for x in rows if x.get(key) is not None]
+        return float(np.mean(vals)) if vals else None
     return {
         "n_episodes": len(rows),
+        "stage_exits_mean": _mean("stage_exits"),
+        "wall_touches_mean": _mean("wall_touches"),
         "return_mean": float(r.mean()), "return_std": float(r.std()),
         "return_min": float(r.min()), "return_max": float(r.max()),
         "success_rate": float(np.mean([x["success"] for x in rows])),
@@ -121,8 +134,10 @@ class MetricsLogger:
         self.rd = run_dir
         self.wb = wandb_run
         self.cfg = cfg
-        self.csv = {name: run_dir.csv_writer(name) for name in
-                    ("train_episodes", "train_updates", "resources", "eval_periodic", "eval_points", "eval_final")}
+        names = ["train_episodes", "train_updates", "resources", "eval_periodic", "eval_points", "eval_final"]
+        if cfg["eval"].get("secondary"):
+            names += ["eval_periodic_noisy", "eval_points_noisy", "eval_final_noisy"]
+        self.csv = {name: run_dir.csv_writer(name) for name in names}
         self.log_every = cfg["logging"]["train_log_every_steps"]
         self.next_log = self.log_every
         self.episodes = 0
@@ -184,8 +199,9 @@ class MetricsLogger:
                 if isinstance(val, (int, float, np.floating, np.integer)):
                     data[f"sb3/{key}"] = float(val)
                     extra[key] = float(val)
-            if "train/loss" in sb3_values:
-                row["loss"] = data["train/loss"] = float(sb3_values["train/loss"])
+            for key in ("loss", "q_mean", "grad_norm"):
+                if f"train/{key}" in sb3_values:
+                    row[key] = data[f"train/{key}"] = float(sb3_values[f"train/{key}"])
         row["extra_json"] = json.dumps(extra, sort_keys=True) if extra else None
         if self._upd_buf or sb3_values or n_updates:
             self.csv["train_updates"].write(row)
@@ -216,24 +232,27 @@ class MetricsLogger:
         self._wb({f"sys/{k}": v for k, v in row.items() if k != "global_step" and v is not None}, step)
 
     # -- evaluation
-    def eval_point(self, idx, step, rows, n_updates):
+    def eval_point(self, idx, step, rows, n_updates, kind=""):
+        """kind "" = headline greedy evaluation; "noisy" = v3 secondary evaluation."""
+        sfx, pfx = (f"_{kind}", f"eval_{kind}") if kind else ("", "eval")
         for r in rows:
-            self.csv["eval_periodic"].write(dict(r, eval_index=idx, global_step=step))
+            self.csv[f"eval_periodic{sfx}"].write(dict(r, eval_index=idx, global_step=step))
         s = summarise(rows)
-        self.csv["eval_points"].write({**s, "eval_index": idx, "global_step": step, "n_updates": n_updates,
-                                       "causes_json": json.dumps(s["causes"], sort_keys=True)})
-        data = {f"eval/{k}": v for k, v in s.items() if k != "causes"}
-        data.update({f"eval/cause/{c}": n / s["n_episodes"] for c, n in s["causes"].items()})
-        data["eval/index"] = idx
+        self.csv[f"eval_points{sfx}"].write({**s, "eval_index": idx, "global_step": step, "n_updates": n_updates,
+                                             "causes_json": json.dumps(s["causes"], sort_keys=True)})
+        data = {f"{pfx}/{k}": v for k, v in s.items() if k != "causes" and v is not None}
+        data.update({f"{pfx}/cause/{c}": n / s["n_episodes"] for c, n in s["causes"].items()})
+        data[f"{pfx}/index"] = idx
         self._wb(data, step)
         return s
 
-    def final(self, step, rows):
+    def final(self, step, rows, kind=""):
+        sfx, pfx = (f"_{kind}", f"final_eval_{kind}") if kind else ("", "final_eval")
         for r in rows:
-            self.csv["eval_final"].write(dict(r, global_step=step))
+            self.csv[f"eval_final{sfx}"].write(dict(r, global_step=step))
         s = summarise(rows)
-        data = {f"final_eval/{k}": v for k, v in s.items() if k != "causes"}
-        data.update({f"final_eval/cause/{c}": n / s["n_episodes"] for c, n in s["causes"].items()})
+        data = {f"{pfx}/{k}": v for k, v in s.items() if k != "causes" and v is not None}
+        data.update({f"{pfx}/cause/{c}": n / s["n_episodes"] for c, n in s["causes"].items()})
         self._wb(data, step)
         if self.wb is not None:
             for k, v in data.items():
