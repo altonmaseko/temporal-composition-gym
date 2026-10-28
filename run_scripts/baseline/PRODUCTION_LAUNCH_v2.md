@@ -49,7 +49,7 @@ connections open at once, the second and third print a harmless warning that loc
 already in use.
 
 Every machine follows the same five steps: **A** setup, **B** preflight, **C** launch, **D** wait,
-**E** bundle the results. Then you download and publish from your laptop (section 7). The
+**E** bundle the results. Then you collect each machine from your laptop (section 7a) and publish once all three are collected (section 7b). The
 commands below are complete; run them exactly as written, one block at a time, on the machine
 named in the heading.
 
@@ -236,21 +236,96 @@ run) before retrying. Resume is an episode-boundary restart: weights, optimiser,
 streams, counters and evaluation progress are restored and the episode in progress starts again;
 `status.json` reports `restored_steps` and `new_steps_this_session`.
 
-## 7. Download, check and publish (PowerShell on your laptop)
+## 7. Download, check and publish
 
-Do this after step E has been done on all three machines. Keep the machines running until the
-last command below has succeeded: until then they hold the only complete copy.
+Do **7a** for each machine as soon as its step E is done, in any order; that machine can then be
+destroyed even if the others are still running. Do **7b** once, after 7a has been done for all
+three machines. Every command uses full paths, so it works from any PowerShell window.
 
-Download the three bundles to your Downloads folder:
-```powershell
-scp -P 43164 root@85.146.9.40:collect_memoryless.tar.gz "$HOME\Downloads"
-```
-```powershell
-scp -P 40002 root@142.198.191.106:collect_implicit.tar.gz "$HOME\Downloads"
-```
-```powershell
-scp -P 40031 root@83.229.2.69:collect_explicit.tar.gz "$HOME\Downloads"
-```
+### 7a. Collect one finished machine
+
+**Memoryless machine (instance 57966532, 25 runs)**
+
+1. On the machine, print the bundle's fingerprint:
+   ```bash
+   sha256sum ~/collect_memoryless.tar.gz
+   ```
+2. On your laptop (PowerShell), download the bundle:
+   ```powershell
+   scp -P 43164 root@85.146.9.40:collect_memoryless.tar.gz "$HOME\Downloads"
+   ```
+3. Print the downloaded copy's fingerprint. It must equal the one from step 1:
+   ```powershell
+   (Get-FileHash "$HOME\Downloads\collect_memoryless.tar.gz").Hash.ToLower()
+   ```
+4. Unpack it into the repository:
+   ```powershell
+   tar -xzf "$HOME\Downloads\collect_memoryless.tar.gz" -C "C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym"
+   ```
+5. Check this machine's runs. It must print `25`:
+   ```powershell
+   (D:\miniconda3\envs\temporal_gym\python.exe "C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym\run_scripts\baseline\check_manifest.py" | Select-String "^complete\s+memoryless\s").Count
+   ```
+6. Copy `collect_memoryless.tar.gz` from Downloads to your backup location (external disk or cloud drive).
+7. Only if steps 3 and 5 passed, destroy instance 57966532 in the Vast.ai console.
+
+**Implicit machine (instance 57966535, 15 runs)**
+
+1. On the machine:
+   ```bash
+   sha256sum ~/collect_implicit.tar.gz
+   ```
+2. On your laptop:
+   ```powershell
+   scp -P 40002 root@142.198.191.106:collect_implicit.tar.gz "$HOME\Downloads"
+   ```
+3. Must equal step 1:
+   ```powershell
+   (Get-FileHash "$HOME\Downloads\collect_implicit.tar.gz").Hash.ToLower()
+   ```
+4. Unpack:
+   ```powershell
+   tar -xzf "$HOME\Downloads\collect_implicit.tar.gz" -C "C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym"
+   ```
+5. Must print `15`:
+   ```powershell
+   (D:\miniconda3\envs\temporal_gym\python.exe "C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym\run_scripts\baseline\check_manifest.py" | Select-String "^complete\s+implicit\s").Count
+   ```
+6. Back up `collect_implicit.tar.gz`.
+7. Only if steps 3 and 5 passed, destroy instance 57966535.
+
+**Explicit machine (instance 57966540, 15 runs)**
+
+1. On the machine:
+   ```bash
+   sha256sum ~/collect_explicit.tar.gz
+   ```
+2. On your laptop:
+   ```powershell
+   scp -P 40031 root@83.229.2.69:collect_explicit.tar.gz "$HOME\Downloads"
+   ```
+3. Must equal step 1:
+   ```powershell
+   (Get-FileHash "$HOME\Downloads\collect_explicit.tar.gz").Hash.ToLower()
+   ```
+4. Unpack:
+   ```powershell
+   tar -xzf "$HOME\Downloads\collect_explicit.tar.gz" -C "C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym"
+   ```
+5. Must print `15`:
+   ```powershell
+   (D:\miniconda3\envs\temporal_gym\python.exe "C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym\run_scripts\baseline\check_manifest.py" | Select-String "^complete\s+explicit\s").Count
+   ```
+6. Back up `collect_explicit.tar.gz`.
+7. Only if steps 3 and 5 passed, destroy instance 57966540.
+
+Destroying an instance at the end of its 7a is fine: none of the commands in 7b run on the Vast.ai
+machines. 7b only uses the files already on your laptop. Its bundle has been verified, unpacked,
+checked and backed up, and its W&B data is already online; only its restart checkpoints are lost,
+and those are needed only to resume unfinished runs. Repeating a machine's 7a is harmless:
+unpacking again overwrites identical files, so runs are never duplicated.
+
+### 7b. Publish (once, after 7a has been done for all three machines)
 
 Go to the repository and bring it up to date with GitHub:
 ```powershell
@@ -260,19 +335,7 @@ cd "C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal
 git pull --ff-only origin new_experiments
 ```
 
-Unpack the three bundles into the repository. Run folder names are unique, so they merge into
-`run_scripts\baseline\results\v2\full\` without overwriting each other:
-```powershell
-tar -xzf "$HOME\Downloads\collect_memoryless.tar.gz"
-```
-```powershell
-tar -xzf "$HOME\Downloads\collect_implicit.tar.gz"
-```
-```powershell
-tar -xzf "$HOME\Downloads\collect_explicit.tar.gz"
-```
-
-Check that all 55 runs arrived complete. The last line must read `55/55 planned runs complete`:
+Check the full matrix. The last line must read `55/55 planned runs complete`:
 ```powershell
 D:\miniconda3\envs\temporal_gym\python.exe run_scripts/baseline/check_manifest.py --json run_scripts/baseline/results/v2/full/manifest.json
 ```
@@ -293,6 +356,8 @@ git commit -m "Add protocol v2 baseline results from the three machines"
 git push origin new_experiments
 ```
 
+GitHub then holds a single results commit containing the complete, verified set of 55 runs.
+
 What ends up where:
 
 | | Laptop | GitHub | W&B |
@@ -302,9 +367,9 @@ What ends up where:
 | Restart checkpoints with replay (`checkpoints/restart`) | no | no | – |
 | Metrics, curves, summaries | in the CSVs | in the CSVs | yes, project `new_experiments` |
 
-The policy snapshots exist only on your laptop after this, so back up
-`run_scripts\baseline\results` (or the three `.tar.gz` files in Downloads) to an external disk or
-cloud drive. Once the push has succeeded and the backup exists, you can destroy the instances.
+Until the push in 7b, your laptop and your backup hold the only copies of the results of any
+destroyed instance, and the policy snapshots stay only there for good, so keep the backed-up
+`.tar.gz` files.
 
 **Cloud-specific checks that are still open** (they cannot be done locally):
 
