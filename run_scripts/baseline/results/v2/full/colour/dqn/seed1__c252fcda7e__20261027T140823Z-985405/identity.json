@@ -1,0 +1,18 @@
+{
+  "run_id": "baseline-v2-full-colour-dqn-s1-c252fcda7e-20261027T140823Z-985405",
+  "run_uid": "20261027T140823Z-985405",
+  "wandb_id": "3925fa2cce53f5a4",
+  "config_hash": "c252fcda7ecc44644c8ad15fc04d291626b689ff016d328493f4a9d2473c0914",
+  "protocol_version": "v2",
+  "phase": "baseline",
+  "mode": "full",
+  "env": "colour",
+  "algo": "dqn",
+  "family": "memoryless",
+  "seed": 1,
+  "machine_role": "memoryless",
+  "batch_id": "memoryless__b349376e79ca__20261027T135816Z-4266",
+  "results_root": null,
+  "run_dir": "/root/temporal-composition-gym/run_scripts/baseline/results/v2/full/colour/dqn/seed1__c252fcda7e__20261027T140823Z-985405",
+  "created_utc": "2026-10-27T14:08:23.315178Z"
+}

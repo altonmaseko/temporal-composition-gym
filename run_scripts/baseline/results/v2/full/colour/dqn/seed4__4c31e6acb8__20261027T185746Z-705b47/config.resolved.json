@@ -1,0 +1,82 @@
+{
+  "protocol_version": "v2",
+  "phase": "baseline",
+  "mode": "full",
+  "env": {
+    "key": "colour",
+    "id": "TemporalComp/SequentialColour-v0",
+    "variant": "main",
+    "kwargs": {
+      "sequence_length_range": [
+        3,
+        5
+      ],
+      "retention_delay_steps": 2,
+      "allow_consecutive_duplicates": false,
+      "colour_vocabulary_size": 6,
+      "randomise_wall_colors": true,
+      "hard_death_mode": false,
+      "infinite_mode": false,
+      "reward_density": "sparse",
+      "frames_per_colour": 5,
+      "max_steps": 300
+    }
+  },
+  "algo": {
+    "name": "dqn",
+    "family": "memoryless",
+    "impl": "sb3",
+    "hyperparams": {
+      "policy": "CnnPolicy",
+      "gamma": 0.99,
+      "buffer_size": 100000,
+      "train_freq": 4,
+      "gradient_steps": 1,
+      "batch_size": 32,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.05,
+      "exploration_fraction": 0.2,
+      "max_grad_norm": 10.0,
+      "learning_rate": 0.0001,
+      "learning_starts": 20000,
+      "target_update_interval": 10000,
+      "policy_kwargs": {
+        "net_arch": [
+          256
+        ],
+        "features_extractor_kwargs": {
+          "features_dim": 512
+        }
+      }
+    }
+  },
+  "seed": {
+    "train_seed": 4,
+    "train_env_reset_seed": 10004000
+  },
+  "budget": {
+    "env_steps": 3000000
+  },
+  "eval": {
+    "n_points": 20,
+    "every_steps": 150000,
+    "periodic_episodes": 50,
+    "final_episodes": 200,
+    "periodic_seed_block": "periodic",
+    "final_seed_block": "final",
+    "policy": "greedy (epsilon=0 / deterministic=True); recurrent state reset at episode start"
+  },
+  "checkpoint": {
+    "every_steps": 300000,
+    "save_replay": true
+  },
+  "logging": {
+    "train_log_every_steps": 15000
+  },
+  "overrides": {},
+  "wandb": {
+    "project": "new_experiments",
+    "entity": null,
+    "group": "baseline-v2"
+  }
+}

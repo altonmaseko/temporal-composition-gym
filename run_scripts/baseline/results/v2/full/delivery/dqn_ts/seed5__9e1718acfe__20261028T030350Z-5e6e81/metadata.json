@@ -1,0 +1,100 @@
+{
+  "created_utc": "2026-10-28T03:03:50.834819Z",
+  "git": {
+    "rev": "f772875328aeb8e262cf7f4777619ee41568aaa7",
+    "branch": "new_experiments",
+    "dirty": false,
+    "changed_tracked_files": [],
+    "diff_sha256": null
+  },
+  "python": {
+    "version": "3.12.15",
+    "executable": "/root/tcg/bin/python"
+  },
+  "packages": {
+    "torch": "2.14.0",
+    "stable_baselines3": "2.9.0",
+    "sb3_contrib": "2.9.0",
+    "gymnasium": "1.3.0",
+    "minigrid": "3.1.0",
+    "pymunk": "7.3.0",
+    "pygame": "2.6.1",
+    "numpy": "2.2.6",
+    "wandb": "0.30.0",
+    "psutil": "7.2.2"
+  },
+  "hardware": {
+    "hostname": "b349376e79ca",
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "cpu_count_logical": 48,
+    "cpu_count_physical": 24,
+    "ram_total_gb": 66.88,
+    "ram_available_gb": 52.28,
+    "disk_free_gb": 55.73,
+    "torch_cuda_available": true,
+    "torch_cuda_version": "13.0",
+    "gpus": [
+      {
+        "index": 0,
+        "name": "NVIDIA GeForce RTX 3090",
+        "vram_gb": 25.3,
+        "capability": "8.6"
+      }
+    ],
+    "nvidia_smi": [
+      "NVIDIA GeForce RTX 3090, 24576 MiB, 580.159.03"
+    ]
+  },
+  "device": {
+    "requested": "cpu",
+    "selected": "cpu",
+    "cuda_available": true,
+    "is_gpu_run": false,
+    "require_gpu": false
+  },
+  "threads": {
+    "torch_num_threads": 4,
+    "requested": 4
+  },
+  "env_vars": {
+    "CUDA_VISIBLE_DEVICES": null,
+    "OMP_NUM_THREADS": "4",
+    "MKL_NUM_THREADS": "4",
+    "WANDB_MODE": null,
+    "PYTHONHASHSEED": null,
+    "BASELINE_MACHINE_ROLE": "memoryless",
+    "BASELINE_BATCH_ID": "memoryless__b349376e79ca__20261027T135816Z-4266"
+  },
+  "argv": [
+    "/root/temporal-composition-gym/agents/train_dqn.py",
+    "--env",
+    "delivery",
+    "--seed",
+    "5",
+    "--mode",
+    "full",
+    "--task-state",
+    "--device",
+    "cpu",
+    "--threads",
+    "4",
+    "--wandb-mode",
+    "online",
+    "--wandb-project",
+    "new_experiments",
+    "--machine-role",
+    "memoryless",
+    "--batch-id",
+    "memoryless__b349376e79ca__20261027T135816Z-4266",
+    "--launcher-stdout",
+    "/root/temporal-composition-gym/run_scripts/baseline/results/v2/full/_batches/memoryless__b349376e79ca__20261027T135816Z-4266/logs/24_delivery__dqn_ts__s5.out",
+    "--launcher-stderr",
+    "/root/temporal-composition-gym/run_scripts/baseline/results/v2/full/_batches/memoryless__b349376e79ca__20261027T135816Z-4266/logs/24_delivery__dqn_ts__s5.err"
+  ],
+  "launcher_logs": {
+    "stdout": "/root/temporal-composition-gym/run_scripts/baseline/results/v2/full/_batches/memoryless__b349376e79ca__20261027T135816Z-4266/logs/24_delivery__dqn_ts__s5.out",
+    "stderr": "/root/temporal-composition-gym/run_scripts/baseline/results/v2/full/_batches/memoryless__b349376e79ca__20261027T135816Z-4266/logs/24_delivery__dqn_ts__s5.err"
+  }
+}

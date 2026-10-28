@@ -1,0 +1,1390 @@
+{
+  "protocol_version": "v2",
+  "mode": "full",
+  "roots": [
+    "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results"
+  ],
+  "expected": 55,
+  "counts": {
+    "complete": 55
+  },
+  "entries": [
+    {
+      "role": "memoryless",
+      "env": "delivery",
+      "algo": "dqn",
+      "seed": 1,
+      "family": "memoryless",
+      "script": "agents/train_dqn.py",
+      "task_state": false,
+      "config_hash": "e899f8397bbc2de4e9902d39840473d092c329482f7d0677e9200e71c598d492",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\dqn\\seed1__e899f8397b__20261027T135825Z-c5c4ae",
+          "run_id": "baseline-v2-full-delivery-dqn-s1-e899f8397b-20261027T135825Z-c5c4ae",
+          "config_hash": "e899f8397bbc2de4e9902d39840473d092c329482f7d0677e9200e71c598d492",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "dqn",
+          "seed": 1,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "colour",
+      "algo": "dqn",
+      "seed": 1,
+      "family": "memoryless",
+      "script": "agents/train_dqn.py",
+      "task_state": false,
+      "config_hash": "c252fcda7ecc44644c8ad15fc04d291626b689ff016d328493f4a9d2473c0914",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\dqn\\seed1__c252fcda7e__20261027T140823Z-985405",
+          "run_id": "baseline-v2-full-colour-dqn-s1-c252fcda7e-20261027T140823Z-985405",
+          "config_hash": "c252fcda7ecc44644c8ad15fc04d291626b689ff016d328493f4a9d2473c0914",
+          "state": "complete",
+          "env": "colour",
+          "algo": "dqn",
+          "seed": 1,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "maintenance",
+      "algo": "ppo",
+      "seed": 1,
+      "family": "memoryless",
+      "script": "agents/train_ppo.py",
+      "task_state": false,
+      "config_hash": "5e8ec5cdcf3aee6fc217a825d05f7710bdf14a8b39739984f779144546d4fabc",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\ppo\\seed1__5e8ec5cdcf__20261027T150814Z-58126a",
+          "run_id": "baseline-v2-full-maintenance-ppo-s1-5e8ec5cdcf-20261027T150814Z-58126a",
+          "config_hash": "5e8ec5cdcf3aee6fc217a825d05f7710bdf14a8b39739984f779144546d4fabc",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "ppo",
+          "seed": 1,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "delivery",
+      "algo": "dqn",
+      "seed": 2,
+      "family": "memoryless",
+      "script": "agents/train_dqn.py",
+      "task_state": false,
+      "config_hash": "eb62f150db9f3eb45ebdde47f451db5db2ac5d6ff7d8b2e75a5f0c251fa26490",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\dqn\\seed2__eb62f150db__20261027T153513Z-d9c5b2",
+          "run_id": "baseline-v2-full-delivery-dqn-s2-eb62f150db-20261027T153513Z-d9c5b2",
+          "config_hash": "eb62f150db9f3eb45ebdde47f451db5db2ac5d6ff7d8b2e75a5f0c251fa26490",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "dqn",
+          "seed": 2,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "colour",
+      "algo": "dqn",
+      "seed": 2,
+      "family": "memoryless",
+      "script": "agents/train_dqn.py",
+      "task_state": false,
+      "config_hash": "e8a784327ac17aa45a0c7c5ed589fb69a1ac2784dc3d93c0416d2490bd7d82a5",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\dqn\\seed2__e8a784327a__20261027T154505Z-0dfaa1",
+          "run_id": "baseline-v2-full-colour-dqn-s2-e8a784327a-20261027T154505Z-0dfaa1",
+          "config_hash": "e8a784327ac17aa45a0c7c5ed589fb69a1ac2784dc3d93c0416d2490bd7d82a5",
+          "state": "complete",
+          "env": "colour",
+          "algo": "dqn",
+          "seed": 2,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "maintenance",
+      "algo": "ppo",
+      "seed": 2,
+      "family": "memoryless",
+      "script": "agents/train_ppo.py",
+      "task_state": false,
+      "config_hash": "4e33611e3eb550063f9d0166d482eeb0b6caab0f6b01ed0f945412bb9f35b3a0",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\ppo\\seed2__4e33611e3e__20261027T164518Z-1e6e14",
+          "run_id": "baseline-v2-full-maintenance-ppo-s2-4e33611e3e-20261027T164518Z-1e6e14",
+          "config_hash": "4e33611e3eb550063f9d0166d482eeb0b6caab0f6b01ed0f945412bb9f35b3a0",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "ppo",
+          "seed": 2,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "delivery",
+      "algo": "dqn",
+      "seed": 3,
+      "family": "memoryless",
+      "script": "agents/train_dqn.py",
+      "task_state": false,
+      "config_hash": "1c48d39de55a776e781fa98f8c8e2678bc99325fe8165f67fda5c77317ebeb56",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\dqn\\seed3__1c48d39de5__20261027T171149Z-2a513e",
+          "run_id": "baseline-v2-full-delivery-dqn-s3-1c48d39de5-20261027T171149Z-2a513e",
+          "config_hash": "1c48d39de55a776e781fa98f8c8e2678bc99325fe8165f67fda5c77317ebeb56",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "dqn",
+          "seed": 3,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "colour",
+      "algo": "dqn",
+      "seed": 3,
+      "family": "memoryless",
+      "script": "agents/train_dqn.py",
+      "task_state": false,
+      "config_hash": "3598ca177a89c7483198bf81fde72b6ba3736ecd03c5439f00fb482c73d605db",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\dqn\\seed3__3598ca177a__20261027T172133Z-cecd49",
+          "run_id": "baseline-v2-full-colour-dqn-s3-3598ca177a-20261027T172133Z-cecd49",
+          "config_hash": "3598ca177a89c7483198bf81fde72b6ba3736ecd03c5439f00fb482c73d605db",
+          "state": "complete",
+          "env": "colour",
+          "algo": "dqn",
+          "seed": 3,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "maintenance",
+      "algo": "ppo",
+      "seed": 3,
+      "family": "memoryless",
+      "script": "agents/train_ppo.py",
+      "task_state": false,
+      "config_hash": "37a39634a7f502fe256cc54fdc8dc90072d11303935bd79345a19a194086b11b",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\ppo\\seed3__37a39634a7__20261027T182046Z-95b3e1",
+          "run_id": "baseline-v2-full-maintenance-ppo-s3-37a39634a7-20261027T182046Z-95b3e1",
+          "config_hash": "37a39634a7f502fe256cc54fdc8dc90072d11303935bd79345a19a194086b11b",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "ppo",
+          "seed": 3,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "delivery",
+      "algo": "dqn",
+      "seed": 4,
+      "family": "memoryless",
+      "script": "agents/train_dqn.py",
+      "task_state": false,
+      "config_hash": "d3277ab9852ce52aadd29a1320cd6a336bcd585d19fd40fd2a43a3ecbc11db87",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\dqn\\seed4__d3277ab985__20261027T184755Z-9d9096",
+          "run_id": "baseline-v2-full-delivery-dqn-s4-d3277ab985-20261027T184755Z-9d9096",
+          "config_hash": "d3277ab9852ce52aadd29a1320cd6a336bcd585d19fd40fd2a43a3ecbc11db87",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "dqn",
+          "seed": 4,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "colour",
+      "algo": "dqn",
+      "seed": 4,
+      "family": "memoryless",
+      "script": "agents/train_dqn.py",
+      "task_state": false,
+      "config_hash": "4c31e6acb8e9dd42dd4b56f20a81890eb0c2559da369a079977046607b471742",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\dqn\\seed4__4c31e6acb8__20261027T185746Z-705b47",
+          "run_id": "baseline-v2-full-colour-dqn-s4-4c31e6acb8-20261027T185746Z-705b47",
+          "config_hash": "4c31e6acb8e9dd42dd4b56f20a81890eb0c2559da369a079977046607b471742",
+          "state": "complete",
+          "env": "colour",
+          "algo": "dqn",
+          "seed": 4,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "maintenance",
+      "algo": "ppo",
+      "seed": 4,
+      "family": "memoryless",
+      "script": "agents/train_ppo.py",
+      "task_state": false,
+      "config_hash": "f052a5066e995f6e6d471d1a00ab8a351c94eea01c40f8b4e6ac93fb9074bc5e",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\ppo\\seed4__f052a5066e__20261027T195725Z-360087",
+          "run_id": "baseline-v2-full-maintenance-ppo-s4-f052a5066e-20261027T195725Z-360087",
+          "config_hash": "f052a5066e995f6e6d471d1a00ab8a351c94eea01c40f8b4e6ac93fb9074bc5e",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "ppo",
+          "seed": 4,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "delivery",
+      "algo": "dqn",
+      "seed": 5,
+      "family": "memoryless",
+      "script": "agents/train_dqn.py",
+      "task_state": false,
+      "config_hash": "929c191a6e180b6944ba7220fda36d26795ffab2d4e683fda971479971d4548e",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\dqn\\seed5__929c191a6e__20261027T202337Z-228997",
+          "run_id": "baseline-v2-full-delivery-dqn-s5-929c191a6e-20261027T202337Z-228997",
+          "config_hash": "929c191a6e180b6944ba7220fda36d26795ffab2d4e683fda971479971d4548e",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "dqn",
+          "seed": 5,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "colour",
+      "algo": "dqn",
+      "seed": 5,
+      "family": "memoryless",
+      "script": "agents/train_dqn.py",
+      "task_state": false,
+      "config_hash": "cd96bd9a2a82e80161307888a57262a4dfb1e15d6e31dc9d585df1700c122b31",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\dqn\\seed5__cd96bd9a2a__20261027T203327Z-982b76",
+          "run_id": "baseline-v2-full-colour-dqn-s5-cd96bd9a2a-20261027T203327Z-982b76",
+          "config_hash": "cd96bd9a2a82e80161307888a57262a4dfb1e15d6e31dc9d585df1700c122b31",
+          "state": "complete",
+          "env": "colour",
+          "algo": "dqn",
+          "seed": 5,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "maintenance",
+      "algo": "ppo",
+      "seed": 5,
+      "family": "memoryless",
+      "script": "agents/train_ppo.py",
+      "task_state": false,
+      "config_hash": "3580c1172240a4d6e72bb7f197c957eef4b0ccb64b52c1bbbf9fc5ce06f965b2",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\ppo\\seed5__3580c11722__20261027T213238Z-2e2c13",
+          "run_id": "baseline-v2-full-maintenance-ppo-s5-3580c11722-20261027T213238Z-2e2c13",
+          "config_hash": "3580c1172240a4d6e72bb7f197c957eef4b0ccb64b52c1bbbf9fc5ce06f965b2",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "ppo",
+          "seed": 5,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "seed": 1,
+      "family": "control",
+      "script": "agents/train_dqn.py",
+      "task_state": true,
+      "config_hash": "300e597359ffc21d51825ac9b4600ed6b16fc8981257f5ca0d47a8b25bdd98f4",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\dqn_ts\\seed1__300e597359__20261027T215947Z-a03786",
+          "run_id": "baseline-v2-full-delivery-dqn_ts-s1-300e597359-20261027T215947Z-a03786",
+          "config_hash": "300e597359ffc21d51825ac9b4600ed6b16fc8981257f5ca0d47a8b25bdd98f4",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "dqn_ts",
+          "seed": 1,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "colour",
+      "algo": "dqn_ts",
+      "seed": 1,
+      "family": "control",
+      "script": "agents/train_dqn.py",
+      "task_state": true,
+      "config_hash": "9a375b23680acecb0e92ce881c90edc2ac5a9bac039e2bc586407932d6ca25f1",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\dqn_ts\\seed1__9a375b2368__20261027T221000Z-ac1745",
+          "run_id": "baseline-v2-full-colour-dqn_ts-s1-9a375b2368-20261027T221000Z-ac1745",
+          "config_hash": "9a375b23680acecb0e92ce881c90edc2ac5a9bac039e2bc586407932d6ca25f1",
+          "state": "complete",
+          "env": "colour",
+          "algo": "dqn_ts",
+          "seed": 1,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "seed": 2,
+      "family": "control",
+      "script": "agents/train_dqn.py",
+      "task_state": true,
+      "config_hash": "c301f023dabaf3930bf277351d6f242e8fcd5eb4213a6920f9f3093cb6a25611",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\dqn_ts\\seed2__c301f023da__20261027T231604Z-404858",
+          "run_id": "baseline-v2-full-delivery-dqn_ts-s2-c301f023da-20261027T231604Z-404858",
+          "config_hash": "c301f023dabaf3930bf277351d6f242e8fcd5eb4213a6920f9f3093cb6a25611",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "dqn_ts",
+          "seed": 2,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "colour",
+      "algo": "dqn_ts",
+      "seed": 2,
+      "family": "control",
+      "script": "agents/train_dqn.py",
+      "task_state": true,
+      "config_hash": "f0b6b9c8ca6a533b503d7601fb6aedb334686a0cc8c64844f14f994c56d89b48",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\dqn_ts\\seed2__f0b6b9c8ca__20261027T232620Z-dd5871",
+          "run_id": "baseline-v2-full-colour-dqn_ts-s2-f0b6b9c8ca-20261027T232620Z-dd5871",
+          "config_hash": "f0b6b9c8ca6a533b503d7601fb6aedb334686a0cc8c64844f14f994c56d89b48",
+          "state": "complete",
+          "env": "colour",
+          "algo": "dqn_ts",
+          "seed": 2,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "seed": 3,
+      "family": "control",
+      "script": "agents/train_dqn.py",
+      "task_state": true,
+      "config_hash": "3a66c610e432990c122d813123289762a9bd4652f3858b0c5e3b723fcf6d35d5",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\dqn_ts\\seed3__3a66c610e4__20261028T003202Z-9ab7fc",
+          "run_id": "baseline-v2-full-delivery-dqn_ts-s3-3a66c610e4-20261028T003202Z-9ab7fc",
+          "config_hash": "3a66c610e432990c122d813123289762a9bd4652f3858b0c5e3b723fcf6d35d5",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "dqn_ts",
+          "seed": 3,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "colour",
+      "algo": "dqn_ts",
+      "seed": 3,
+      "family": "control",
+      "script": "agents/train_dqn.py",
+      "task_state": true,
+      "config_hash": "8547894cf270d003b1e029da9218993215ffa7d5e2c7ff2544300fe06d39ed7a",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\dqn_ts\\seed3__8547894cf2__20261028T004216Z-baff19",
+          "run_id": "baseline-v2-full-colour-dqn_ts-s3-8547894cf2-20261028T004216Z-baff19",
+          "config_hash": "8547894cf270d003b1e029da9218993215ffa7d5e2c7ff2544300fe06d39ed7a",
+          "state": "complete",
+          "env": "colour",
+          "algo": "dqn_ts",
+          "seed": 3,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "seed": 4,
+      "family": "control",
+      "script": "agents/train_dqn.py",
+      "task_state": true,
+      "config_hash": "06151d1c66157a9e85276a4dbf0e5feaf77aa37f0a5e400ff274fdd8a7f969f1",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\dqn_ts\\seed4__06151d1c66__20261028T014735Z-3f1a74",
+          "run_id": "baseline-v2-full-delivery-dqn_ts-s4-06151d1c66-20261028T014735Z-3f1a74",
+          "config_hash": "06151d1c66157a9e85276a4dbf0e5feaf77aa37f0a5e400ff274fdd8a7f969f1",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "dqn_ts",
+          "seed": 4,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "colour",
+      "algo": "dqn_ts",
+      "seed": 4,
+      "family": "control",
+      "script": "agents/train_dqn.py",
+      "task_state": true,
+      "config_hash": "f0726609b372cd6eb3163a6486fc8d50dffd082aa72718e31d89d4cce4e4140d",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\dqn_ts\\seed4__f0726609b3__20261028T015751Z-7ab8e1",
+          "run_id": "baseline-v2-full-colour-dqn_ts-s4-f0726609b3-20261028T015751Z-7ab8e1",
+          "config_hash": "f0726609b372cd6eb3163a6486fc8d50dffd082aa72718e31d89d4cce4e4140d",
+          "state": "complete",
+          "env": "colour",
+          "algo": "dqn_ts",
+          "seed": 4,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "seed": 5,
+      "family": "control",
+      "script": "agents/train_dqn.py",
+      "task_state": true,
+      "config_hash": "9e1718acfe5090e40079fafaf1f94234c29f27496a967fe9e20ef0b7eceacb7f",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\dqn_ts\\seed5__9e1718acfe__20261028T030350Z-5e6e81",
+          "run_id": "baseline-v2-full-delivery-dqn_ts-s5-9e1718acfe-20261028T030350Z-5e6e81",
+          "config_hash": "9e1718acfe5090e40079fafaf1f94234c29f27496a967fe9e20ef0b7eceacb7f",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "dqn_ts",
+          "seed": 5,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "memoryless",
+      "env": "colour",
+      "algo": "dqn_ts",
+      "seed": 5,
+      "family": "control",
+      "script": "agents/train_dqn.py",
+      "task_state": true,
+      "config_hash": "2b42c3f6423c5ecb3764a4db0f7580ccb6d0ae2c68ce54af81eb16ce1afb71bd",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\dqn_ts\\seed5__2b42c3f642__20261028T031405Z-6f0338",
+          "run_id": "baseline-v2-full-colour-dqn_ts-s5-2b42c3f642-20261028T031405Z-6f0338",
+          "config_hash": "2b42c3f6423c5ecb3764a4db0f7580ccb6d0ae2c68ce54af81eb16ce1afb71bd",
+          "state": "complete",
+          "env": "colour",
+          "algo": "dqn_ts",
+          "seed": 5,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "delivery",
+      "algo": "drqn",
+      "seed": 1,
+      "family": "implicit",
+      "script": "agents/drqn/train_drqn.py",
+      "task_state": false,
+      "config_hash": "6182c7d3357312f60c0dfe908f57cdc49cbe67af3ad13d26f4b3bca0ca982095",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\drqn\\seed1__6182c7d335__20261027T135858Z-71dde8",
+          "run_id": "baseline-v2-full-delivery-drqn-s1-6182c7d335-20261027T135858Z-71dde8",
+          "config_hash": "6182c7d3357312f60c0dfe908f57cdc49cbe67af3ad13d26f4b3bca0ca982095",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "drqn",
+          "seed": 1,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "colour",
+      "algo": "drqn",
+      "seed": 1,
+      "family": "implicit",
+      "script": "agents/drqn/train_drqn.py",
+      "task_state": false,
+      "config_hash": "f85f289520699b282aad8c41c19f2d728b199c4369f123d1daa53216e3b5cb15",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\drqn\\seed1__f85f289520__20261027T143013Z-202abd",
+          "run_id": "baseline-v2-full-colour-drqn-s1-f85f289520-20261027T143013Z-202abd",
+          "config_hash": "f85f289520699b282aad8c41c19f2d728b199c4369f123d1daa53216e3b5cb15",
+          "state": "complete",
+          "env": "colour",
+          "algo": "drqn",
+          "seed": 1,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "seed": 1,
+      "family": "implicit",
+      "script": "agents/train_recurrent_ppo.py",
+      "task_state": false,
+      "config_hash": "d1ca9ded049d0c42152d4196ef51e2aaf924bd6537b60c8d2464ac0025d68757",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\recurrent_ppo\\seed1__d1ca9ded04__20261027T181100Z-beb79e",
+          "run_id": "baseline-v2-full-maintenance-recurrent_ppo-s1-d1ca9ded04-20261027T181100Z-beb79e",
+          "config_hash": "d1ca9ded049d0c42152d4196ef51e2aaf924bd6537b60c8d2464ac0025d68757",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "recurrent_ppo",
+          "seed": 1,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "delivery",
+      "algo": "drqn",
+      "seed": 2,
+      "family": "implicit",
+      "script": "agents/drqn/train_drqn.py",
+      "task_state": false,
+      "config_hash": "cac74425e4db4341f4b67beb6bcb225f64c592ab20d6c3f9f05d97e04cf91bde",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\drqn\\seed2__cac74425e4__20261027T191411Z-a83029",
+          "run_id": "baseline-v2-full-delivery-drqn-s2-cac74425e4-20261027T191411Z-a83029",
+          "config_hash": "cac74425e4db4341f4b67beb6bcb225f64c592ab20d6c3f9f05d97e04cf91bde",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "drqn",
+          "seed": 2,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "colour",
+      "algo": "drqn",
+      "seed": 2,
+      "family": "implicit",
+      "script": "agents/drqn/train_drqn.py",
+      "task_state": false,
+      "config_hash": "3d23ad40763536a9b4d962b79208ea9ec4aca98d8699b0d31130454462da5f8a",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\drqn\\seed2__3d23ad4076__20261027T194534Z-047187",
+          "run_id": "baseline-v2-full-colour-drqn-s2-3d23ad4076-20261027T194534Z-047187",
+          "config_hash": "3d23ad40763536a9b4d962b79208ea9ec4aca98d8699b0d31130454462da5f8a",
+          "state": "complete",
+          "env": "colour",
+          "algo": "drqn",
+          "seed": 2,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "seed": 2,
+      "family": "implicit",
+      "script": "agents/train_recurrent_ppo.py",
+      "task_state": false,
+      "config_hash": "f3fb0b1172a70dbcc9c437664d175388a4f79366da8e8eedf08d1eb68fd54e83",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\recurrent_ppo\\seed2__f3fb0b1172__20261027T232601Z-385f07",
+          "run_id": "baseline-v2-full-maintenance-recurrent_ppo-s2-f3fb0b1172-20261027T232601Z-385f07",
+          "config_hash": "f3fb0b1172a70dbcc9c437664d175388a4f79366da8e8eedf08d1eb68fd54e83",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "recurrent_ppo",
+          "seed": 2,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "delivery",
+      "algo": "drqn",
+      "seed": 3,
+      "family": "implicit",
+      "script": "agents/drqn/train_drqn.py",
+      "task_state": false,
+      "config_hash": "c94b53ac3d76a19785add8c2b7c9019b37509dc93522c79707b1b01ff73bf16a",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\drqn\\seed3__c94b53ac3d__20261028T002758Z-880b76",
+          "run_id": "baseline-v2-full-delivery-drqn-s3-c94b53ac3d-20261028T002758Z-880b76",
+          "config_hash": "c94b53ac3d76a19785add8c2b7c9019b37509dc93522c79707b1b01ff73bf16a",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "drqn",
+          "seed": 3,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "colour",
+      "algo": "drqn",
+      "seed": 3,
+      "family": "implicit",
+      "script": "agents/drqn/train_drqn.py",
+      "task_state": false,
+      "config_hash": "6b6a7ad104402c483939df884a86ab2bffca597a9a48b46b3b19bac2776520d3",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\drqn\\seed3__6b6a7ad104__20261028T005924Z-50bcca",
+          "run_id": "baseline-v2-full-colour-drqn-s3-6b6a7ad104-20261028T005924Z-50bcca",
+          "config_hash": "6b6a7ad104402c483939df884a86ab2bffca597a9a48b46b3b19bac2776520d3",
+          "state": "complete",
+          "env": "colour",
+          "algo": "drqn",
+          "seed": 3,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "seed": 3,
+      "family": "implicit",
+      "script": "agents/train_recurrent_ppo.py",
+      "task_state": false,
+      "config_hash": "93048dc003abac2543fca4854a2b6893a67cb7ead34b3b667d189766c2020ba2",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\recurrent_ppo\\seed3__93048dc003__20261028T043827Z-6ca896",
+          "run_id": "baseline-v2-full-maintenance-recurrent_ppo-s3-93048dc003-20261028T043827Z-6ca896",
+          "config_hash": "93048dc003abac2543fca4854a2b6893a67cb7ead34b3b667d189766c2020ba2",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "recurrent_ppo",
+          "seed": 3,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "delivery",
+      "algo": "drqn",
+      "seed": 4,
+      "family": "implicit",
+      "script": "agents/drqn/train_drqn.py",
+      "task_state": false,
+      "config_hash": "43777bf356ee92002a02c78a116cc36f9feaf7004c5793a245f8c906666c6048",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\drqn\\seed4__43777bf356__20261028T054137Z-6a766b",
+          "run_id": "baseline-v2-full-delivery-drqn-s4-43777bf356-20261028T054137Z-6a766b",
+          "config_hash": "43777bf356ee92002a02c78a116cc36f9feaf7004c5793a245f8c906666c6048",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "drqn",
+          "seed": 4,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "colour",
+      "algo": "drqn",
+      "seed": 4,
+      "family": "implicit",
+      "script": "agents/drqn/train_drqn.py",
+      "task_state": false,
+      "config_hash": "79f57dee0e72166585c7afcf048ed7ce4b3124603c5a6aefad221b2595bf0dc5",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\drqn\\seed4__79f57dee0e__20261028T061255Z-d7f37a",
+          "run_id": "baseline-v2-full-colour-drqn-s4-79f57dee0e-20261028T061255Z-d7f37a",
+          "config_hash": "79f57dee0e72166585c7afcf048ed7ce4b3124603c5a6aefad221b2595bf0dc5",
+          "state": "complete",
+          "env": "colour",
+          "algo": "drqn",
+          "seed": 4,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "seed": 4,
+      "family": "implicit",
+      "script": "agents/train_recurrent_ppo.py",
+      "task_state": false,
+      "config_hash": "7e37178c0b7fc53677799bd428d0f0d461f5f3195b9fbe079a4a7749c959ba3c",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\recurrent_ppo\\seed4__7e37178c0b__20261028T095235Z-184e52",
+          "run_id": "baseline-v2-full-maintenance-recurrent_ppo-s4-7e37178c0b-20261028T095235Z-184e52",
+          "config_hash": "7e37178c0b7fc53677799bd428d0f0d461f5f3195b9fbe079a4a7749c959ba3c",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "recurrent_ppo",
+          "seed": 4,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "delivery",
+      "algo": "drqn",
+      "seed": 5,
+      "family": "implicit",
+      "script": "agents/drqn/train_drqn.py",
+      "task_state": false,
+      "config_hash": "5fb88995ac50e8a1b527faa8ef7a25c37b32cc43ae32c0aec3ef2a4b5c3339b0",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\drqn\\seed5__5fb88995ac__20261028T105628Z-8ca03d",
+          "run_id": "baseline-v2-full-delivery-drqn-s5-5fb88995ac-20261028T105628Z-8ca03d",
+          "config_hash": "5fb88995ac50e8a1b527faa8ef7a25c37b32cc43ae32c0aec3ef2a4b5c3339b0",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "drqn",
+          "seed": 5,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "colour",
+      "algo": "drqn",
+      "seed": 5,
+      "family": "implicit",
+      "script": "agents/drqn/train_drqn.py",
+      "task_state": false,
+      "config_hash": "544d2237351ccc66dac3cbc0d0d1878ae2a2f99bab158ce8b4b7091e6702aace",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\drqn\\seed5__544d223735__20261028T112741Z-252fa5",
+          "run_id": "baseline-v2-full-colour-drqn-s5-544d223735-20261028T112741Z-252fa5",
+          "config_hash": "544d2237351ccc66dac3cbc0d0d1878ae2a2f99bab158ce8b4b7091e6702aace",
+          "state": "complete",
+          "env": "colour",
+          "algo": "drqn",
+          "seed": 5,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "implicit",
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "seed": 5,
+      "family": "implicit",
+      "script": "agents/train_recurrent_ppo.py",
+      "task_state": false,
+      "config_hash": "9a5bc2ba736e4bfd0da9e1ad6bb0285a74dc09d4af6e38b3c96ae53987586629",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\recurrent_ppo\\seed5__9a5bc2ba73__20261028T150806Z-7a482d",
+          "run_id": "baseline-v2-full-maintenance-recurrent_ppo-s5-9a5bc2ba73-20261028T150806Z-7a482d",
+          "config_hash": "9a5bc2ba736e4bfd0da9e1ad6bb0285a74dc09d4af6e38b3c96ae53987586629",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "recurrent_ppo",
+          "seed": 5,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "delivery",
+      "algo": "qrm",
+      "seed": 1,
+      "family": "explicit",
+      "script": "agents/qrm/train_qrm.py",
+      "task_state": false,
+      "config_hash": "6e9e8ace05ed79f9f27943e38e0fe0b61748bbc35b82e37f1b05e4ebe7e3515c",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\qrm\\seed1__6e9e8ace05__20261027T135928Z-a482ce",
+          "run_id": "baseline-v2-full-delivery-qrm-s1-6e9e8ace05-20261027T135928Z-a482ce",
+          "config_hash": "6e9e8ace05ed79f9f27943e38e0fe0b61748bbc35b82e37f1b05e4ebe7e3515c",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "qrm",
+          "seed": 1,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "colour",
+      "algo": "qrm_cue",
+      "seed": 1,
+      "family": "explicit",
+      "script": "agents/qrm/train_qrm.py",
+      "task_state": false,
+      "config_hash": "b52d4d9cdbae0bf043a52dd1d5af245dfe169a24363db78b8d4bb2db62a71dc6",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\qrm_cue\\seed1__b52d4d9cdb__20261027T140619Z-0d1c4d",
+          "run_id": "baseline-v2-full-colour-qrm_cue-s1-b52d4d9cdb-20261027T140619Z-0d1c4d",
+          "config_hash": "b52d4d9cdbae0bf043a52dd1d5af245dfe169a24363db78b8d4bb2db62a71dc6",
+          "state": "complete",
+          "env": "colour",
+          "algo": "qrm_cue",
+          "seed": 1,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "seed": 1,
+      "family": "explicit",
+      "script": "agents/ppo_rm/train_ppo_rm.py",
+      "task_state": false,
+      "config_hash": "2bb5515147faa9369d8930994a3696cc49d22b212feebb31197e28cd1b74894a",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\ppo_rm\\seed1__2bb5515147__20261027T144919Z-9918af",
+          "run_id": "baseline-v2-full-maintenance-ppo_rm-s1-2bb5515147-20261027T144919Z-9918af",
+          "config_hash": "2bb5515147faa9369d8930994a3696cc49d22b212feebb31197e28cd1b74894a",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "ppo_rm",
+          "seed": 1,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "delivery",
+      "algo": "qrm",
+      "seed": 2,
+      "family": "explicit",
+      "script": "agents/qrm/train_qrm.py",
+      "task_state": false,
+      "config_hash": "f3988823c0f664b7a583ce7fde05df2e96f3689b6077106efd3c286491348e23",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\qrm\\seed2__f3988823c0__20261027T150931Z-08fb90",
+          "run_id": "baseline-v2-full-delivery-qrm-s2-f3988823c0-20261027T150931Z-08fb90",
+          "config_hash": "f3988823c0f664b7a583ce7fde05df2e96f3689b6077106efd3c286491348e23",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "qrm",
+          "seed": 2,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "colour",
+      "algo": "qrm_cue",
+      "seed": 2,
+      "family": "explicit",
+      "script": "agents/qrm/train_qrm.py",
+      "task_state": false,
+      "config_hash": "2517c8ebfc0fb57a40da54315f6f69090990f845622bd8d572c1ef58667895d4",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\qrm_cue\\seed2__2517c8ebfc__20261027T151621Z-e336b0",
+          "run_id": "baseline-v2-full-colour-qrm_cue-s2-2517c8ebfc-20261027T151621Z-e336b0",
+          "config_hash": "2517c8ebfc0fb57a40da54315f6f69090990f845622bd8d572c1ef58667895d4",
+          "state": "complete",
+          "env": "colour",
+          "algo": "qrm_cue",
+          "seed": 2,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "seed": 2,
+      "family": "explicit",
+      "script": "agents/ppo_rm/train_ppo_rm.py",
+      "task_state": false,
+      "config_hash": "c8a3a8369da56987b289a373340232af0d999097638449c23e41fa0893c64c28",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\ppo_rm\\seed2__c8a3a8369d__20261027T155939Z-8dc709",
+          "run_id": "baseline-v2-full-maintenance-ppo_rm-s2-c8a3a8369d-20261027T155939Z-8dc709",
+          "config_hash": "c8a3a8369da56987b289a373340232af0d999097638449c23e41fa0893c64c28",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "ppo_rm",
+          "seed": 2,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "delivery",
+      "algo": "qrm",
+      "seed": 3,
+      "family": "explicit",
+      "script": "agents/qrm/train_qrm.py",
+      "task_state": false,
+      "config_hash": "2b283a716895d5ae4cd7bf63bfe48787696154ceb67c6df86117b819c70e805a",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\qrm\\seed3__2b283a7168__20261027T161955Z-310f1c",
+          "run_id": "baseline-v2-full-delivery-qrm-s3-2b283a7168-20261027T161955Z-310f1c",
+          "config_hash": "2b283a716895d5ae4cd7bf63bfe48787696154ceb67c6df86117b819c70e805a",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "qrm",
+          "seed": 3,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "colour",
+      "algo": "qrm_cue",
+      "seed": 3,
+      "family": "explicit",
+      "script": "agents/qrm/train_qrm.py",
+      "task_state": false,
+      "config_hash": "a2115c1cc23fa86e8f18e056c431ad671fbc0eff4cdcb6421506afe5f5bdd7db",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\qrm_cue\\seed3__a2115c1cc2__20261027T162646Z-0f42ae",
+          "run_id": "baseline-v2-full-colour-qrm_cue-s3-a2115c1cc2-20261027T162646Z-0f42ae",
+          "config_hash": "a2115c1cc23fa86e8f18e056c431ad671fbc0eff4cdcb6421506afe5f5bdd7db",
+          "state": "complete",
+          "env": "colour",
+          "algo": "qrm_cue",
+          "seed": 3,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "seed": 3,
+      "family": "explicit",
+      "script": "agents/ppo_rm/train_ppo_rm.py",
+      "task_state": false,
+      "config_hash": "777553828970effb534ad6014831376c8f565cf2c21ec97827d9ac782ed1df14",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\ppo_rm\\seed3__7775538289__20261027T171019Z-3e0235",
+          "run_id": "baseline-v2-full-maintenance-ppo_rm-s3-7775538289-20261027T171019Z-3e0235",
+          "config_hash": "777553828970effb534ad6014831376c8f565cf2c21ec97827d9ac782ed1df14",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "ppo_rm",
+          "seed": 3,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "delivery",
+      "algo": "qrm",
+      "seed": 4,
+      "family": "explicit",
+      "script": "agents/qrm/train_qrm.py",
+      "task_state": false,
+      "config_hash": "50190638859fe8609735ba8c0d8b994bf443fdf27e08347bdaaf1e4ba39dfeaf",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\qrm\\seed4__5019063885__20261027T173101Z-791843",
+          "run_id": "baseline-v2-full-delivery-qrm-s4-5019063885-20261027T173101Z-791843",
+          "config_hash": "50190638859fe8609735ba8c0d8b994bf443fdf27e08347bdaaf1e4ba39dfeaf",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "qrm",
+          "seed": 4,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "colour",
+      "algo": "qrm_cue",
+      "seed": 4,
+      "family": "explicit",
+      "script": "agents/qrm/train_qrm.py",
+      "task_state": false,
+      "config_hash": "2890b3d6f0def11d29d0bbceea97171e8f1982742d3274bd3d6e00b4f2c289b4",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\qrm_cue\\seed4__2890b3d6f0__20261027T173754Z-378f97",
+          "run_id": "baseline-v2-full-colour-qrm_cue-s4-2890b3d6f0-20261027T173754Z-378f97",
+          "config_hash": "2890b3d6f0def11d29d0bbceea97171e8f1982742d3274bd3d6e00b4f2c289b4",
+          "state": "complete",
+          "env": "colour",
+          "algo": "qrm_cue",
+          "seed": 4,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "seed": 4,
+      "family": "explicit",
+      "script": "agents/ppo_rm/train_ppo_rm.py",
+      "task_state": false,
+      "config_hash": "7b80968095d675703ba4322b92451e30c90fccee1d98cd334017938cd031539c",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\ppo_rm\\seed4__7b80968095__20261027T182103Z-7292bc",
+          "run_id": "baseline-v2-full-maintenance-ppo_rm-s4-7b80968095-20261027T182103Z-7292bc",
+          "config_hash": "7b80968095d675703ba4322b92451e30c90fccee1d98cd334017938cd031539c",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "ppo_rm",
+          "seed": 4,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "delivery",
+      "algo": "qrm",
+      "seed": 5,
+      "family": "explicit",
+      "script": "agents/qrm/train_qrm.py",
+      "task_state": false,
+      "config_hash": "256fa2e340e040f0336e891c85cf5ec5509f98acaec687c13281f722c8c7756b",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\delivery\\qrm\\seed5__256fa2e340__20261027T184146Z-607156",
+          "run_id": "baseline-v2-full-delivery-qrm-s5-256fa2e340-20261027T184146Z-607156",
+          "config_hash": "256fa2e340e040f0336e891c85cf5ec5509f98acaec687c13281f722c8c7756b",
+          "state": "complete",
+          "env": "delivery",
+          "algo": "qrm",
+          "seed": 5,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "colour",
+      "algo": "qrm_cue",
+      "seed": 5,
+      "family": "explicit",
+      "script": "agents/qrm/train_qrm.py",
+      "task_state": false,
+      "config_hash": "78e39ef67328b5b58ac2d06ccdb7e1206a12d92961002513084b36d26975c4ae",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\colour\\qrm_cue\\seed5__78e39ef673__20261027T184840Z-076e9b",
+          "run_id": "baseline-v2-full-colour-qrm_cue-s5-78e39ef673-20261027T184840Z-076e9b",
+          "config_hash": "78e39ef67328b5b58ac2d06ccdb7e1206a12d92961002513084b36d26975c4ae",
+          "state": "complete",
+          "env": "colour",
+          "algo": "qrm_cue",
+          "seed": 5,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "role": "explicit",
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "seed": 5,
+      "family": "explicit",
+      "script": "agents/ppo_rm/train_ppo_rm.py",
+      "task_state": false,
+      "config_hash": "040a8c0e56e401e3095c5c9dc69f5d9baaed03283ff9575ada7691e2c2cd9860",
+      "state": "complete",
+      "attempts": [
+        {
+          "run_dir": "C:\\Users\\alton\\Desktop\\School Work\\Research Project Development\\NEW-temporal-composition-gym\\run_scripts\\baseline\\results\\v2\\full\\maintenance\\ppo_rm\\seed5__040a8c0e56__20261027T193157Z-a693ed",
+          "run_id": "baseline-v2-full-maintenance-ppo_rm-s5-040a8c0e56-20261027T193157Z-a693ed",
+          "config_hash": "040a8c0e56e401e3095c5c9dc69f5d9baaed03283ff9575ada7691e2c2cd9860",
+          "state": "complete",
+          "env": "maintenance",
+          "algo": "ppo_rm",
+          "seed": 5,
+          "mode": "full",
+          "verified": true,
+          "problems": []
+        }
+      ]
+    }
+  ],
+  "unexpected_runs": [],
+  "all_complete": true
+}

@@ -1,0 +1,35 @@
+{
+  "global_step": 2048000,
+  "n_updates": 10000,
+  "train_episodes": 521,
+  "final_eval": {
+    "n_episodes": 100,
+    "return_mean": -3322.420999999775,
+    "return_std": 366.67472705243387,
+    "return_min": -3508.099999999762,
+    "return_max": -1001.4,
+    "success_rate": 0.0,
+    "length_mean": 3921.23,
+    "progress_mean": 0.0,
+    "causes": {
+      "timeout": 98,
+      "uncollected_codes_at_exit": 2
+    }
+  },
+  "last_periodic_eval": {
+    "n_episodes": 20,
+    "return_mean": -3320.269999999772,
+    "return_std": 174.35803136075435,
+    "return_min": -3508.099999999762,
+    "return_max": -3105.2999999997805,
+    "success_rate": 0.0,
+    "length_mean": 4000.0,
+    "progress_mean": 0.0,
+    "causes": {
+      "timeout": 20
+    }
+  },
+  "config_hash": "7e37178c0b7fc53677799bd428d0f0d461f5f3195b9fbe079a4a7749c959ba3c",
+  "run_id": "baseline-v2-full-maintenance-recurrent_ppo-s4-7e37178c0b-20261028T095235Z-184e52",
+  "completed_utc": "2026-10-28T10:56:25.583405Z"
+}

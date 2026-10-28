@@ -1,0 +1,18 @@
+{
+  "run_id": "baseline-v2-full-colour-qrm_cue-s5-78e39ef673-20261027T184840Z-076e9b",
+  "run_uid": "20261027T184840Z-076e9b",
+  "wandb_id": "ed1adde53877a101",
+  "config_hash": "78e39ef67328b5b58ac2d06ccdb7e1206a12d92961002513084b36d26975c4ae",
+  "protocol_version": "v2",
+  "phase": "baseline",
+  "mode": "full",
+  "env": "colour",
+  "algo": "qrm_cue",
+  "family": "explicit",
+  "seed": 5,
+  "machine_role": "explicit",
+  "batch_id": "explicit__2770de9a8390__20261027T135920Z-27928",
+  "results_root": null,
+  "run_dir": "/root/temporal-composition-gym/run_scripts/baseline/results/v2/full/colour/qrm_cue/seed5__78e39ef673__20261027T184840Z-076e9b",
+  "created_utc": "2026-10-27T18:48:40.841440Z"
+}

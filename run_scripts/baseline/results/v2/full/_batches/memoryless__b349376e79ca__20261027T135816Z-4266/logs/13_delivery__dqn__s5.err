@@ -1,0 +1,45 @@
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /root/.netrc.
+wandb: Currently logged in as: altonmaseko (altonmaseko-wits-university) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run abe0db7748286604
+wandb: Tracking run with wandb version 0.30.0
+wandb: Run data is saved locally in /root/temporal-composition-gym/run_scripts/baseline/results/v2/full/delivery/dqn/seed5__929c191a6e__20261027T202337Z-228997/wandb/run-20261027_202338-abe0db7748286604
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run baseline-v2-full-delivery-dqn-s5-929c191a6e-20261027T202337Z-228997
+wandb: ⭐️ View project at https://wandb.ai/altonmaseko-wits-university/new_experiments
+wandb: 🚀 View run at https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/abe0db7748286604
+wandb: Detected [agents] in use.
+wandb: Use W&B Weave for improved LLM call tracing. Install Weave with `pip install weave` then add `import weave` to the top of your script.
+wandb: For more information, check out the docs at: https://weave-docs.wandb.ai
+wandb: updating run metadata
+wandb: uploading history steps 243-243, summary, console lines 24-24
+wandb: 
+wandb: Run history:
+wandb:   eval/cause/damage_death ▁
+wandb:           eval/cause/lava ▁
+wandb: eval/cause/premature_goal ▁▁▁
+wandb:        eval/cause/timeout ▁▇▇██████████████████
+wandb:                eval/index ▁▁▂▂▂▃▃▃▄▄▅▅▅▆▆▆▇▇▇██
+wandb:          eval/length_mean ▁▇▇██████████████████
+wandb:           eval/n_episodes ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:        eval/progress_mean ▁▁▂▅█▃▆▇▄█▄█▄▅▁▆▃▄▅▇▄
+wandb:           eval/return_max ▁▁▅▅█▅▅▅▅▅▅▅▅▅▁▅▅▅▅▅▅
+wandb:          eval/return_mean ▁▇▇███████████▇██████
+wandb:                       +31 ...
+wandb: 
+wandb: Run summary:
+wandb:   eval/cause/damage_death 0.06
+wandb:           eval/cause/lava 0.18
+wandb: eval/cause/premature_goal 0.02
+wandb:        eval/cause/timeout 1
+wandb:                eval/index 20
+wandb:          eval/length_mean 500
+wandb:           eval/n_episodes 50
+wandb:        eval/progress_mean 0.06
+wandb:           eval/return_max 10
+wandb:          eval/return_mean 0.6
+wandb:                       +32 ...
+wandb: 
+wandb: 🚀 View run baseline-v2-full-delivery-dqn-s5-929c191a6e-20261027T202337Z-228997 at: https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/abe0db7748286604
+wandb: ⭐️ View project at: https://wandb.ai/altonmaseko-wits-university/new_experiments
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./run_scripts/baseline/results/v2/full/delivery/dqn/seed5__929c191a6e__20261027T202337Z-228997/wandb/run-20261027_202338-abe0db7748286604/logs

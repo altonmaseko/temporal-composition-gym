@@ -1,0 +1,35 @@
+{
+  "global_step": 1000000,
+  "n_updates": 247501,
+  "train_episodes": 7120,
+  "final_eval": {
+    "n_episodes": 200,
+    "return_mean": 1.48,
+    "return_std": 6.30948492351,
+    "return_min": -50.0,
+    "return_max": 20.0,
+    "success_rate": 0.0,
+    "length_mean": 497.505,
+    "progress_mean": 0.295,
+    "causes": {
+      "timeout": 199,
+      "premature_goal": 1
+    }
+  },
+  "last_periodic_eval": {
+    "n_episodes": 50,
+    "return_mean": 2.54,
+    "return_std": 6.615769040708722,
+    "return_min": -14.0,
+    "return_max": 19.0,
+    "success_rate": 0.0,
+    "length_mean": 500.0,
+    "progress_mean": 0.46,
+    "causes": {
+      "timeout": 50
+    }
+  },
+  "config_hash": "6182c7d3357312f60c0dfe908f57cdc49cbe67af3ad13d26f4b3bca0ca982095",
+  "run_id": "baseline-v2-full-delivery-drqn-s1-6182c7d335-20261027T135858Z-71dde8",
+  "completed_utc": "2026-10-27T14:30:10.134050Z"
+}

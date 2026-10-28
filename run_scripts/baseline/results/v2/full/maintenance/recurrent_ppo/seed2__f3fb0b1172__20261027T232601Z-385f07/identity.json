@@ -1,0 +1,18 @@
+{
+  "run_id": "baseline-v2-full-maintenance-recurrent_ppo-s2-f3fb0b1172-20261027T232601Z-385f07",
+  "run_uid": "20261027T232601Z-385f07",
+  "wandb_id": "724230bfc4e1bdc4",
+  "config_hash": "f3fb0b1172a70dbcc9c437664d175388a4f79366da8e8eedf08d1eb68fd54e83",
+  "protocol_version": "v2",
+  "phase": "baseline",
+  "mode": "full",
+  "env": "maintenance",
+  "algo": "recurrent_ppo",
+  "family": "implicit",
+  "seed": 2,
+  "machine_role": "implicit",
+  "batch_id": "implicit__de7fcc040c1d__20261027T135849Z-5597",
+  "results_root": null,
+  "run_dir": "/root/temporal-composition-gym/run_scripts/baseline/results/v2/full/maintenance/recurrent_ppo/seed2__f3fb0b1172__20261027T232601Z-385f07",
+  "created_utc": "2026-10-27T23:26:01.846632Z"
+}

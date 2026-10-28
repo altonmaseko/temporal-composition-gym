@@ -1,0 +1,46 @@
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /root/.netrc.
+wandb: Currently logged in as: altonmaseko (altonmaseko-wits-university) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run 8f11aef3ffbabbcb
+wandb: Tracking run with wandb version 0.30.0
+wandb: Run data is saved locally in /root/temporal-composition-gym/run_scripts/baseline/results/v2/full/maintenance/ppo_rm/seed5__040a8c0e56__20261027T193157Z-a693ed/wandb/run-20261027_193158-8f11aef3ffbabbcb
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run baseline-v2-full-maintenance-ppo_rm-s5-040a8c0e56-20261027T193157Z-a693ed
+wandb: ⭐️ View project at https://wandb.ai/altonmaseko-wits-university/new_experiments
+wandb: 🚀 View run at https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/8f11aef3ffbabbcb
+wandb: Detected [agents] in use.
+wandb: Use W&B Weave for improved LLM call tracing. Install Weave with `pip install weave` then add `import weave` to the top of your script.
+wandb: For more information, check out the docs at: https://weave-docs.wandb.ai
+wandb: updating run metadata
+wandb: uploading output.log; uploading wandb-summary.json; uploading config.yaml
+wandb: uploading history steps 243-243, summary, console lines 24-24
+wandb: 
+wandb: Run history:
+wandb:  eval/cause/held_codes_at_final_exit ▁
+wandb:                   eval/cause/success ▁
+wandb:                   eval/cause/timeout █▅▃▆▇▂▆▇▁▃▅▆▅▆█▆▅▂▂▁▃
+wandb: eval/cause/uncollected_codes_at_exit ▄▅▂▁▇▂▁█▄▄▂▄▂▂▄▇▇▇▅
+wandb:                           eval/index ▁▁▂▂▂▃▃▃▄▄▅▅▅▆▆▆▇▇▇██
+wandb:                     eval/length_mean █▅▃▆▇▂▆▇▁▄▅▆▄▆█▆▄▃▂▃▃
+wandb:                      eval/n_episodes ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                   eval/progress_mean ▁▁▁▁▁▁▁▁▃▁▁▃▁▁▁▁▁▁▁█▃
+wandb:                      eval/return_max ▁████████████████████
+wandb:                     eval/return_mean ▁▅█████▇█████████████
+wandb:                                  +38 ...
+wandb: 
+wandb: Run summary:
+wandb:  eval/cause/held_codes_at_final_exit 0.05
+wandb:                   eval/cause/success 0.05
+wandb:                   eval/cause/timeout 0.8
+wandb: eval/cause/uncollected_codes_at_exit 0.2
+wandb:                           eval/index 20
+wandb:                     eval/length_mean 3252.85
+wandb:                      eval/n_episodes 20
+wandb:                   eval/progress_mean 0.05
+wandb:                      eval/return_max -55.2
+wandb:                     eval/return_mean -440.235
+wandb:                                  +39 ...
+wandb: 
+wandb: 🚀 View run baseline-v2-full-maintenance-ppo_rm-s5-040a8c0e56-20261027T193157Z-a693ed at: https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/8f11aef3ffbabbcb
+wandb: ⭐️ View project at: https://wandb.ai/altonmaseko-wits-university/new_experiments
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./run_scripts/baseline/results/v2/full/maintenance/ppo_rm/seed5__040a8c0e56__20261027T193157Z-a693ed/wandb/run-20261027_193158-8f11aef3ffbabbcb/logs

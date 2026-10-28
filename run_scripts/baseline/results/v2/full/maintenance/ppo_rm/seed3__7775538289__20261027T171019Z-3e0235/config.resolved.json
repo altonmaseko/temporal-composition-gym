@@ -1,0 +1,84 @@
+{
+  "protocol_version": "v2",
+  "phase": "baseline",
+  "mode": "full",
+  "env": {
+    "key": "maintenance",
+    "id": "TemporalComp/DeferredMaintenance-v0",
+    "variant": "main",
+    "kwargs": {
+      "max_stages": 4,
+      "readiness_delay_range": [
+        1,
+        2
+      ],
+      "max_code_types": 3,
+      "max_active_requests": 3,
+      "codes_per_collection_stage": 1,
+      "distractor_stations": true,
+      "required_hover_duration": 2.0,
+      "spatial_sensor_type": "local_grid",
+      "gravity_scale": 500.0,
+      "max_steps": 4000
+    }
+  },
+  "algo": {
+    "name": "ppo_rm",
+    "family": "explicit",
+    "impl": "sb3",
+    "hyperparams": {
+      "policy": "MlpPolicy",
+      "n_steps": 2048,
+      "batch_size": 64,
+      "n_epochs": 10,
+      "learning_rate": 0.0003,
+      "gamma": 0.99,
+      "gae_lambda": 0.95,
+      "clip_range": 0.2,
+      "ent_coef": 0.0,
+      "vf_coef": 0.5,
+      "max_grad_norm": 0.5,
+      "policy_kwargs": {
+        "net_arch": {
+          "pi": [
+            128,
+            128
+          ],
+          "vf": [
+            128,
+            128
+          ]
+        }
+      }
+    }
+  },
+  "seed": {
+    "train_seed": 3,
+    "train_env_reset_seed": 10003000
+  },
+  "budget": {
+    "env_steps": 2048000
+  },
+  "eval": {
+    "n_points": 20,
+    "every_steps": 102400,
+    "periodic_episodes": 20,
+    "final_episodes": 100,
+    "periodic_seed_block": "periodic",
+    "final_seed_block": "final",
+    "policy": "greedy (epsilon=0 / deterministic=True); recurrent state reset at episode start"
+  },
+  "checkpoint": {
+    "every_steps": 204800,
+    "save_replay": true
+  },
+  "logging": {
+    "train_log_every_steps": 10240
+  },
+  "overrides": {},
+  "wandb": {
+    "project": "new_experiments",
+    "entity": null,
+    "group": "baseline-v2"
+  }
+}

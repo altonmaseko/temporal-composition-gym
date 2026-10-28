@@ -1,0 +1,163 @@
+{
+  "role": "explicit",
+  "host": "2770de9a8390",
+  "utc": "2026-10-27T13:58:20Z",
+  "failed": false,
+  "checks": [
+    {
+      "check": "python",
+      "status": "PASS",
+      "detail": "/root/tcg/bin/python (3.12.15)"
+    },
+    {
+      "check": "code source",
+      "status": "PASS",
+      "detail": "temporal_comp_gym and agents imported from /root/temporal-composition-gym"
+    },
+    {
+      "check": "code revision",
+      "status": "PASS",
+      "detail": "f772875328aeb8e262cf7f4777619ee41568aaa7 on new_experiments"
+    },
+    {
+      "check": "clean checkout",
+      "status": "PASS",
+      "detail": "no uncommitted changes to tracked files"
+    },
+    {
+      "check": "baseline plan file",
+      "status": "PASS",
+      "detail": "run_scripts/baseline/baseline_plan.json matches the code"
+    },
+    {
+      "check": "package torch",
+      "status": "PASS",
+      "detail": "2.14.0 (pinned 2.14.0)"
+    },
+    {
+      "check": "package stable_baselines3",
+      "status": "PASS",
+      "detail": "2.9.0 (pinned 2.9.0)"
+    },
+    {
+      "check": "package sb3_contrib",
+      "status": "PASS",
+      "detail": "2.9.0 (pinned 2.9.0)"
+    },
+    {
+      "check": "package gymnasium",
+      "status": "PASS",
+      "detail": "1.3.0 (pinned 1.3.0)"
+    },
+    {
+      "check": "package minigrid",
+      "status": "PASS",
+      "detail": "3.1.0 (pinned 3.1.0)"
+    },
+    {
+      "check": "package pymunk",
+      "status": "PASS",
+      "detail": "7.3.0 (pinned 7.3.0)"
+    },
+    {
+      "check": "package pygame",
+      "status": "PASS",
+      "detail": "2.6.1 (pinned 2.6.1)"
+    },
+    {
+      "check": "package numpy",
+      "status": "PASS",
+      "detail": "2.2.6 (pinned 2.2.6)"
+    },
+    {
+      "check": "package wandb",
+      "status": "PASS",
+      "detail": "0.30.0 (pinned 0.30.0)"
+    },
+    {
+      "check": "package psutil",
+      "status": "PASS",
+      "detail": "7.2.2 (pinned 7.2.2)"
+    },
+    {
+      "check": "package pytablericons",
+      "status": "PASS",
+      "detail": "1.0.1 (pinned 1.0.1)"
+    },
+    {
+      "check": "package PIL",
+      "status": "PASS",
+      "detail": "12.3.0 (pinned 12.3.0)"
+    },
+    {
+      "check": "package requests",
+      "status": "PASS",
+      "detail": "2.34.2 (pinned 2.34.2)"
+    },
+    {
+      "check": "pygame-ce",
+      "status": "WARN",
+      "detail": "pygame-ce is installed alongside pygame (same import name)"
+    },
+    {
+      "check": "cuda",
+      "status": "PASS",
+      "detail": "1 GPU(s); using cuda:0 = NVIDIA GeForce RTX 3090, 25.3 GB VRAM, CUDA 13.0"
+    },
+    {
+      "check": "vram",
+      "status": "PASS",
+      "detail": "25.3 GB (need >= 4 GB)"
+    },
+    {
+      "check": "cuda compute",
+      "status": "PASS",
+      "detail": "matmul on GPU ok"
+    },
+    {
+      "check": "ram",
+      "status": "PASS",
+      "detail": "62.9 GB available of 67.2 GB (need >= 6.0 GB; largest run: QRM-Cue colour: 2.1 GB frame replay)"
+    },
+    {
+      "check": "disk",
+      "status": "PASS",
+      "detail": "97.7 GB free at /root/temporal-composition-gym/run_scripts/baseline/results (need >= 10.0 GB)"
+    },
+    {
+      "check": "cpu",
+      "status": "PASS",
+      "detail": "20 logical CPUs; OMP_NUM_THREADS=None"
+    },
+    {
+      "check": "wandb login",
+      "status": "PASS",
+      "detail": "logged in (credentials handled by W&B; not read by this code)"
+    },
+    {
+      "check": "wandb online run",
+      "status": "PASS",
+      "detail": "created https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/nrnklky0 in project 'new_experiments'"
+    },
+    {
+      "check": "learning check delivery/qrm",
+      "status": "PASS",
+      "detail": "7s, updates=876, device=cpu, peak RSS 0.88 GB, peak GPU 0.00 GB, 2638 env steps/s, W&B https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/07f94e8ec4c4705b"
+    },
+    {
+      "check": "learning check colour/qrm_cue",
+      "status": "PASS",
+      "detail": "8s, updates=626, device=cuda, peak RSS 1.73 GB, peak GPU 0.06 GB, 1032 env steps/s, W&B https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/84d84541ae9b8d1e"
+    },
+    {
+      "check": "learning check maintenance/ppo_rm",
+      "status": "PASS",
+      "detail": "7s, updates=16, device=cpu, peak RSS 0.93 GB, peak GPU 0.00 GB, 2406 env steps/s, W&B https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/a866c97709dd14c0"
+    },
+    {
+      "check": "rough full-run time",
+      "status": "WARN",
+      "detail": "hours per run (smoke throughput x full budget): {'delivery/qrm': 0.11, 'colour/qrm_cue': 0.81, 'maintenance/ppo_rm': 0.24}; x5 seeds ~ 6 h (lower bound: full-size replay/batches and full evaluations are slower)"
+    }
+  ]
+}

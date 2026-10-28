@@ -1,0 +1,21 @@
+{
+  "state": "complete",
+  "started_utc": "2026-10-28T11:27:41.425815Z",
+  "budget": 3000000,
+  "env_steps_done": 3000000,
+  "final_eval_done": true,
+  "resumes": [],
+  "updated_utc": "2026-10-28T15:08:02.425311Z",
+  "wandb": {
+    "id": "23a4edeb0751c056",
+    "url": "https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/23a4edeb0751c056",
+    "mode": "online",
+    "project": "new_experiments",
+    "entity": null
+  },
+  "n_updates": 745001,
+  "restored_steps": 0,
+  "new_steps_this_session": 3000000,
+  "finished_utc": "2026-10-28T15:08:02.425165Z",
+  "verified": true
+}

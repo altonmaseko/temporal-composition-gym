@@ -1,0 +1,117 @@
+=== protocol v2 baseline batch: role=memoryless mode=full
+    python:   /root/tcg/bin/python 3.12.15
+    repo:     /root/temporal-composition-gym (f772875)
+    results:  /root/temporal-composition-gym/run_scripts/baseline/results
+    batch:    /root/temporal-composition-gym/run_scripts/baseline/results/v2/full/_batches/memoryless__b349376e79ca__20261027T135816Z-4266
+    devices:  policy=plan  threads=4  W&B: online / new_experiments 
+    runs:     25 (one at a time)
+--- preflight
+preflight: role=memoryless host=b349376e79ca Linux-6.8.0-138-generic-x86_64-with-glibc2.39
+[PASS] python: /root/tcg/bin/python (3.12.15)
+[PASS] code source: temporal_comp_gym and agents imported from /root/temporal-composition-gym
+[PASS] code revision: f772875328aeb8e262cf7f4777619ee41568aaa7 on new_experiments
+[PASS] clean checkout: no uncommitted changes to tracked files
+/root/temporal-composition-gym/run_scripts/baseline/baseline_plan.json is up to date
+[PASS] baseline plan file: run_scripts/baseline/baseline_plan.json matches the code
+[PASS] package torch: 2.14.0 (pinned 2.14.0)
+[PASS] package stable_baselines3: 2.9.0 (pinned 2.9.0)
+[PASS] package sb3_contrib: 2.9.0 (pinned 2.9.0)
+[PASS] package gymnasium: 1.3.0 (pinned 1.3.0)
+[PASS] package minigrid: 3.1.0 (pinned 3.1.0)
+[PASS] package pymunk: 7.3.0 (pinned 7.3.0)
+[PASS] package pygame: 2.6.1 (pinned 2.6.1)
+[PASS] package numpy: 2.2.6 (pinned 2.2.6)
+[PASS] package wandb: 0.30.0 (pinned 0.30.0)
+[PASS] package psutil: 7.2.2 (pinned 7.2.2)
+[PASS] package pytablericons: 1.0.1 (pinned 1.0.1)
+[PASS] package PIL: 12.3.0 (pinned 12.3.0)
+[PASS] package requests: 2.34.2 (pinned 2.34.2)
+[WARN] pygame-ce: pygame-ce is installed alongside pygame (same import name)
+[PASS] cuda: 1 GPU(s); using cuda:0 = NVIDIA GeForce RTX 3090, 25.3 GB VRAM, CUDA 13.0
+[PASS] vram: 25.3 GB (need >= 4 GB)
+[PASS] cuda compute: matmul on GPU ok
+[PASS] ram: 51.9 GB available of 66.9 GB (need >= 8.0 GB; largest run: DQN colour: 4.2 GB replay (obs+next) + restart copy)
+[PASS] disk: 97.1 GB free at /root/temporal-composition-gym/run_scripts/baseline/results (need >= 15.0 GB)
+[PASS] cpu: 48 logical CPUs; OMP_NUM_THREADS=4
+wandb: WARNING The anonymous parameter to wandb.login() has no effect and will be removed in future versions.
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /root/.netrc.
+wandb: Currently logged in as: altonmaseko (altonmaseko-wits-university) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+[PASS] wandb login: logged in (credentials handled by W&B; not read by this code)
+wandb: setting up run j1vei1tn
+wandb: Tracking run with wandb version 0.30.0
+wandb: Run data is saved locally in /root/temporal-composition-gym/wandb/run-20261027_135820-j1vei1tn
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run preflight-b349376e79ca-20261027T135820
+wandb: ⭐️ View project at https://wandb.ai/altonmaseko-wits-university/new_experiments
+wandb: 🚀 View run at https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/j1vei1tn
+wandb: Detected [agents] in use.
+wandb: Use W&B Weave for improved LLM call tracing. Install Weave with `pip install weave` then add `import weave` to the top of your script.
+wandb: For more information, check out the docs at: https://weave-docs.wandb.ai
+wandb: updating run metadata; uploading data
+wandb: uploading history steps 0-0, summary, console lines 0-2
+wandb: 
+wandb: Run history:
+wandb: preflight/ok ▁
+wandb: 
+wandb: Run summary:
+wandb: preflight/ok 1
+wandb: 
+wandb: 🚀 View run preflight-b349376e79ca-20261027T135820 at: https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/j1vei1tn
+wandb: ⭐️ View project at: https://wandb.ai/altonmaseko-wits-university/new_experiments
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20261027_135820-j1vei1tn/logs
+[PASS] wandb online run: created https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/j1vei1tn in project 'new_experiments'
+PREFLIGHT PASSED
+[1/25] delivery / dqn / seed 1  (started 2026-10-27T13:58:24Z)
+      ok: complete: final success=0.000 return=0.80
+[2/25] colour / dqn / seed 1  (started 2026-10-27T14:08:21Z)
+      ok: complete: final success=0.000 return=0.00
+[3/25] maintenance / ppo / seed 1  (started 2026-10-27T15:08:12Z)
+      ok: complete: final success=0.000 return=-3365.71
+[4/25] delivery / dqn / seed 2  (started 2026-10-27T15:35:12Z)
+      ok: complete: final success=0.000 return=0.75
+[5/25] colour / dqn / seed 2  (started 2026-10-27T15:45:04Z)
+      ok: complete: final success=0.000 return=-0.10
+[6/25] maintenance / ppo / seed 2  (started 2026-10-27T16:45:17Z)
+      ok: complete: final success=0.010 return=-555.69
+[7/25] delivery / dqn / seed 3  (started 2026-10-27T17:11:48Z)
+      ok: complete: final success=0.000 return=0.65
+[8/25] colour / dqn / seed 3  (started 2026-10-27T17:21:31Z)
+      ok: complete: final success=0.000 return=0.00
+[9/25] maintenance / ppo / seed 3  (started 2026-10-27T18:20:45Z)
+      ok: complete: final success=0.000 return=-3316.82
+[10/25] delivery / dqn / seed 4  (started 2026-10-27T18:47:54Z)
+      ok: complete: final success=0.000 return=0.85
+[11/25] colour / dqn / seed 4  (started 2026-10-27T18:57:45Z)
+      ok: complete: final success=0.000 return=0.00
+[12/25] maintenance / ppo / seed 4  (started 2026-10-27T19:57:24Z)
+      ok: complete: final success=0.000 return=-1084.43
+[13/25] delivery / dqn / seed 5  (started 2026-10-27T20:23:36Z)
+      ok: complete: final success=0.000 return=0.00
+[14/25] colour / dqn / seed 5  (started 2026-10-27T20:33:26Z)
+      ok: complete: final success=0.000 return=-0.06
+[15/25] maintenance / ppo / seed 5  (started 2026-10-27T21:32:37Z)
+      ok: complete: final success=0.000 return=-3104.81
+[16/25] delivery / dqn_ts / seed 1  (started 2026-10-27T21:59:46Z)
+      ok: complete: final success=0.000 return=0.20
+[17/25] colour / dqn_ts / seed 1  (started 2026-10-27T22:09:59Z)
+      ok: complete: final success=0.000 return=0.00
+[18/25] delivery / dqn_ts / seed 2  (started 2026-10-27T23:16:03Z)
+      ok: complete: final success=0.000 return=0.35
+[19/25] colour / dqn_ts / seed 2  (started 2026-10-27T23:26:18Z)
+      ok: complete: final success=0.000 return=0.00
+[20/25] delivery / dqn_ts / seed 3  (started 2026-10-28T00:32:00Z)
+      ok: complete: final success=0.000 return=0.55
+[21/25] colour / dqn_ts / seed 3  (started 2026-10-28T00:42:14Z)
+      ok: complete: final success=0.000 return=-0.09
+[22/25] delivery / dqn_ts / seed 4  (started 2026-10-28T01:47:34Z)
+      ok: complete: final success=0.000 return=0.25
+[23/25] colour / dqn_ts / seed 4  (started 2026-10-28T01:57:50Z)
+      ok: complete: final success=0.000 return=0.00
+[24/25] delivery / dqn_ts / seed 5  (started 2026-10-28T03:03:49Z)
+      ok: complete: final success=0.000 return=0.42
+[25/25] colour / dqn_ts / seed 5  (started 2026-10-28T03:14:04Z)
+      ok: complete: final success=0.000 return=0.00
+=== batch memoryless__b349376e79ca__20261027T135816Z-4266: 25 of 25 runs attempted
+All 25 runs exited 0 (each verified its budget and final evaluation).
+Check the full matrix with: /root/tcg/bin/python run_scripts/baseline/check_manifest.py --mode full

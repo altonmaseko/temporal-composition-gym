@@ -1,0 +1,34 @@
+{
+  "global_step": 3000000,
+  "n_updates": 745001,
+  "train_episodes": 10017,
+  "final_eval": {
+    "n_episodes": 200,
+    "return_mean": 0.0,
+    "return_std": 0.0,
+    "return_min": 0.0,
+    "return_max": 0.0,
+    "success_rate": 0.0,
+    "length_mean": 300.0,
+    "progress_mean": 0.0,
+    "causes": {
+      "timeout": 200
+    }
+  },
+  "last_periodic_eval": {
+    "n_episodes": 50,
+    "return_mean": 0.0,
+    "return_std": 0.0,
+    "return_min": 0.0,
+    "return_max": 0.0,
+    "success_rate": 0.0,
+    "length_mean": 300.0,
+    "progress_mean": 0.0,
+    "causes": {
+      "timeout": 50
+    }
+  },
+  "config_hash": "a2115c1cc23fa86e8f18e056c431ad671fbc0eff4cdcb6421506afe5f5bdd7db",
+  "run_id": "baseline-v2-full-colour-qrm_cue-s3-a2115c1cc2-20261027T162646Z-0f42ae",
+  "completed_utc": "2026-10-27T17:10:15.774412Z"
+}

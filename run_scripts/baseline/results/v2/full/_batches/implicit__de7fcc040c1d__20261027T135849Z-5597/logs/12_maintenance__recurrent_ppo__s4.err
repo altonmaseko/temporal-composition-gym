@@ -1,0 +1,44 @@
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /root/.netrc.
+wandb: Currently logged in as: altonmaseko (altonmaseko-wits-university) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.30.0
+wandb: Run data is saved locally in /root/temporal-composition-gym/run_scripts/baseline/results/v2/full/maintenance/recurrent_ppo/seed4__7e37178c0b__20261028T095235Z-184e52/wandb/run-20261028_095237-0144a288aa97f66e
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run baseline-v2-full-maintenance-recurrent_ppo-s4-7e37178c0b-20261028T095235Z-184e52
+wandb: ⭐️ View project at https://wandb.ai/altonmaseko-wits-university/new_experiments
+wandb: 🚀 View run at https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/0144a288aa97f66e
+wandb: Detected [agents] in use.
+wandb: Use W&B Weave for improved LLM call tracing. Install Weave with `pip install weave` then add `import weave` to the top of your script.
+wandb: For more information, check out the docs at: https://weave-docs.wandb.ai
+wandb: updating run metadata
+wandb: uploading output.log; uploading wandb-summary.json; uploading config.yaml
+wandb: 
+wandb: Run history:
+wandb: eval/cause/timeout ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:         eval/index ▁▁▂▂▂▃▃▃▄▄▅▅▅▆▆▆▇▇▇██
+wandb:   eval/length_mean ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:    eval/n_episodes ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb: eval/progress_mean ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:    eval/return_max ▁████████████████████
+wandb:   eval/return_mean ▁████████████████████
+wandb:    eval/return_min ▁████████████████████
+wandb:    eval/return_std ▁▅███████████████████
+wandb:  eval/success_rate ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                +34 ...
+wandb: 
+wandb: Run summary:
+wandb: eval/cause/timeout 1
+wandb:         eval/index 20
+wandb:   eval/length_mean 4000
+wandb:    eval/n_episodes 20
+wandb: eval/progress_mean 0
+wandb:    eval/return_max -3105.3
+wandb:   eval/return_mean -3320.27
+wandb:    eval/return_min -3508.1
+wandb:    eval/return_std 174.35803
+wandb:  eval/success_rate 0
+wandb:                +35 ...
+wandb: 
+wandb: 🚀 View run baseline-v2-full-maintenance-recurrent_ppo-s4-7e37178c0b-20261028T095235Z-184e52 at: https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/0144a288aa97f66e
+wandb: ⭐️ View project at: https://wandb.ai/altonmaseko-wits-university/new_experiments
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./run_scripts/baseline/results/v2/full/maintenance/recurrent_ppo/seed4__7e37178c0b__20261028T095235Z-184e52/wandb/run-20261028_095237-0144a288aa97f66e/logs

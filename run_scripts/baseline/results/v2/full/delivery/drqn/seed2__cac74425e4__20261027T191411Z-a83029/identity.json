@@ -1,0 +1,18 @@
+{
+  "run_id": "baseline-v2-full-delivery-drqn-s2-cac74425e4-20261027T191411Z-a83029",
+  "run_uid": "20261027T191411Z-a83029",
+  "wandb_id": "240deca49512c513",
+  "config_hash": "cac74425e4db4341f4b67beb6bcb225f64c592ab20d6c3f9f05d97e04cf91bde",
+  "protocol_version": "v2",
+  "phase": "baseline",
+  "mode": "full",
+  "env": "delivery",
+  "algo": "drqn",
+  "family": "implicit",
+  "seed": 2,
+  "machine_role": "implicit",
+  "batch_id": "implicit__de7fcc040c1d__20261027T135849Z-5597",
+  "results_root": null,
+  "run_dir": "/root/temporal-composition-gym/run_scripts/baseline/results/v2/full/delivery/drqn/seed2__cac74425e4__20261027T191411Z-a83029",
+  "created_utc": "2026-10-27T19:14:11.871837Z"
+}

@@ -1,0 +1,75 @@
+{
+  "protocol_version": "v2",
+  "phase": "baseline",
+  "mode": "full",
+  "env": {
+    "key": "delivery",
+    "id": "TemporalComp/HazardousDelivery-v0",
+    "variant": "main",
+    "kwargs": {
+      "grid_size": 10,
+      "percent_death_squares": 0.05,
+      "percent_damage_squares": 0.05,
+      "randomise_start": true,
+      "randomise_goal": true,
+      "num_packages": 3,
+      "carrying_capacity": 1,
+      "health_regeneration_nodes": 2,
+      "task_dependencies": false,
+      "include_health_in_state": true,
+      "include_inventory_in_state": false,
+      "max_steps": 500,
+      "resample_unsolvable": true
+    }
+  },
+  "algo": {
+    "name": "qrm",
+    "family": "explicit",
+    "impl": "custom",
+    "hyperparams": {
+      "encoder": "mlp",
+      "enc_dim": 128,
+      "hidden_dim": 128,
+      "gamma": 0.99,
+      "lr": 0.0005,
+      "replay_frames": 100000,
+      "learning_starts": 10000,
+      "train_freq": 4,
+      "target_update": 2000,
+      "batch_size": 32,
+      "eps_start": 1.0,
+      "eps_end": 0.05,
+      "eps_fraction": 0.2,
+      "grad_clip": 10.0
+    }
+  },
+  "seed": {
+    "train_seed": 2,
+    "train_env_reset_seed": 10002000
+  },
+  "budget": {
+    "env_steps": 1000000
+  },
+  "eval": {
+    "n_points": 20,
+    "every_steps": 50000,
+    "periodic_episodes": 50,
+    "final_episodes": 200,
+    "periodic_seed_block": "periodic",
+    "final_seed_block": "final",
+    "policy": "greedy (epsilon=0 / deterministic=True); recurrent state reset at episode start"
+  },
+  "checkpoint": {
+    "every_steps": 100000,
+    "save_replay": true
+  },
+  "logging": {
+    "train_log_every_steps": 5000
+  },
+  "overrides": {},
+  "wandb": {
+    "project": "new_experiments",
+    "entity": null,
+    "group": "baseline-v2"
+  }
+}

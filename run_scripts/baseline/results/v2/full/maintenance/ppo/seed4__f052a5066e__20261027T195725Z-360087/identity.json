@@ -1,0 +1,18 @@
+{
+  "run_id": "baseline-v2-full-maintenance-ppo-s4-f052a5066e-20261027T195725Z-360087",
+  "run_uid": "20261027T195725Z-360087",
+  "wandb_id": "45b3967592e8c8af",
+  "config_hash": "f052a5066e995f6e6d471d1a00ab8a351c94eea01c40f8b4e6ac93fb9074bc5e",
+  "protocol_version": "v2",
+  "phase": "baseline",
+  "mode": "full",
+  "env": "maintenance",
+  "algo": "ppo",
+  "family": "memoryless",
+  "seed": 4,
+  "machine_role": "memoryless",
+  "batch_id": "memoryless__b349376e79ca__20261027T135816Z-4266",
+  "results_root": null,
+  "run_dir": "/root/temporal-composition-gym/run_scripts/baseline/results/v2/full/maintenance/ppo/seed4__f052a5066e__20261027T195725Z-360087",
+  "created_utc": "2026-10-27T19:57:25.792408Z"
+}
