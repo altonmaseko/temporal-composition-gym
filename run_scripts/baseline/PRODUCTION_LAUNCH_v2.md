@@ -1,6 +1,6 @@
 # Protocol v2 baseline: production launch and collection contract
 
-Status: **ready to launch, subject to the cloud preflight on each machine** (sections 4 and 7). Validated code revision: `7d94a93`.
+Status: **ready to launch, subject to the cloud preflight on each machine** (step B in sections 4-6). Validated code revision: `7d94a93`.
 All agreed comparisons and local checks are implemented; the local offline validation
 report is [validation/pipeline_validation_v2.json](validation/pipeline_validation_v2.json) and
 the task solvability report is [validation/task_validation_v2.json](validation/task_validation_v2.json).
@@ -9,9 +9,9 @@ the task solvability report is [validation/task_validation_v2.json](validation/t
 
 Launch every machine from the same commit of branch `new_experiments`. The validated code
 revision is named in section 8; later commits that change only documentation or reports
-are equivalent. Every run records the exact `git rev-parse HEAD`, dirty-file list and diff
-hash in its `metadata.json`, and preflight warns if the checkout is not clean. Push the
-branch to GitHub before renting the machines (they clone from `origin`).
+are equivalent (the setup step checks that the code is identical). Every run records the exact
+`git rev-parse HEAD`, dirty-file list and diff hash in its `metadata.json`, and preflight warns
+if the checkout is not clean. The machines clone `new_experiments` from GitHub.
 
 ## 2. What will run
 
@@ -35,100 +35,276 @@ tags `baseline, v2, full, <family>, <env>, <algo>, seed<n>`. Smoke/preflight run
 `baseline-v2-smoke` / `preflight-v2`. The x-axis of every metric is `global_step`
 (environment interactions).
 
-## 3. One-time setup on each machine (Linux, NVIDIA GPU, Python >= 3.10)
+## 3. The three machines
 
+| Role | Vast.ai instance | Connect from PowerShell on your laptop | Runs |
+|---|---|---|---|
+| memoryless | 57966532 | `ssh -p 43164 root@85.146.9.40 -L 8080:localhost:8080` | 25 |
+| implicit | 57966535 | `ssh -p 40002 root@142.198.191.106 -L 8080:localhost:8080` | 15 |
+| explicit | 57966540 | `ssh -p 40031 root@83.229.2.69 -L 8080:localhost:8080` | 15 |
+
+Each SSH login opens inside tmux on the machine, so training keeps running when you close
+PowerShell; connecting again with the same command returns you to it. If you have two or three
+connections open at once, the second and third print a harmless warning that local port 8080 is
+already in use.
+
+Every machine follows the same five steps: **A** setup, **B** preflight, **C** launch, **D** wait,
+**E** bundle the results. Then you download and publish from your laptop (section 7). The
+commands below are complete; run them exactly as written, one block at a time, on the machine
+named in the heading.
+
+## 4. Memoryless machine (instance 57966532)
+
+Connect (PowerShell on your laptop):
+```powershell
+ssh -p 43164 root@85.146.9.40 -L 8080:localhost:8080
+```
+
+**A. Setup** (once). Clone the code:
 ```bash
 git clone --branch new_experiments https://github.com/altonmaseko/temporal-composition-gym.git ~/temporal-composition-gym
-cd ~/temporal-composition-gym && git log -1 --oneline
-git diff --stat 7d94a93 HEAD -- agents temporal_comp_gym run_scripts/baseline requirements.txt setup.py \
-    ':(exclude)run_scripts/baseline/*.md' ':(exclude)run_scripts/baseline/validation'   # must print nothing
-python3 -m venv ~/tcg && ~/tcg/bin/python -m pip install --upgrade pip
-~/tcg/bin/python -m pip install -r requirements.txt
-~/tcg/bin/wandb login          # paste the API key once; stored by W&B in ~/.netrc, never read by this code
 ```
-
-## 4. Cloud preflight (one per machine; about 3-10 minutes; does not use the training budget)
-
+Confirm the code equals the validated revision. It must print the commit line, then `CODE CHECK DONE`, and nothing in between:
 ```bash
-cd ~/temporal-composition-gym
-~/tcg/bin/python run_scripts/baseline/preflight.py --role memoryless --learning-check --out ~/preflight_memoryless.json
-~/tcg/bin/python run_scripts/baseline/preflight.py --role implicit   --learning-check --out ~/preflight_implicit.json
-~/tcg/bin/python run_scripts/baseline/preflight.py --role explicit   --learning-check --out ~/preflight_explicit.json
+cd ~/temporal-composition-gym && git log -1 --oneline && git diff --stat 7d94a93 HEAD -- '*.py' '*.sh' requirements.txt setup.py run_scripts/baseline/baseline_plan.json ':(exclude)play_human' && echo "CODE CHECK DONE"
 ```
-
-Run only the line for that machine's role. It must end with `PREFLIGHT PASSED`. It checks the
-interpreter, that this checkout's code is imported, the code revision and plan file, package
-versions, CUDA and VRAM, RAM and disk for the role's largest run, W&B login and an online run in
-`new_experiments`, and then a labelled smoke training of each of the role's algorithms, which must
-show gradient updates, all evaluations, a restart checkpoint, the GPU for colour runs, and an online
-W&B URL created by the training process itself. It also prints rough per-run time projections from
-the measured throughput (a lower bound).
-
-## 5. Production commands (one per machine)
-
+Create the Python environment (installs the venv package first if the image lacks it):
 ```bash
-cd ~/temporal-composition-gym && tmux new -s baseline
+python3 --version && (python3 -m venv ~/tcg || (apt-get update && apt-get install -y python3-venv && python3 -m venv --clear ~/tcg))
 ```
-
-Memoryless machine:
+Install the dependencies (several minutes; PyTorch is large):
 ```bash
-bash run_scripts/baseline/run_memoryless_baselines.sh --python ~/tcg/bin/python --threads 4 2>&1 | tee -a ~/baseline_memoryless.log
+~/tcg/bin/python -m pip install --upgrade pip && ~/tcg/bin/python -m pip install -r ~/temporal-composition-gym/requirements.txt
 ```
-
-Implicit-memory machine:
+Log in to W&B (paste your API key when asked; the input stays hidden):
 ```bash
-bash run_scripts/baseline/run_implicit_memory_baselines.sh --python ~/tcg/bin/python --threads 4 2>&1 | tee -a ~/baseline_implicit.log
+~/tcg/bin/wandb login
 ```
 
-Explicit-memory machine:
+**B. Preflight** (3-10 minutes). It must end with `PREFLIGHT PASSED`:
 ```bash
-bash run_scripts/baseline/run_explicit_memory_baselines.sh --python ~/tcg/bin/python --threads 4 2>&1 | tee -a ~/baseline_explicit.log
+cd ~/temporal-composition-gym && ~/tcg/bin/python run_scripts/baseline/preflight.py --role memoryless --learning-check --out ~/preflight_memoryless.json
 ```
 
-Each launcher reruns the preflight (without the learning check) and stops before training if
-it fails. Detach with `Ctrl-b d`; reattach with `tmux attach -t baseline`.
+**C. Launch** the 25 runs:
+```bash
+cd ~/temporal-composition-gym && bash run_scripts/baseline/run_memoryless_baselines.sh --python ~/tcg/bin/python --threads 4 2>&1 | tee -a ~/baseline_memoryless.log
+```
 
-## 6. Monitoring, failures and restart
+**D. Wait.** You can close PowerShell. To check progress later, connect again, or from any shell on the machine run:
+```bash
+tail -n 20 ~/baseline_memoryless.log
+```
+It is finished when the log ends with `All 25 runs exited 0 (each verified its budget and final evaluation).` If it ends with `BATCH FAILED` instead, see section 6.
 
-- **Per run**: the launcher prints `ok: complete: ...` or `FAILED (exit N)` with the last lines
-  of stderr. Logs: `run_scripts/baseline/results/v2/full/_batches/<batch>/logs/`.
-- **Per batch**: `batch_status.tsv` (exit code per run). The launcher exits nonzero and prints
-  `BATCH FAILED` if any run failed or was not attempted; it never prints a success summary then.
+**E. Bundle the results** (after it has finished). It shows the end of the log, adds the preflight report and log to the results, packs everything except the restart checkpoints (`checkpoints/restart`, which hold the replay buffer) and the W&B cache, and prints the bundle size:
+```bash
+cd ~/temporal-composition-gym && tail -n 3 ~/baseline_memoryless.log && mkdir -p run_scripts/baseline/results/v2/full/_machine_logs/memoryless && cp ~/preflight_memoryless.json ~/baseline_memoryless.log run_scripts/baseline/results/v2/full/_machine_logs/memoryless/ && tar -czf ~/collect_memoryless.tar.gz --exclude='*/checkpoints/restart*' --exclude='*/wandb' run_scripts/baseline/results/v2/full && ls -lh ~/collect_memoryless.tar.gz
+```
+
+## 5. Implicit-memory machine (instance 57966535)
+
+Connect (PowerShell on your laptop):
+```powershell
+ssh -p 40002 root@142.198.191.106 -L 8080:localhost:8080
+```
+
+**A. Setup** (once). Clone the code:
+```bash
+git clone --branch new_experiments https://github.com/altonmaseko/temporal-composition-gym.git ~/temporal-composition-gym
+```
+Confirm the code equals the validated revision. It must print the commit line, then `CODE CHECK DONE`, and nothing in between:
+```bash
+cd ~/temporal-composition-gym && git log -1 --oneline && git diff --stat 7d94a93 HEAD -- '*.py' '*.sh' requirements.txt setup.py run_scripts/baseline/baseline_plan.json ':(exclude)play_human' && echo "CODE CHECK DONE"
+```
+Create the Python environment:
+```bash
+python3 --version && (python3 -m venv ~/tcg || (apt-get update && apt-get install -y python3-venv && python3 -m venv --clear ~/tcg))
+```
+Install the dependencies:
+```bash
+~/tcg/bin/python -m pip install --upgrade pip && ~/tcg/bin/python -m pip install -r ~/temporal-composition-gym/requirements.txt
+```
+Log in to W&B:
+```bash
+~/tcg/bin/wandb login
+```
+
+**B. Preflight.** It must end with `PREFLIGHT PASSED`:
+```bash
+cd ~/temporal-composition-gym && ~/tcg/bin/python run_scripts/baseline/preflight.py --role implicit --learning-check --out ~/preflight_implicit.json
+```
+
+**C. Launch** the 15 runs:
+```bash
+cd ~/temporal-composition-gym && bash run_scripts/baseline/run_implicit_memory_baselines.sh --python ~/tcg/bin/python --threads 4 2>&1 | tee -a ~/baseline_implicit.log
+```
+
+**D. Wait.** Check progress:
+```bash
+tail -n 20 ~/baseline_implicit.log
+```
+It is finished when the log ends with `All 15 runs exited 0 (each verified its budget and final evaluation).`
+
+**E. Bundle the results:**
+```bash
+cd ~/temporal-composition-gym && tail -n 3 ~/baseline_implicit.log && mkdir -p run_scripts/baseline/results/v2/full/_machine_logs/implicit && cp ~/preflight_implicit.json ~/baseline_implicit.log run_scripts/baseline/results/v2/full/_machine_logs/implicit/ && tar -czf ~/collect_implicit.tar.gz --exclude='*/checkpoints/restart*' --exclude='*/wandb' run_scripts/baseline/results/v2/full && ls -lh ~/collect_implicit.tar.gz
+```
+
+## 6. Explicit-memory machine (instance 57966540)
+
+Connect (PowerShell on your laptop):
+```powershell
+ssh -p 40031 root@83.229.2.69 -L 8080:localhost:8080
+```
+
+**A. Setup** (once). Clone the code:
+```bash
+git clone --branch new_experiments https://github.com/altonmaseko/temporal-composition-gym.git ~/temporal-composition-gym
+```
+Confirm the code equals the validated revision. It must print the commit line, then `CODE CHECK DONE`, and nothing in between:
+```bash
+cd ~/temporal-composition-gym && git log -1 --oneline && git diff --stat 7d94a93 HEAD -- '*.py' '*.sh' requirements.txt setup.py run_scripts/baseline/baseline_plan.json ':(exclude)play_human' && echo "CODE CHECK DONE"
+```
+Create the Python environment:
+```bash
+python3 --version && (python3 -m venv ~/tcg || (apt-get update && apt-get install -y python3-venv && python3 -m venv --clear ~/tcg))
+```
+Install the dependencies:
+```bash
+~/tcg/bin/python -m pip install --upgrade pip && ~/tcg/bin/python -m pip install -r ~/temporal-composition-gym/requirements.txt
+```
+Log in to W&B:
+```bash
+~/tcg/bin/wandb login
+```
+
+**B. Preflight.** It must end with `PREFLIGHT PASSED`:
+```bash
+cd ~/temporal-composition-gym && ~/tcg/bin/python run_scripts/baseline/preflight.py --role explicit --learning-check --out ~/preflight_explicit.json
+```
+
+**C. Launch** the 15 runs:
+```bash
+cd ~/temporal-composition-gym && bash run_scripts/baseline/run_explicit_memory_baselines.sh --python ~/tcg/bin/python --threads 4 2>&1 | tee -a ~/baseline_explicit.log
+```
+
+**D. Wait.** Check progress:
+```bash
+tail -n 20 ~/baseline_explicit.log
+```
+It is finished when the log ends with `All 15 runs exited 0 (each verified its budget and final evaluation).`
+
+**E. Bundle the results:**
+```bash
+cd ~/temporal-composition-gym && tail -n 3 ~/baseline_explicit.log && mkdir -p run_scripts/baseline/results/v2/full/_machine_logs/explicit && cp ~/preflight_explicit.json ~/baseline_explicit.log run_scripts/baseline/results/v2/full/_machine_logs/explicit/ && tar -czf ~/collect_explicit.tar.gz --exclude='*/checkpoints/restart*' --exclude='*/wandb' run_scripts/baseline/results/v2/full && ls -lh ~/collect_explicit.tar.gz
+```
+
+## 6b. Monitoring, failures and restart
+
+- **Per run**: the launcher prints `[i/N] env / algo / seed s`, then `ok: complete: ...` or
+  `FAILED (exit N)` with the last lines of stderr. Per-run logs:
+  `~/temporal-composition-gym/run_scripts/baseline/results/v2/full/_batches/<batch>/logs/`.
+- **Per batch**: `batch_status.tsv` in the same batch folder (exit code per run). The launcher
+  exits nonzero and prints `BATCH FAILED` if any run failed or was not attempted; it never prints a
+  success summary then.
 - **Per run directory**: `status.json` `state` is `complete` only after the budget and every
   evaluation are verified; `failed` carries the error and traceback.
 - **Whole matrix**: `check_manifest.py` (section 7) exits 0 only when all 55 runs are complete
   exactly once.
 
-**Restart after a crash, reboot or failed run** - rerun the same launcher command with
-`--continue-batch`:
+**If a machine reboots, the connection to a run is lost, or the log ends with `BATCH FAILED`:**
+connect to that machine and run its restart command. It skips runs that are already complete,
+resumes unfinished runs from their last checkpoint (every 10% of the budget), and starts the rest
+fresh. Do not rerun the plain launch command: that would start every run again.
 
+Memoryless machine:
 ```bash
-bash run_scripts/baseline/run_implicit_memory_baselines.sh --python ~/tcg/bin/python --threads 4 --continue-batch 2>&1 | tee -a ~/baseline_implicit.log
+cd ~/temporal-composition-gym && bash run_scripts/baseline/run_memoryless_baselines.sh --python ~/tcg/bin/python --threads 4 --continue-batch 2>&1 | tee -a ~/baseline_memoryless.log
+```
+Implicit-memory machine:
+```bash
+cd ~/temporal-composition-gym && bash run_scripts/baseline/run_implicit_memory_baselines.sh --python ~/tcg/bin/python --threads 4 --continue-batch 2>&1 | tee -a ~/baseline_implicit.log
+```
+Explicit-memory machine:
+```bash
+cd ~/temporal-composition-gym && bash run_scripts/baseline/run_explicit_memory_baselines.sh --python ~/tcg/bin/python --threads 4 --continue-batch 2>&1 | tee -a ~/baseline_explicit.log
 ```
 
-For every planned run it then skips the run if a verified complete run with the planned
-config hash exists, resumes the most recent unfinished run that has a restart checkpoint, or
-starts it fresh otherwise. Resume is an episode-boundary restart (weights, optimiser, replay,
-RNG streams, counters and evaluation progress restored; the episode in progress restarts), and
-`status.json` reports `restored_steps` and `new_steps_this_session`. Fix the cause of a
-`failed` run first (its `status.json` has the traceback). Without `--continue-batch` the
-launcher always starts fresh runs.
+If the same run fails again, look at the error in its `status.json` (the `FAILED` line names the
+run) before retrying. Resume is an episode-boundary restart: weights, optimiser, replay, RNG
+streams, counters and evaluation progress are restored and the episode in progress starts again;
+`status.json` reports `restored_steps` and `new_steps_this_session`.
 
-## 7. Collecting the three machines
+## 7. Download, check and publish (PowerShell on your laptop)
 
-Run directories are unique, so copies merge without overwriting:
+Do this after step E has been done on all three machines. Keep the machines running until the
+last command below has succeeded: until then they hold the only complete copy.
 
-```bash
-mkdir -p ~/baseline_v2 && cd ~/baseline_v2
-rsync -a --exclude 'checkpoints/' --exclude 'wandb/' memoryless-host:temporal-composition-gym/run_scripts/baseline/results/v2/full/ results/v2/full/
-rsync -a --exclude 'checkpoints/' --exclude 'wandb/' implicit-host:temporal-composition-gym/run_scripts/baseline/results/v2/full/   results/v2/full/
-rsync -a --exclude 'checkpoints/' --exclude 'wandb/' explicit-host:temporal-composition-gym/run_scripts/baseline/results/v2/full/   results/v2/full/
-python <repo>/run_scripts/baseline/check_manifest.py --root ~/baseline_v2/results --json ~/baseline_v2/manifest.json
+Download the three bundles to your Downloads folder:
+```powershell
+scp -P 43164 root@85.146.9.40:collect_memoryless.tar.gz "$HOME\Downloads"
+```
+```powershell
+scp -P 40002 root@142.198.191.106:collect_implicit.tar.gz "$HOME\Downloads"
+```
+```powershell
+scp -P 40031 root@83.229.2.69:collect_explicit.tar.gz "$HOME\Downloads"
 ```
 
-Drop the two `--exclude` options to also keep policy snapshots and restart checkpoints
-(several GB per colour run). Also copy each machine's `~/preflight_<role>.json` and
-`~/baseline_<role>.log`.
+Go to the repository and bring it up to date with GitHub:
+```powershell
+cd "C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym"
+```
+```powershell
+git pull --ff-only origin new_experiments
+```
+
+Unpack the three bundles into the repository. Run folder names are unique, so they merge into
+`run_scripts\baseline\results\v2\full\` without overwriting each other:
+```powershell
+tar -xzf "$HOME\Downloads\collect_memoryless.tar.gz"
+```
+```powershell
+tar -xzf "$HOME\Downloads\collect_implicit.tar.gz"
+```
+```powershell
+tar -xzf "$HOME\Downloads\collect_explicit.tar.gz"
+```
+
+Check that all 55 runs arrived complete. The last line must read `55/55 planned runs complete`:
+```powershell
+D:\miniconda3\envs\temporal_gym\python.exe run_scripts/baseline/check_manifest.py --json run_scripts/baseline/results/v2/full/manifest.json
+```
+
+Stage the results and confirm that no checkpoint files are staged (this second command must print nothing):
+```powershell
+git add run_scripts/baseline/results
+```
+```powershell
+git status --short | Select-String checkpoints
+```
+
+Commit and push:
+```powershell
+git commit -m "Add protocol v2 baseline results from the three machines"
+```
+```powershell
+git push origin new_experiments
+```
+
+What ends up where:
+
+| | Laptop | GitHub | W&B |
+|---|---|---|---|
+| CSV/JSON records, manifest, batch logs, machine logs | yes | yes | – |
+| Policy snapshots (`checkpoints/policy_step*`, every 10%) | yes | no (ignored by `.gitignore`) | – |
+| Restart checkpoints with replay (`checkpoints/restart`) | no | no | – |
+| Metrics, curves, summaries | in the CSVs | in the CSVs | yes, project `new_experiments` |
+
+The policy snapshots exist only on your laptop after this, so back up
+`run_scripts\baseline\results` (or the three `.tar.gz` files in Downloads) to an external disk or
+cloud drive. Once the push has succeeded and the backup exists, you can destroy the instances.
 
 **Cloud-specific checks that are still open** (they cannot be done locally):
 
@@ -188,7 +364,7 @@ preflight reports measured projections for each machine.
 
 **Readiness:** the agreed comparisons (45 main runs + 10 controls) and all local checks are
 implemented and passing, so the pipeline is ready for production **once each machine's cloud
-preflight passes** (section 7 lists what only the cloud can verify).
+preflight passes** (the list after section 7 shows what only the cloud can verify).
 
 ## 9. Baseline collection contract (what the analysis phase receives)
 
