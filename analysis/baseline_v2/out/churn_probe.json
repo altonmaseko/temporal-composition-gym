@@ -1,0 +1,66 @@
+{
+  "snapshots": [
+    700000,
+    800000,
+    900000,
+    1000000
+  ],
+  "epsilon": 0.05,
+  "episodes_per_cell_mode": 100,
+  "table": [
+    {
+      "algo": "dqn",
+      "mode": "final",
+      "progress": 0.28,
+      "ret": -20.78,
+      "length": 351.92,
+      "lava": 0.27,
+      "timeout": 0.54
+    },
+    {
+      "algo": "dqn",
+      "mode": "mixture",
+      "progress": 1.11,
+      "ret": -20.61,
+      "length": 300.33,
+      "lava": 0.46,
+      "timeout": 0.32
+    },
+    {
+      "algo": "dqn_ts",
+      "mode": "final",
+      "progress": 0.24,
+      "ret": -22.3,
+      "length": 337.29,
+      "lava": 0.32,
+      "timeout": 0.52
+    },
+    {
+      "algo": "dqn_ts",
+      "mode": "mixture",
+      "progress": 1.3,
+      "ret": -18.52,
+      "length": 285.24,
+      "lava": 0.41,
+      "timeout": 0.26
+    },
+    {
+      "algo": "qrm",
+      "mode": "final",
+      "progress": 0.32,
+      "ret": -20.57,
+      "length": 366.08,
+      "lava": 0.31,
+      "timeout": 0.54
+    },
+    {
+      "algo": "qrm",
+      "mode": "mixture",
+      "progress": 1.01,
+      "ret": -19.05,
+      "length": 304.31,
+      "lava": 0.4,
+      "timeout": 0.38
+    }
+  ]
+}

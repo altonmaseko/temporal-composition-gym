@@ -1,0 +1,31 @@
+A delivery {"oracle": {"return": 80.0, "disc_0.99": 62.39164012821493, "disc_0.999": 77.99773331491606, "length": 32.4, "first_pos_reward_step": 5.5, "last_pos_reward_step": 31.4, "discount_weight_of_final_reward": 0.7315614700286168}, "oracle_success": 1.0, "random": {"return": -49.75, "disc_0.99": -37.05290503606197, "length": 39.9, "causes": {"lava": 16, "premature_goal": 3, "damage_death": 1}}, "episodes
+A colour {"oracle": {"return": 10.0, "disc_0.99": 4.459615439210375, "disc_0.999": 9.22131195416154, "length": 82.1, "first_pos_reward_step": 81.1, "last_pos_reward_step": 81.1, "discount_weight_of_final_reward": 0.4459615439210375}, "oracle_success": 1.0, "random": {"return": -0.85, "disc_0.99": -0.14847159826737497, "length": 300.0, "causes": {"timeout": 20}}, "episodes": 20, "effective_horizon_steps_1_o
+A maintenance {"oracle": {"return": 1071.5000000000007, "disc_0.99": -4.930576606601564, "disc_0.999": 286.76173242719904, "length": 1379.6, "first_pos_reward_step": 666.6, "last_pos_reward_step": 1378.6, "discount_weight_of_final_reward": 8.203707866158314e-06}, "oracle_success": 1.0, "random": {"return": -5624.260000000216, "disc_0.99": -28.673720641294448, "length": 4000.0, "causes": {"timeout": 5}}, "episod
+C delivery dqn [(23.062889099121094, 23.741466522216797), (12.699979782104492, 14.569046974182129), (20.597095489501953, 22.081668853759766), (21.05820083618164, 21.750518798828125), (17.448650360107422, 18.28221893310547)]
+C delivery drqn [(18.10565948486328, 30.201204299926758), (18.542949676513672, 30.601783752441406), (14.155823707580566, 25.055500030517578), (11.85279369354248, 23.3846378326416), (17.604524612426758, 29.419336318969727)]
+C delivery qrm [(21.370512008666992, 73.21849060058594), (18.156902313232422, 64.47299194335938), (27.817604064941406, 62.537269592285156), (22.53992462158203, 119.99847412109375), (17.621416091918945, 45.513832092285156)]
+C delivery dqn_ts [(22.58110237121582, 24.344106674194336), (21.68456268310547, 24.09941864013672), (24.362232208251953, 28.931472778320312), (16.106813430786133, 19.66800308227539), (17.01690101623535, 20.509532928466797)]
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.61GB
+  warnings.warn(
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.56GB
+  warnings.warn(
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.57GB
+  warnings.warn(
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.54GB
+  warnings.warn(
+C colour dqn [(0.9941564798355103, 1.1231541633605957), (1.3269740343093872, 1.667107105255127), (0.7506673336029053, 0.7933048009872437), (0.8138330578804016, 0.8588496446609497), (0.7725357413291931, 0.8421304821968079)]
+C colour drqn [(1.0404775142669678, 1.3554332256317139), (0.7540170550346375, 0.8692194223403931), (1.462099552154541, 1.748844027519226), (1.1241995096206665, 1.3383784294128418), (1.0325897932052612, 1.4208101034164429)]
+C colour qrm_cue [(6.866432189941406, 867.79931640625), (1.1631512641906738, 3.567554473876953), (1.7428370714187622, 7.222405910491943), (1.6276239156723022, 12.136369705200195), (0.8851866126060486, 40.92762756347656)]
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.54GB
+  warnings.warn(
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.51GB
+  warnings.warn(
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.52GB
+  warnings.warn(
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.55GB
+  warnings.warn(
+C colour dqn_ts [(2.2246601581573486, 2.3591694831848145), (0.6055781245231628, 0.6642451286315918), (0.9590341448783875, 1.1978918313980103), (0.9358474612236023, 1.098678708076477), (0.6959120035171509, 0.7826390862464905)]
+D ppo [(-1.17, 1.67, -79.63568878173828, -54.2), (0.12, 0.07, -27.474212646484375, -3.2), (-0.73, 1.76, -55.367671966552734, -54.2), (0.25, -0.0, 5.398455619812012, -3.1), (-0.33, 1.02, -80.3521728515625, -56.3)]
+D recurrent_ppo [(-1.0, -1.0, None, -54.0), (-0.6, 0.81, None, -7.4), (-0.95, 0.96, None, -59.5), (-1.0, 1.0, None, -54.2), (-1.0, 1.0, None, -54.2)]
+D ppo_rm [(0.04, 0.05, -20.959014892578125, -2.0), (0.25, 0.01, -8.66958999633789, -31.8), (-0.97, -0.99, -73.6910171508789, -55.0), (-1.44, -1.68, -82.79666900634766, -54.8), (0.15, -0.06, -23.13262176513672, -3.3)]
+wrote C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym\analysis\baseline_v2\out\suspects.json

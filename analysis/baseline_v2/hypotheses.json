@@ -1,0 +1,385 @@
+{
+  "note": "Ranked failure-mode hypotheses per cell (rank 1 = most likely main cause of ~0% final success). status: confirmed = shown directly by the analysis; supported = consistent evidence, not isolated by an intervention; open = untested. Evidence keys refer to out/*.json and REPORT.md sections.",
+  "defects": {
+    "pipeline_defects_found": [],
+    "checked_and_clean": [
+      "manifest 55/55 complete, one attempt each, no resumes, no failed attempts",
+      "config hashes and resolved configs equal baseline_plan.json; plan file equals plan code",
+      "budgets exact; sum of training-episode lengths equals the last episode's global_step in every run; 21 eval points at 0,5%,...,100%; 200/100 final episodes",
+      "gradient-update counts equal the analytic expectation in every run",
+      "training seeds 1-5, env reset seed 10,000,000+1000*seed, eval episode seeds 1,000,000+/2,000,000+ identical across all 55 runs; no two seeds of a cell share their first 50 training episodes",
+      "single code revision f772875 for all runs, code-identical to validated 7d94a93 (differences are docs and play_human only); HEAD has no code change since",
+      "devices as planned: colour on RTX 3090 (CUDA), delivery and maintenance on CPU",
+      "rewards, terminated and truncated flags reach every learner's buffer exactly as the env emits them (SB3 DQN/DQN-TS, SB3 PPO/PPO-RM/RecurrentPPO incl. timeout bootstrap, DRQN, QRM, QRM-Cue)",
+      "QRM/QRM-Cue: the actual RM head is always a valid counterfactual head with the env's reward, next head and terminal flag",
+      "FrameReplay transitions and R2D2 sequences (incl. ring wrap-around, burn-in, episode-start alignment): 29,271 synthetic checks, 0 errors",
+      "SB3 DQN, SB3 PPO and sb3-contrib RecurrentPPO all bootstrap time-limit truncations (TimeLimit.truncated set by DummyVecEnv)",
+      "target-network sync every 2,000/10,000 env steps; epsilon 1.0 -> 0.05 linearly over the first 20% in every run",
+      "training vs frozen-snapshot delivery gap: same on eval and diagnostic seeds; a snapshot mixture reproduces the training numbers (policy churn, not a mismatch)"
+    ],
+    "logging_gaps_not_affecting_results": [
+      "SB3 DQN / DQN-TS rows in train_updates.csv carry only the loss of the last gradient step of the interval and no Q-value or gradient norm (computed here from snapshots instead)",
+      "the final forced flush row of custom agents (DRQN, QRM, QRM-Cue) has empty loss/q_mean/grad_norm",
+      "RecurrentPPO value predictions are not exposed through the analysis helper; value loss and explained variance are logged"
+    ],
+    "design_issues_affecting_interpretation": [
+      "maintenance: gamma 0.99 at 60 control steps per simulated second makes the task rewards nearly invisible (oracle discounted return -4.9 vs about -2 to -10 for hovering in place)",
+      "greedy evaluation of value-based agents in partially observable tasks: frozen greedy policies fall into 2-step loops; exploratory behaviour differs from the evaluated policy",
+      "normalised return is dominated by penalty avoidance (a stand-still policy scores 0.39 in delivery, 0.08 in colour, ~0.8 for hovering in maintenance)"
+    ]
+  },
+  "invalidates_baseline_results": {
+    "answer": "no",
+    "explanation": "No pipeline defect was found, so the 55 runs are a faithful record of protocol v2 with untuned defaults. They do not support an RQ1 ranking: every cell is at ~0% success, the differences in normalised return reflect penalty avoidance, and in maintenance the gamma/time-scale mismatch means the training objective does not favour solving the task. Report them as a valid negative baseline, not as evidence about explicit vs implicit memory."
+  },
+  "diagnostic_seed_ranges_used": {
+    "training_seed": 401,
+    "env_and_episode_seeds": "6,000,000+",
+    "periodic_eval_episode_seeds_reused_for_behaviour_rollouts": "1,000,000-1,000,019 (no training)",
+    "recorded_in": "run_scripts/baseline/BASELINE_PROTOCOL.md section 11 (2026-10-28)"
+  },
+  "cells": {
+    "delivery/dqn": [
+      {
+        "rank": 1,
+        "hypothesis": "Search-and-survive exploration: local 4-neighbour sensing, layouts re-drawn every episode and 5% lava make the 3-delivery + goal chain rare under epsilon-greedy; the value function learns safety (timeouts) instead.",
+        "status": "supported",
+        "evidence": "late epsilon-0.05 episodes: 0.7-5.3% success, ~45% lava; DQN-TS (given task state) also 0% eval success",
+        "cheapest_diagnostic": "DQN-TS 300k steps with num_packages=1, and with percent_death_squares=0 (seed 401)",
+        "cost": "~3 min CPU per arm"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "No good frozen policy: greedy snapshots fall into 2-cycles; training-time deliveries come from policy churn (weights change every 4 steps).",
+        "status": "confirmed",
+        "evidence": "100% of greedy rollouts cycle by step 3-5; frozen snapshot at eps 0.05 delivers 0.24-0.37/ep vs 0.81-1.05 in training; snapshot mixture restores 1.01-1.30",
+        "cheapest_diagnostic": "snapshot mixture on the 200 final-eval seeds (no training)",
+        "cost": "~5 min CPU"
+      },
+      {
+        "rank": 3,
+        "hypothesis": "Q-value overestimation under aliasing (max-operator bias).",
+        "status": "confirmed fact, cause hypothesis",
+        "evidence": "Q(s0) 12-28 vs realised greedy discounted return ~0; QRM heads up to 120 > bound 80",
+        "cheapest_diagnostic": "Double-DQN target, 300k steps, Q vs Monte-Carlo return (seed 401)",
+        "cost": "~3 min CPU"
+      },
+      {
+        "rank": 4,
+        "hypothesis": "DRQN does not use its memory (loops like the memoryless agents).",
+        "status": "hypothesis",
+        "evidence": "DRQN greedy positions cycle with period 2; progress only modestly higher",
+        "cheapest_diagnostic": "linear probe of LSTM state for carried/delivered on 50 rollouts (no training)",
+        "cost": "~2 min CPU"
+      }
+    ],
+    "delivery/drqn": [
+      {
+        "rank": 1,
+        "hypothesis": "Search-and-survive exploration: local 4-neighbour sensing, layouts re-drawn every episode and 5% lava make the 3-delivery + goal chain rare under epsilon-greedy; the value function learns safety (timeouts) instead.",
+        "status": "supported",
+        "evidence": "late epsilon-0.05 episodes: 0.7-5.3% success, ~45% lava; DQN-TS (given task state) also 0% eval success",
+        "cheapest_diagnostic": "DQN-TS 300k steps with num_packages=1, and with percent_death_squares=0 (seed 401)",
+        "cost": "~3 min CPU per arm"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "No good frozen policy: greedy snapshots fall into 2-cycles; training-time deliveries come from policy churn (weights change every 4 steps).",
+        "status": "confirmed",
+        "evidence": "100% of greedy rollouts cycle by step 3-5; frozen snapshot at eps 0.05 delivers 0.24-0.37/ep vs 0.81-1.05 in training; snapshot mixture restores 1.01-1.30",
+        "cheapest_diagnostic": "snapshot mixture on the 200 final-eval seeds (no training)",
+        "cost": "~5 min CPU"
+      },
+      {
+        "rank": 3,
+        "hypothesis": "Q-value overestimation under aliasing (max-operator bias).",
+        "status": "confirmed fact, cause hypothesis",
+        "evidence": "Q(s0) 12-28 vs realised greedy discounted return ~0; QRM heads up to 120 > bound 80",
+        "cheapest_diagnostic": "Double-DQN target, 300k steps, Q vs Monte-Carlo return (seed 401)",
+        "cost": "~3 min CPU"
+      },
+      {
+        "rank": 4,
+        "hypothesis": "DRQN does not use its memory (loops like the memoryless agents).",
+        "status": "hypothesis",
+        "evidence": "DRQN greedy positions cycle with period 2; progress only modestly higher",
+        "cheapest_diagnostic": "linear probe of LSTM state for carried/delivered on 50 rollouts (no training)",
+        "cost": "~2 min CPU"
+      }
+    ],
+    "delivery/qrm": [
+      {
+        "rank": 1,
+        "hypothesis": "Search-and-survive exploration: local 4-neighbour sensing, layouts re-drawn every episode and 5% lava make the 3-delivery + goal chain rare under epsilon-greedy; the value function learns safety (timeouts) instead.",
+        "status": "supported",
+        "evidence": "late epsilon-0.05 episodes: 0.7-5.3% success, ~45% lava; DQN-TS (given task state) also 0% eval success",
+        "cheapest_diagnostic": "DQN-TS 300k steps with num_packages=1, and with percent_death_squares=0 (seed 401)",
+        "cost": "~3 min CPU per arm"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "No good frozen policy: greedy snapshots fall into 2-cycles; training-time deliveries come from policy churn (weights change every 4 steps).",
+        "status": "confirmed",
+        "evidence": "100% of greedy rollouts cycle by step 3-5; frozen snapshot at eps 0.05 delivers 0.24-0.37/ep vs 0.81-1.05 in training; snapshot mixture restores 1.01-1.30",
+        "cheapest_diagnostic": "snapshot mixture on the 200 final-eval seeds (no training)",
+        "cost": "~5 min CPU"
+      },
+      {
+        "rank": 3,
+        "hypothesis": "Q-value overestimation under aliasing (max-operator bias).",
+        "status": "confirmed fact, cause hypothesis",
+        "evidence": "Q(s0) 12-28 vs realised greedy discounted return ~0; QRM heads up to 120 > bound 80",
+        "cheapest_diagnostic": "Double-DQN target, 300k steps, Q vs Monte-Carlo return (seed 401)",
+        "cost": "~3 min CPU"
+      },
+      {
+        "rank": 4,
+        "hypothesis": "DRQN does not use its memory (loops like the memoryless agents).",
+        "status": "hypothesis",
+        "evidence": "DRQN greedy positions cycle with period 2; progress only modestly higher",
+        "cheapest_diagnostic": "linear probe of LSTM state for carried/delivered on 50 rollouts (no training)",
+        "cost": "~2 min CPU"
+      }
+    ],
+    "delivery/dqn_ts": [
+      {
+        "rank": 1,
+        "hypothesis": "Search-and-survive exploration: local 4-neighbour sensing, layouts re-drawn every episode and 5% lava make the 3-delivery + goal chain rare under epsilon-greedy; the value function learns safety (timeouts) instead.",
+        "status": "supported",
+        "evidence": "late epsilon-0.05 episodes: 0.7-5.3% success, ~45% lava; DQN-TS (given task state) also 0% eval success",
+        "cheapest_diagnostic": "DQN-TS 300k steps with num_packages=1, and with percent_death_squares=0 (seed 401)",
+        "cost": "~3 min CPU per arm"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "No good frozen policy: greedy snapshots fall into 2-cycles; training-time deliveries come from policy churn (weights change every 4 steps).",
+        "status": "confirmed",
+        "evidence": "100% of greedy rollouts cycle by step 3-5; frozen snapshot at eps 0.05 delivers 0.24-0.37/ep vs 0.81-1.05 in training; snapshot mixture restores 1.01-1.30",
+        "cheapest_diagnostic": "snapshot mixture on the 200 final-eval seeds (no training)",
+        "cost": "~5 min CPU"
+      },
+      {
+        "rank": 3,
+        "hypothesis": "Q-value overestimation under aliasing (max-operator bias).",
+        "status": "confirmed fact, cause hypothesis",
+        "evidence": "Q(s0) 12-28 vs realised greedy discounted return ~0; QRM heads up to 120 > bound 80",
+        "cheapest_diagnostic": "Double-DQN target, 300k steps, Q vs Monte-Carlo return (seed 401)",
+        "cost": "~3 min CPU"
+      },
+      {
+        "rank": 4,
+        "hypothesis": "DRQN does not use its memory (loops like the memoryless agents).",
+        "status": "hypothesis",
+        "evidence": "DRQN greedy positions cycle with period 2; progress only modestly higher",
+        "cheapest_diagnostic": "linear probe of LSTM state for carried/delivered on 50 rollouts (no training)",
+        "cost": "~2 min CPU"
+      }
+    ],
+    "colour/dqn": [
+      {
+        "rank": 1,
+        "hypothesis": "Sparse +10 completion vs -1 per wrong wall creates a wall-avoidance local optimum.",
+        "status": "behaviour confirmed, cause hypothesis",
+        "evidence": "greedy: 94-100% of episodes touch no wall, agent stops ~1 block short of a wall and oscillates; return ~0 from 150k steps on",
+        "cheapest_diagnostic": "DQN-TS with reward_density='dense' or sequence_length_range=(1,1), 500k steps, seed 401",
+        "cost": "~10 min GPU per arm"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "Replay holds almost no success transitions.",
+        "status": "confirmed fact",
+        "evidence": "0.3-4.0 successes per 100k replay window late in training; P(minibatch of 32 has one) 0.01-0.13%",
+        "cheapest_diagnostic": "count successes in the dense/short-sequence arm above; or successful-episode replay",
+        "cost": "included above"
+      },
+      {
+        "rank": 4,
+        "hypothesis": "Exploration after epsilon reaches 0.05: a 13-step straight run is needed to reach any wall.",
+        "status": "hypothesis",
+        "evidence": "training progress drops from 0.6-0.9 at eps~0.5 to 0.2-0.6 at eps 0.05",
+        "cheapest_diagnostic": "free re-analysis of train_episodes.csv by epsilon",
+        "cost": "free"
+      }
+    ],
+    "colour/drqn": [
+      {
+        "rank": 1,
+        "hypothesis": "Sparse +10 completion vs -1 per wrong wall creates a wall-avoidance local optimum.",
+        "status": "behaviour confirmed, cause hypothesis",
+        "evidence": "greedy: 94-100% of episodes touch no wall, agent stops ~1 block short of a wall and oscillates; return ~0 from 150k steps on",
+        "cheapest_diagnostic": "DQN-TS with reward_density='dense' or sequence_length_range=(1,1), 500k steps, seed 401",
+        "cost": "~10 min GPU per arm"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "Replay holds almost no success transitions.",
+        "status": "confirmed fact",
+        "evidence": "0.3-4.0 successes per 100k replay window late in training; P(minibatch of 32 has one) 0.01-0.13%",
+        "cheapest_diagnostic": "count successes in the dense/short-sequence arm above; or successful-episode replay",
+        "cost": "included above"
+      },
+      {
+        "rank": 4,
+        "hypothesis": "Exploration after epsilon reaches 0.05: a 13-step straight run is needed to reach any wall.",
+        "status": "hypothesis",
+        "evidence": "training progress drops from 0.6-0.9 at eps~0.5 to 0.2-0.6 at eps 0.05",
+        "cheapest_diagnostic": "free re-analysis of train_episodes.csv by epsilon",
+        "cost": "free"
+      }
+    ],
+    "colour/qrm_cue": [
+      {
+        "rank": 1,
+        "hypothesis": "Sparse +10 completion vs -1 per wrong wall creates a wall-avoidance local optimum.",
+        "status": "behaviour confirmed, cause hypothesis",
+        "evidence": "greedy: 94-100% of episodes touch no wall, agent stops ~1 block short of a wall and oscillates; return ~0 from 150k steps on",
+        "cheapest_diagnostic": "DQN-TS with reward_density='dense' or sequence_length_range=(1,1), 500k steps, seed 401",
+        "cost": "~10 min GPU per arm"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "Replay holds almost no success transitions.",
+        "status": "confirmed fact",
+        "evidence": "0.3-4.0 successes per 100k replay window late in training; P(minibatch of 32 has one) 0.01-0.13%",
+        "cheapest_diagnostic": "count successes in the dense/short-sequence arm above; or successful-episode replay",
+        "cost": "included above"
+      },
+      {
+        "rank": 3,
+        "hypothesis": "QRM-Cue Q-divergence across navigation heads (counterfactual bootstrapping with almost no reward anchor).",
+        "status": "confirmed fact, cause hypothesis",
+        "evidence": "nav heads on nav frames exceed the +10 bound in 4/5 seeds (max 868 seed 1, 68 seed 5, 47 seed 4, 15 seed 3); seed-1 batch Q 30, grad norm 12 at 3M",
+        "cheapest_diagnostic": "QRM-Cue 300k steps with counterfactual updates on vs off, logging max nav-head Q",
+        "cost": "~5 min GPU per arm"
+      },
+      {
+        "rank": 4,
+        "hypothesis": "Exploration after epsilon reaches 0.05: a 13-step straight run is needed to reach any wall.",
+        "status": "hypothesis",
+        "evidence": "training progress drops from 0.6-0.9 at eps~0.5 to 0.2-0.6 at eps 0.05",
+        "cheapest_diagnostic": "free re-analysis of train_episodes.csv by epsilon",
+        "cost": "free"
+      }
+    ],
+    "colour/dqn_ts": [
+      {
+        "rank": 1,
+        "hypothesis": "Sparse +10 completion vs -1 per wrong wall creates a wall-avoidance local optimum.",
+        "status": "behaviour confirmed, cause hypothesis",
+        "evidence": "greedy: 94-100% of episodes touch no wall, agent stops ~1 block short of a wall and oscillates; return ~0 from 150k steps on",
+        "cheapest_diagnostic": "DQN-TS with reward_density='dense' or sequence_length_range=(1,1), 500k steps, seed 401",
+        "cost": "~10 min GPU per arm"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "Replay holds almost no success transitions.",
+        "status": "confirmed fact",
+        "evidence": "0.3-4.0 successes per 100k replay window late in training; P(minibatch of 32 has one) 0.01-0.13%",
+        "cheapest_diagnostic": "count successes in the dense/short-sequence arm above; or successful-episode replay",
+        "cost": "included above"
+      },
+      {
+        "rank": 4,
+        "hypothesis": "Exploration after epsilon reaches 0.05: a 13-step straight run is needed to reach any wall.",
+        "status": "hypothesis",
+        "evidence": "training progress drops from 0.6-0.9 at eps~0.5 to 0.2-0.6 at eps 0.05",
+        "cheapest_diagnostic": "free re-analysis of train_episodes.csv by epsilon",
+        "cost": "free"
+      }
+    ],
+    "maintenance/ppo": [
+      {
+        "rank": 1,
+        "hypothesis": "Discount horizon: gamma 0.99 at 60 Hz makes task rewards invisible; the oracle is not better than hovering under the trained objective.",
+        "status": "confirmed",
+        "evidence": "oracle discounted return (gamma 0.99) -4.9 vs hover -2 to -10, fall-and-rest -54; first reward at step ~667 (weight 0.0012), completion at ~1,380 (8e-6); gamma 0.999 oracle +287",
+        "cheapest_diagnostic": "PPO-RM with gamma 0.999 (or action repeat 8) for 2M steps, seed 401",
+        "cost": "~20 min CPU"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "Penalty dominance and action saturation: -5/step boundary and -1000 exits; unbounded Gaussian clipped to [-1,1] with ent_coef 0 collapses std to 0.05-0.1 at the bound.",
+        "status": "confirmed fact, cause hypothesis",
+        "evidence": "9/15 final policies have means beyond the bound; 9/15 fall and rest on the boundary; std 0.05-0.1",
+        "cheapest_diagnostic": "second arm of the run above with ent_coef 0.01 and reward-only VecNormalize",
+        "cost": "~20 min CPU"
+      },
+      {
+        "rank": 3,
+        "hypothesis": "Too few episodes and outcomes to learn from.",
+        "status": "confirmed fact",
+        "evidence": "521-563 episodes per run, 0 successes in 8,078, <=2 services per run",
+        "cheapest_diagnostic": "services per 100k steps in the runs above",
+        "cost": "included"
+      }
+    ],
+    "maintenance/recurrent_ppo": [
+      {
+        "rank": 1,
+        "hypothesis": "Discount horizon: gamma 0.99 at 60 Hz makes task rewards invisible; the oracle is not better than hovering under the trained objective.",
+        "status": "confirmed",
+        "evidence": "oracle discounted return (gamma 0.99) -4.9 vs hover -2 to -10, fall-and-rest -54; first reward at step ~667 (weight 0.0012), completion at ~1,380 (8e-6); gamma 0.999 oracle +287",
+        "cheapest_diagnostic": "PPO-RM with gamma 0.999 (or action repeat 8) for 2M steps, seed 401",
+        "cost": "~20 min CPU"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "Penalty dominance and action saturation: -5/step boundary and -1000 exits; unbounded Gaussian clipped to [-1,1] with ent_coef 0 collapses std to 0.05-0.1 at the bound.",
+        "status": "confirmed fact, cause hypothesis",
+        "evidence": "9/15 final policies have means beyond the bound; 9/15 fall and rest on the boundary; std 0.05-0.1",
+        "cheapest_diagnostic": "second arm of the run above with ent_coef 0.01 and reward-only VecNormalize",
+        "cost": "~20 min CPU"
+      },
+      {
+        "rank": 3,
+        "hypothesis": "Too few episodes and outcomes to learn from.",
+        "status": "confirmed fact",
+        "evidence": "521-563 episodes per run, 0 successes in 8,078, <=2 services per run",
+        "cheapest_diagnostic": "services per 100k steps in the runs above",
+        "cost": "included"
+      },
+      {
+        "rank": 5,
+        "hypothesis": "Recurrent PPO: LSTM adds optimisation difficulty (all 5 seeds saturate).",
+        "status": "hypothesis",
+        "evidence": "4/5 seeds fall and rest",
+        "cheapest_diagnostic": "revisit after 1-2",
+        "cost": "-"
+      }
+    ],
+    "maintenance/ppo_rm": [
+      {
+        "rank": 1,
+        "hypothesis": "Discount horizon: gamma 0.99 at 60 Hz makes task rewards invisible; the oracle is not better than hovering under the trained objective.",
+        "status": "confirmed",
+        "evidence": "oracle discounted return (gamma 0.99) -4.9 vs hover -2 to -10, fall-and-rest -54; first reward at step ~667 (weight 0.0012), completion at ~1,380 (8e-6); gamma 0.999 oracle +287",
+        "cheapest_diagnostic": "PPO-RM with gamma 0.999 (or action repeat 8) for 2M steps, seed 401",
+        "cost": "~20 min CPU"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "Penalty dominance and action saturation: -5/step boundary and -1000 exits; unbounded Gaussian clipped to [-1,1] with ent_coef 0 collapses std to 0.05-0.1 at the bound.",
+        "status": "confirmed fact, cause hypothesis",
+        "evidence": "9/15 final policies have means beyond the bound; 9/15 fall and rest on the boundary; std 0.05-0.1",
+        "cheapest_diagnostic": "second arm of the run above with ent_coef 0.01 and reward-only VecNormalize",
+        "cost": "~20 min CPU"
+      },
+      {
+        "rank": 3,
+        "hypothesis": "Too few episodes and outcomes to learn from.",
+        "status": "confirmed fact",
+        "evidence": "521-563 episodes per run, 0 successes in 8,078, <=2 services per run",
+        "cheapest_diagnostic": "services per 100k steps in the runs above",
+        "cost": "included"
+      },
+      {
+        "rank": 4,
+        "hypothesis": "PPO-RM critic poor / RM features unused.",
+        "status": "hypothesis",
+        "evidence": "explained variance 0.02-0.32 vs PPO 0.8-0.9",
+        "cheapest_diagnostic": "value vs return on rollouts of the final PPO-RM snapshot (no training)",
+        "cost": "~2 min CPU"
+      }
+    ]
+  }
+}

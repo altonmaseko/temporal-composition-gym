@@ -1,0 +1,22 @@
+dqn 1
+dqn 2
+dqn 3
+dqn 4
+dqn 5
+dqn_ts 1
+dqn_ts 2
+dqn_ts 3
+dqn_ts 4
+dqn_ts 5
+qrm 1
+qrm 2
+qrm 3
+qrm 4
+qrm 5
+  algo    mode  progress    ret  length  lava  timeout
+   dqn   final      0.28 -20.78  351.92  0.27     0.54
+   dqn mixture      1.11 -20.61  300.33  0.46     0.32
+dqn_ts   final      0.24 -22.30  337.29  0.32     0.52
+dqn_ts mixture      1.30 -18.52  285.24  0.41     0.26
+   qrm   final      0.32 -20.57  366.08  0.31     0.54
+   qrm mixture      1.01 -19.05  304.31  0.40     0.38

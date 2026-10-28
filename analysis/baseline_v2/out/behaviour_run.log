@@ -1,0 +1,206 @@
+delivery/dqn seed1 step100000: done (7s)
+delivery/dqn seed1 step500000: done (11s)
+delivery/dqn seed1 step1000000: done (15s)
+delivery/dqn seed2 step100000: done (20s)
+delivery/dqn seed2 step500000: done (25s)
+delivery/dqn seed2 step1000000: done (29s)
+delivery/dqn seed3 step100000: done (34s)
+delivery/dqn seed3 step500000: done (39s)
+delivery/dqn seed3 step1000000: done (43s)
+delivery/dqn seed4 step100000: done (47s)
+delivery/dqn seed4 step500000: done (52s)
+delivery/dqn seed4 step1000000: done (57s)
+delivery/dqn seed5 step100000: done (62s)
+delivery/dqn seed5 step500000: done (67s)
+delivery/dqn seed5 step1000000: done (72s)
+delivery/drqn seed1 step100000: done (79s)
+delivery/drqn seed1 step500000: done (85s)
+delivery/drqn seed1 step1000000: done (90s)
+delivery/drqn seed2 step100000: done (95s)
+delivery/drqn seed2 step500000: done (101s)
+delivery/drqn seed2 step1000000: done (107s)
+delivery/drqn seed3 step100000: done (112s)
+delivery/drqn seed3 step500000: done (119s)
+delivery/drqn seed3 step1000000: done (125s)
+delivery/drqn seed4 step100000: done (131s)
+delivery/drqn seed4 step500000: done (136s)
+delivery/drqn seed4 step1000000: done (142s)
+delivery/drqn seed5 step100000: done (148s)
+delivery/drqn seed5 step500000: done (155s)
+delivery/drqn seed5 step1000000: done (162s)
+delivery/qrm seed1 step100000: done (167s)
+delivery/qrm seed1 step500000: done (172s)
+delivery/qrm seed1 step1000000: done (177s)
+delivery/qrm seed2 step100000: done (181s)
+delivery/qrm seed2 step500000: done (186s)
+delivery/qrm seed2 step1000000: done (192s)
+delivery/qrm seed3 step100000: done (197s)
+delivery/qrm seed3 step500000: done (202s)
+delivery/qrm seed3 step1000000: done (207s)
+delivery/qrm seed4 step100000: done (212s)
+delivery/qrm seed4 step500000: done (217s)
+delivery/qrm seed4 step1000000: done (222s)
+delivery/qrm seed5 step100000: done (227s)
+delivery/qrm seed5 step500000: done (233s)
+delivery/qrm seed5 step1000000: done (238s)
+delivery/dqn_ts seed1 step100000: done (245s)
+delivery/dqn_ts seed1 step500000: done (252s)
+delivery/dqn_ts seed1 step1000000: done (257s)
+delivery/dqn_ts seed2 step100000: done (263s)
+delivery/dqn_ts seed2 step500000: done (269s)
+delivery/dqn_ts seed2 step1000000: done (275s)
+delivery/dqn_ts seed3 step100000: done (281s)
+delivery/dqn_ts seed3 step500000: done (287s)
+delivery/dqn_ts seed3 step1000000: done (292s)
+delivery/dqn_ts seed4 step100000: done (297s)
+delivery/dqn_ts seed4 step500000: done (303s)
+delivery/dqn_ts seed4 step1000000: done (308s)
+delivery/dqn_ts seed5 step100000: done (313s)
+delivery/dqn_ts seed5 step500000: done (318s)
+delivery/dqn_ts seed5 step1000000: done (323s)
+done 323.0203125476837
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.92GB
+  warnings.warn(
+colour/dqn seed1 step300000: done (13s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.52GB
+  warnings.warn(
+colour/dqn seed1 step1500000: done (25s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.51GB
+  warnings.warn(
+colour/dqn seed1 step3000000: done (38s)
+colour/dqn seed2 step300000: done (50s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.47GB
+  warnings.warn(
+colour/dqn seed2 step1500000: done (62s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.80GB
+  warnings.warn(
+colour/dqn seed2 step3000000: done (71s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.79GB
+  warnings.warn(
+colour/dqn seed3 step300000: done (79s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.77GB
+  warnings.warn(
+colour/dqn seed3 step1500000: done (88s)
+colour/dqn seed3 step3000000: done (96s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.76GB
+  warnings.warn(
+colour/dqn seed4 step300000: done (105s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.75GB
+  warnings.warn(
+colour/dqn seed4 step1500000: done (113s)
+colour/dqn seed4 step3000000: done (121s)
+colour/dqn seed5 step300000: done (129s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:242: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.24GB > 3.82GB
+  warnings.warn(
+colour/dqn seed5 step1500000: done (137s)
+colour/dqn seed5 step3000000: done (145s)
+colour/drqn seed1 step300000: done (160s)
+colour/drqn seed1 step1500000: done (175s)
+colour/drqn seed1 step3000000: done (190s)
+colour/drqn seed2 step300000: done (205s)
+colour/drqn seed2 step1500000: done (219s)
+colour/drqn seed2 step3000000: done (235s)
+colour/drqn seed3 step300000: done (250s)
+colour/drqn seed3 step1500000: done (267s)
+colour/drqn seed3 step3000000: done (282s)
+colour/drqn seed4 step300000: done (297s)
+colour/drqn seed4 step1500000: done (313s)
+colour/drqn seed4 step3000000: done (332s)
+colour/drqn seed5 step300000: done (348s)
+colour/drqn seed5 step1500000: done (364s)
+colour/drqn seed5 step3000000: done (380s)
+colour/qrm_cue seed1 step300000: done (389s)
+colour/qrm_cue seed1 step1500000: done (398s)
+colour/qrm_cue seed1 step3000000: done (408s)
+colour/qrm_cue seed2 step300000: done (418s)
+colour/qrm_cue seed2 step1500000: done (427s)
+colour/qrm_cue seed2 step3000000: done (437s)
+colour/qrm_cue seed3 step300000: done (448s)
+colour/qrm_cue seed3 step1500000: done (458s)
+colour/qrm_cue seed3 step3000000: done (467s)
+colour/qrm_cue seed4 step300000: done (476s)
+colour/qrm_cue seed4 step1500000: done (486s)
+colour/qrm_cue seed4 step3000000: done (495s)
+colour/qrm_cue seed5 step300000: done (504s)
+colour/qrm_cue seed5 step1500000: done (514s)
+colour/qrm_cue seed5 step3000000: done (523s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.44GB
+  warnings.warn(
+colour/dqn_ts seed1 step300000: done (535s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.41GB
+  warnings.warn(
+colour/dqn_ts seed1 step1500000: done (546s)
+colour/dqn_ts seed1 step3000000: done (558s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.38GB
+  warnings.warn(
+colour/dqn_ts seed2 step300000: done (569s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.42GB
+  warnings.warn(
+colour/dqn_ts seed2 step1500000: done (580s)
+colour/dqn_ts seed2 step3000000: done (591s)
+colour/dqn_ts seed3 step300000: done (602s)
+colour/dqn_ts seed3 step1500000: done (612s)
+colour/dqn_ts seed3 step3000000: done (623s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.43GB
+  warnings.warn(
+colour/dqn_ts seed4 step300000: done (634s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.48GB
+  warnings.warn(
+colour/dqn_ts seed4 step1500000: done (645s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.45GB
+  warnings.warn(
+colour/dqn_ts seed4 step3000000: done (655s)
+colour/dqn_ts seed5 step300000: done (668s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.55GB
+  warnings.warn(
+colour/dqn_ts seed5 step1500000: done (679s)
+D:\miniconda3\envs\temporal_gym\lib\site-packages\stable_baselines3\common\buffers.py:607: UserWarning: This system does not have apparently enough memory to store the complete replay buffer 4.27GB > 3.61GB
+  warnings.warn(
+colour/dqn_ts seed5 step3000000: done (691s)
+done 691.4789729118347
+maintenance/ppo seed1 step204800: done (28s)
+maintenance/ppo seed1 step1024000: done (53s)
+maintenance/ppo seed1 step2048000: done (80s)
+maintenance/ppo seed2 step204800: done (102s)
+maintenance/ppo seed2 step1024000: done (125s)
+maintenance/ppo seed2 step2048000: done (149s)
+maintenance/ppo seed3 step204800: done (172s)
+maintenance/ppo seed3 step1024000: done (192s)
+maintenance/ppo seed3 step2048000: done (212s)
+maintenance/ppo seed4 step204800: done (232s)
+maintenance/ppo seed4 step1024000: done (248s)
+maintenance/ppo seed4 step2048000: done (266s)
+maintenance/ppo seed5 step204800: done (286s)
+maintenance/ppo seed5 step1024000: done (301s)
+maintenance/ppo seed5 step2048000: done (321s)
+maintenance/recurrent_ppo seed1 step204800: done (366s)
+maintenance/recurrent_ppo seed1 step1024000: done (416s)
+maintenance/recurrent_ppo seed1 step2048000: done (454s)
+maintenance/recurrent_ppo seed2 step204800: done (492s)
+maintenance/recurrent_ppo seed2 step1024000: done (532s)
+maintenance/recurrent_ppo seed2 step2048000: done (591s)
+maintenance/recurrent_ppo seed3 step204800: done (629s)
+maintenance/recurrent_ppo seed3 step1024000: done (666s)
+maintenance/recurrent_ppo seed3 step2048000: done (703s)
+maintenance/recurrent_ppo seed4 step204800: done (738s)
+maintenance/recurrent_ppo seed4 step1024000: done (773s)
+maintenance/recurrent_ppo seed4 step2048000: done (812s)
+maintenance/recurrent_ppo seed5 step204800: done (846s)
+maintenance/recurrent_ppo seed5 step1024000: done (880s)
+maintenance/recurrent_ppo seed5 step2048000: done (915s)
+maintenance/ppo_rm seed1 step204800: done (931s)
+maintenance/ppo_rm seed1 step1024000: done (950s)
+maintenance/ppo_rm seed1 step2048000: done (967s)
+maintenance/ppo_rm seed2 step204800: done (986s)
+maintenance/ppo_rm seed2 step1024000: done (1002s)
+maintenance/ppo_rm seed2 step2048000: done (1020s)
+maintenance/ppo_rm seed3 step204800: done (1040s)
+maintenance/ppo_rm seed3 step1024000: done (1062s)
+maintenance/ppo_rm seed3 step2048000: done (1083s)
+maintenance/ppo_rm seed4 step204800: done (1104s)
+maintenance/ppo_rm seed4 step1024000: done (1124s)
+maintenance/ppo_rm seed4 step2048000: done (1143s)
+maintenance/ppo_rm seed5 step204800: done (1157s)
+maintenance/ppo_rm seed5 step1024000: done (1174s)
+maintenance/ppo_rm seed5 step2048000: done (1189s)
+done 1189.2126624584198

@@ -1,0 +1,198 @@
+{
+  "probe": "delivery_pkg1",
+  "env": "delivery",
+  "algo": "dqn_ts",
+  "env_overrides": {
+    "num_packages": 1
+  },
+  "hyperparam_overrides": {},
+  "hyperparams": {
+    "gamma": 0.99,
+    "buffer_size": 100000,
+    "train_freq": 4,
+    "gradient_steps": 1,
+    "batch_size": 32,
+    "exploration_initial_eps": 1.0,
+    "exploration_final_eps": 0.05,
+    "exploration_fraction": 0.2,
+    "max_grad_norm": 10.0,
+    "learning_rate": 0.0005,
+    "learning_starts": 10000,
+    "target_update_interval": 2000
+  },
+  "planned_steps": 300000,
+  "train_seconds": 470.32100319862366,
+  "stopped_early": false,
+  "n_updates": 72500,
+  "train": {
+    "steps_done": 300000,
+    "episodes": 1826,
+    "successes": 8,
+    "events_total": {
+      "pickup": 355,
+      "lava": 1137,
+      "goal_contact": 392,
+      "delivery": 65
+    },
+    "windows": [
+      {
+        "window_start": 0,
+        "episodes": 911,
+        "success_rate": 0.007683863885839737,
+        "successes": 7,
+        "progress_mean": 0.043907793633369926,
+        "return_mean": -50.073545554335894,
+        "causes": {
+          "lava": 661,
+          "premature_goal": 218,
+          "damage_death": 20,
+          "success": 7,
+          "timeout": 5
+        },
+        "stage_exit": 0,
+        "final_exit": 0,
+        "stage_exit_incomplete": 0,
+        "code_collected": 0,
+        "service_attempt": 0,
+        "pickup": 186,
+        "delivery": 40,
+        "goal_contact": 225,
+        "lava": 661
+      },
+      {
+        "window_start": 50000,
+        "episodes": 198,
+        "success_rate": 0.005050505050505051,
+        "successes": 1,
+        "progress_mean": 0.015151515151515152,
+        "return_mean": -37.80808080808081,
+        "causes": {
+          "lava": 114,
+          "premature_goal": 33,
+          "success": 1,
+          "damage_death": 1,
+          "timeout": 49
+        },
+        "stage_exit": 0,
+        "final_exit": 0,
+        "stage_exit_incomplete": 0,
+        "code_collected": 0,
+        "service_attempt": 0,
+        "pickup": 30,
+        "delivery": 3,
+        "goal_contact": 34,
+        "lava": 114
+      },
+      {
+        "window_start": 100000,
+        "episodes": 175,
+        "success_rate": 0.0,
+        "successes": 0,
+        "progress_mean": 0.011428571428571429,
+        "return_mean": -34.94285714285714,
+        "causes": {
+          "timeout": 55,
+          "lava": 96,
+          "premature_goal": 24
+        },
+        "stage_exit": 0,
+        "final_exit": 0,
+        "stage_exit_incomplete": 0,
+        "code_collected": 0,
+        "service_attempt": 0,
+        "pickup": 31,
+        "delivery": 2,
+        "goal_contact": 24,
+        "lava": 96
+      },
+      {
+        "window_start": 150000,
+        "episodes": 174,
+        "success_rate": 0.0,
+        "successes": 0,
+        "progress_mean": 0.040229885057471264,
+        "return_mean": -35.35057471264368,
+        "causes": {
+          "timeout": 52,
+          "premature_goal": 33,
+          "lava": 88,
+          "damage_death": 1
+        },
+        "stage_exit": 0,
+        "final_exit": 0,
+        "stage_exit_incomplete": 0,
+        "code_collected": 0,
+        "service_attempt": 0,
+        "pickup": 30,
+        "delivery": 7,
+        "goal_contact": 33,
+        "lava": 88
+      },
+      {
+        "window_start": 200000,
+        "episodes": 187,
+        "success_rate": 0.0,
+        "successes": 0,
+        "progress_mean": 0.0213903743315508,
+        "return_mean": -36.06417112299465,
+        "causes": {
+          "lava": 101,
+          "timeout": 53,
+          "premature_goal": 33
+        },
+        "stage_exit": 0,
+        "final_exit": 0,
+        "stage_exit_incomplete": 0,
+        "code_collected": 0,
+        "service_attempt": 0,
+        "pickup": 43,
+        "delivery": 4,
+        "goal_contact": 33,
+        "lava": 101
+      },
+      {
+        "window_start": 250000,
+        "episodes": 181,
+        "success_rate": 0.0,
+        "successes": 0,
+        "progress_mean": 0.049723756906077346,
+        "return_mean": -34.07182320441989,
+        "causes": {
+          "timeout": 59,
+          "lava": 77,
+          "premature_goal": 43,
+          "damage_death": 2
+        },
+        "stage_exit": 0,
+        "final_exit": 0,
+        "stage_exit_incomplete": 0,
+        "code_collected": 0,
+        "service_attempt": 0,
+        "pickup": 35,
+        "delivery": 9,
+        "goal_contact": 43,
+        "lava": 77
+      }
+    ]
+  },
+  "eval_greedy_50": {
+    "episodes": 50,
+    "success": 0.0,
+    "return_mean": 0.0,
+    "progress_mean": 0.0,
+    "length_mean": 500.0,
+    "causes": {
+      "timeout": 50
+    },
+    "stage_exit_per_ep": 0.0,
+    "final_exit_per_ep": 0.0,
+    "stage_exit_incomplete_per_ep": 0.0,
+    "code_collected_per_ep": 0.0,
+    "service_attempt_per_ep": 0.0,
+    "pickup_per_ep": 0.0,
+    "delivery_per_ep": 0.0,
+    "goal_contact_per_ep": 0.0,
+    "lava_per_ep": 0.0
+  },
+  "eval_seconds": 21.470364093780518
+}

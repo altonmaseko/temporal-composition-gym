@@ -1,0 +1,166 @@
+{
+  "probe": "maint_g999",
+  "env": "maintenance",
+  "algo": "ppo_rm",
+  "env_overrides": {},
+  "hyperparam_overrides": {
+    "gamma": 0.999
+  },
+  "hyperparams": {
+    "n_steps": 2048,
+    "batch_size": 64,
+    "n_epochs": 10,
+    "learning_rate": 0.0003,
+    "gamma": 0.999,
+    "gae_lambda": 0.95,
+    "clip_range": 0.2,
+    "ent_coef": 0.0,
+    "vf_coef": 0.5,
+    "max_grad_norm": 0.5
+  },
+  "planned_steps": 499712,
+  "train_seconds": 744.3769879341125,
+  "stopped_early": false,
+  "n_updates": 2440,
+  "train": {
+    "steps_done": 499712,
+    "episodes": 140,
+    "successes": 0,
+    "events_total": {
+      "stage_exit_incomplete": 21,
+      "code_collected": 80,
+      "stage_exit": 37,
+      "final_exit": 2,
+      "service_attempt": 736
+    },
+    "windows": [
+      {
+        "window_start": 0,
+        "episodes": 36,
+        "success_rate": 0.0,
+        "successes": 0,
+        "progress_mean": 0.0,
+        "return_mean": -2459.4361111110793,
+        "causes": {
+          "uncollected_codes_at_exit": 14,
+          "timeout": 20,
+          "held_codes_at_final_exit": 2
+        },
+        "stage_exit": 25,
+        "final_exit": 2,
+        "stage_exit_incomplete": 14,
+        "code_collected": 21,
+        "service_attempt": 0,
+        "pickup": 0,
+        "delivery": 0,
+        "goal_contact": 0,
+        "lava": 0
+      },
+      {
+        "window_start": 100000,
+        "episodes": 27,
+        "success_rate": 0.0,
+        "successes": 0,
+        "progress_mean": 0.0,
+        "return_mean": -457.94814814815277,
+        "causes": {
+          "timeout": 23,
+          "uncollected_codes_at_exit": 4
+        },
+        "stage_exit": 5,
+        "final_exit": 0,
+        "stage_exit_incomplete": 4,
+        "code_collected": 17,
+        "service_attempt": 126,
+        "pickup": 0,
+        "delivery": 0,
+        "goal_contact": 0,
+        "lava": 0
+      },
+      {
+        "window_start": 200000,
+        "episodes": 25,
+        "success_rate": 0.0,
+        "successes": 0,
+        "progress_mean": 0.0,
+        "return_mean": -254.9920000000078,
+        "causes": {
+          "timeout": 25
+        },
+        "stage_exit": 3,
+        "final_exit": 0,
+        "stage_exit_incomplete": 0,
+        "code_collected": 13,
+        "service_attempt": 151,
+        "pickup": 0,
+        "delivery": 0,
+        "goal_contact": 0,
+        "lava": 0
+      },
+      {
+        "window_start": 300000,
+        "episodes": 27,
+        "success_rate": 0.0,
+        "successes": 0,
+        "progress_mean": 0.0,
+        "return_mean": -327.4555555555616,
+        "causes": {
+          "timeout": 25,
+          "uncollected_codes_at_exit": 2
+        },
+        "stage_exit": 1,
+        "final_exit": 0,
+        "stage_exit_incomplete": 2,
+        "code_collected": 13,
+        "service_attempt": 315,
+        "pickup": 0,
+        "delivery": 0,
+        "goal_contact": 0,
+        "lava": 0
+      },
+      {
+        "window_start": 400000,
+        "episodes": 25,
+        "success_rate": 0.0,
+        "successes": 0,
+        "progress_mean": 0.0,
+        "return_mean": -280.5520000000068,
+        "causes": {
+          "timeout": 24,
+          "uncollected_codes_at_exit": 1
+        },
+        "stage_exit": 3,
+        "final_exit": 0,
+        "stage_exit_incomplete": 1,
+        "code_collected": 16,
+        "service_attempt": 144,
+        "pickup": 0,
+        "delivery": 0,
+        "goal_contact": 0,
+        "lava": 0
+      }
+    ]
+  },
+  "eval_greedy_50": {
+    "episodes": 50,
+    "success": 0.0,
+    "return_mean": -2463.371999999912,
+    "progress_mean": 0.0,
+    "length_mean": 2885.9,
+    "causes": {
+      "uncollected_codes_at_exit": 14,
+      "held_codes_at_final_exit": 1,
+      "timeout": 35
+    },
+    "stage_exit_per_ep": 0.52,
+    "final_exit_per_ep": 0.02,
+    "stage_exit_incomplete_per_ep": 0.28,
+    "code_collected_per_ep": 0.74,
+    "service_attempt_per_ep": 1.5,
+    "pickup_per_ep": 0.0,
+    "delivery_per_ep": 0.0,
+    "goal_contact_per_ep": 0.0,
+    "lava_per_ep": 0.0
+  },
+  "eval_seconds": 62.8331401348114
+}
