@@ -34,7 +34,7 @@ Total **88 screening +66 confirmation =154**. Per-run budget: delivery 250,000; 
 | B | 10.64 | 21–32 | $6.30–9.60 | 33.33 h |
 | C | 10.61 | 21–32 | $6.30–9.60 | 33.33 h |
 
-The 2–3× allowance covers extra evaluation overhead; these are estimates, not measured v3 throughput. **100 billed hours / ~$30 compute total**, including setup/idle/retries. Storage and transfer are extra. Pause before exceeding a share; do not silently reduce fidelity or remove cells.
+The 2–3× allowance covers extra evaluation overhead; these are estimates, not measured v3 throughput. **100 billed hours / ~$30 compute total**, including setup/idle/retries. Storage and transfer are extra. The shares are advisory: the launcher warns when a run is projected to exceed one but keeps running (see Budget warning below). Do not silently reduce fidelity or remove cells.
 
 ## 3. Three machines and billing
 
@@ -445,7 +445,7 @@ source ~/tuning_c.env
 cd ~/temporal-composition-gym && bash run_scripts/tuning/run_c_tuning.sh --python ~/tcg/bin/python --stage confirm --continue-batch --wandb-mode online --billing-start "$BILLING_START" --hourly-rate 0.30 --previously-billed-hours "$PREVIOUS_HOURS" 2>&1 | tee -a ~/tuning_c.log
 ```
 
-**Budget pause:** stop work and stop the instance in the console before its allowance expires. The launcher stops a child five minutes before its deadline; it cannot stop billing. Do not reset billing terms to bypass the cap.
+**Budget warning:** the launcher never skips or stops a run because of the budget. Before each run whose projected time exceeds the role's remaining allowance, it prints `BUDGET WARNING ...` and continues. Watch the log and stop the instance in the console yourself if you want to stop spending; the launcher cannot stop billing. Do not reset billing terms; the allowance is still recorded for accounting.
 
 **Duplicates:** inspect both attempts' identity/failure/resume evidence, decide the intended infrastructure attempt before comparing scores, and preserve both. Save a JSON object mapping full config hash to relative v3/full/.../aNN path as run_scripts/tuning/results/v3/full/choices.json. Add **--attempt-choices run_scripts/tuning/results/v3/full/choices.json** to every matching launcher/manifest/collect/select command. Only a verified complete attempt can be chosen; the JSON output records that explicit choice. Keep this same choices file in publication. Missing or failed screening blocks freeze; a deliberate incomplete-data deviation needs researcher review and --allow-incomplete --reason. Six valid confirmations remain mandatory.
 

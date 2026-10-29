@@ -90,11 +90,14 @@ def main(argv=None):
             continue
         started=time.monotonic()
         if state=='pending':
-            limit=None
             if a.mode=='full':
-                limit=remaining_seconds(a.role,a.billing_start,a.previously_billed_hours,a.hourly_rate)-300
-                if limit < projected_seconds(s['env'],s['algo'],observed.get((s['env'],s['algo']),())):
-                    state,code='paused_budget',2
+                # Warn only: the researcher chose to never skip or kill a run over the budget.
+                left=remaining_seconds(a.role,a.billing_start,a.previously_billed_hours,a.hourly_rate)
+                need=projected_seconds(s['env'],s['algo'],observed.get((s['env'],s['algo']),()))
+                if left < need:
+                    print(f'BUDGET WARNING role {a.role}: {left/3600:.2f} h of allowance left, '
+                          f'{name} projected {need/3600:.2f} h. Continuing anyway; '
+                          'billing continues until you stop the machine.',flush=True)
             if state=='pending':
                 out,err=folder/f'{i:02}.out.log',folder/f'{i:02}.err.log'
                 cmd+=['--launcher-stdout',str(out),'--launcher-stderr',str(err)]
@@ -102,8 +105,8 @@ def main(argv=None):
                 with out.open('w') as stdout,err.open('w') as stderr:
                     proc=subprocess.Popen(cmd,cwd=ROOT,env=env,stdout=stdout,stderr=stderr)
                     try:
-                        code=proc.wait(timeout=limit)
-                    except (subprocess.TimeoutExpired,KeyboardInterrupt):
+                        code=proc.wait()
+                    except KeyboardInterrupt:
                         proc.terminate()
                         try:
                             proc.wait(timeout=30)
@@ -123,8 +126,8 @@ def main(argv=None):
             writer.writerow([name,state,code,time.monotonic()-started])
         print(state.upper(),name,flush=True)
         failures+=bool(code)
-        if state=='paused_budget' or code==130:
-            print('PAUSED: budget/interrupt. Stop rented machines yourself; this program cannot stop billing.',flush=True)
+        if code==130:
+            print('PAUSED: interrupted. Stop rented machines yourself; this program cannot stop billing.',flush=True)
             break
     print('BATCH FAILED' if failures else 'BATCH COMPLETE',flush=True)
     return 1 if failures else 0

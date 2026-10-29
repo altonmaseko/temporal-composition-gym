@@ -72,5 +72,5 @@ Implementation details (T2, no scientific-design change): diagnostic smoke uses 
 
 - **Trial count:** accepted: 8 candidates/cell including the default, plus top-two confirmation on three new seeds (154 runs).
 - **Fidelity:** accepted: 25%; accept the explicit limitation on late learning rather than increasing cost now.
-- **Spending:** accepted: a 100 billed-hour / approximately $30 compute cap, with a pause before exceeding it.
+- **Spending:** accepted: a 100 billed-hour / approximately $30 compute cap, with a pause before exceeding it. **Revised 2026-10-29:** the cap is advisory. The launcher prints a budget warning and keeps running; it never skips or terminates a run because of the budget. No scientific setting changes.
 - **Over-budget scope:** accepted: retain all 11 cells. Any cell removal or common trial-count/fidelity reduction requires your decision and a revised plan before affected runs; incomplete searches remain labelled incomplete.
