@@ -26,6 +26,8 @@ EVAL_EPISODE_SEED_BASE = {
     "final_test": 5_000_000,
 }
 EVAL_BLOCK_SIZE = 1_000_000
+# A sub-block within the existing tuning million, not another top-level block.
+EVAL_SUBBLOCKS = {"tuning_terminal": (3_010_000, 990_000)}
 TRAIN_ENV_SEED_BASE = 10_000_000
 
 # Fixed child index per stream name. Never renumber existing entries.
@@ -41,8 +43,12 @@ _STREAMS = {
 
 def eval_episode_seeds(kind, n):
     """The first n episode seeds of an evaluation block (identical for every algorithm)."""
-    base = EVAL_EPISODE_SEED_BASE[kind]
-    if not 0 < n <= EVAL_BLOCK_SIZE:
+    if kind in EVAL_SUBBLOCKS:
+        base, limit = EVAL_SUBBLOCKS[kind]
+    else:
+        base = EVAL_EPISODE_SEED_BASE[kind]
+        limit = 10_000 if kind == "tuning_validation" else EVAL_BLOCK_SIZE
+    if not 0 < n <= limit:
         raise ValueError("n must be in (0, EVAL_BLOCK_SIZE]")
     return [base + i for i in range(n)]
 

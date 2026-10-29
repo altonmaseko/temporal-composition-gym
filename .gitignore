@@ -9,3 +9,9 @@ __pycache__/
 # Baseline run artifacts: keep CSV/JSON records, not checkpoints (multi-GB replay) or W&B caches
 run_scripts/baseline/results/**/checkpoints/
 run_scripts/baseline/results/**/wandb/
+run_scripts/tuning/results/**/checkpoints/
+run_scripts/tuning/results/**/_wb/
+run_scripts/tuning/results/**/logs/
+# Diagnostic raw runs stay local; the compact CSV/JSON evidence bundle is committed.
+run_scripts/tuning/results/v3/smoke/
+run_scripts/tuning/results/rt/

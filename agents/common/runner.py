@@ -91,6 +91,8 @@ def restore_rng(state, run_rng, env):
 
 def _swap_restart_dir(rd, tmp):
     """Replace checkpoints/restart with tmp so a crash never leaves a half-written restart."""
+    if hasattr(rd, 'swap_restart'):
+        return rd.swap_restart(tmp)
     old = rd.restart_dir + ".old"
     if os.path.exists(old):
         shutil.rmtree(old)
@@ -137,6 +139,12 @@ class Trainer:
     def maybe_checkpoint(self, step):
         if step > 0 and step >= self.next_ckpt:
             self.save_checkpoint(step)
+            if self.cfg["phase"] == "tuning":
+                # Keep the latest policy plus restart only; baseline retention is unchanged.
+                from pathlib import Path
+                for old in Path(self.rd.ckpt_dir).glob("policy_step*.*"):
+                    if old.stem != f"policy_step{step:09d}":
+                        old.unlink()
             while self.next_ckpt <= step:
                 self.next_ckpt += self.ckpt_every
 
@@ -429,7 +437,7 @@ def _check_resume(rd, cfg, cfg_hash):
     return identity, status, st
 
 
-def run(cfg, args):
+def run(cfg, args, directory_class=RunDirectory):
     cfg_hash = plan.config_hash(cfg)
     device = select_device(args.device, args.require_gpu)
     if args.threads:
@@ -443,8 +451,10 @@ def run(cfg, args):
     resume = args.resume is not None
 
     if resume:
-        rd = RunDirectory(os.path.abspath(args.resume))
+        rd = directory_class(os.path.abspath(args.resume))
         identity, status, restart_meta = _check_resume(rd, cfg, cfg_hash)
+        if cfg["phase"] == "tuning":
+            rd.preserve_status(status)
         write_json_atomic(rd.file(f"metadata_resume_{time.strftime('%Y%m%dT%H%M%S')}.json"),
                           collect_metadata(device, threads, {"launcher_logs": launcher}))
         resumes = status.get("resumes", []) + [{"utc": utc_iso(), "restored_step": restart_meta["global_step"],
@@ -452,7 +462,7 @@ def run(cfg, args):
         rd.update_status(state="running", resumes=resumes, error=None)
         rd.truncate_records(restart_meta["global_step"])
     else:
-        rd = RunDirectory.create(cfg, cfg_hash, args.results_root)
+        rd = directory_class.create(cfg, cfg_hash, args.results_root)
         run_id = f"{cfg['phase']}-{cfg['protocol_version']}-{cfg['mode']}-{cfg['env']['key']}-{cfg['algo']['name']}" \
                  f"-s{cfg['seed']['train_seed']}-{cfg_hash[:10]}-{rd.run_uid}"
         identity = {
@@ -463,6 +473,8 @@ def run(cfg, args):
             "results_root": os.path.abspath(args.results_root) if args.results_root else None,
             "run_dir": rd.path, "created_utc": utc_iso(),
         }
+        if cfg["phase"] == "tuning":
+            identity.update(args.tuning_context)
         write_json_atomic(rd.file("config.resolved.json"), cfg)
         write_json_atomic(rd.file("identity.json"), identity)
         write_json_atomic(rd.file("metadata.json"), collect_metadata(device, threads, {"launcher_logs": launcher}))
@@ -475,7 +487,8 @@ def run(cfg, args):
     logger = None
     exit_code = 1
     try:
-        wb = init_wandb(cfg, identity, cfg_hash, args.wandb_mode, rd.path, resume=resume)
+        wb = init_wandb(cfg, identity, cfg_hash, args.wandb_mode,
+                        rd.wandb_path if cfg["phase"] == "tuning" else rd.path, resume=resume)
         if wb is not None:
             rd.update_status(wandb={"id": wb.id, "url": getattr(wb, "url", None), "mode": args.wandb_mode,
                                     "project": cfg["wandb"]["project"], "entity": cfg["wandb"]["entity"]})

@@ -133,7 +133,7 @@ def check_resources(rep, role, results_root):
     rep.add("cpu", True, f"{os.cpu_count()} logical CPUs; OMP_NUM_THREADS={os.environ.get('OMP_NUM_THREADS')}")
 
 
-def check_wandb(rep, mode, project, entity):
+def check_wandb(rep, mode, project, entity, group="preflight-v2"):
     from agents.common.baseline_plan import FORBIDDEN_WANDB_PROJECTS
     if project in FORBIDDEN_WANDB_PROJECTS:
         rep.add("wandb project", False, f"{project!r} is the pilot project")
@@ -153,7 +153,7 @@ def check_wandb(rep, mode, project, entity):
         return
     rep.add("wandb login", True, "logged in (credentials handled by W&B; not read by this code)")
     try:
-        run = wandb.init(project=project, entity=entity, mode="online", group="preflight-v2", job_type="preflight",
+        run = wandb.init(project=project, entity=entity, mode="online", group=group, job_type="preflight",
                          name=f"preflight-{socket.gethostname()}-{time.strftime('%Y%m%dT%H%M%S')}",
                          config={"purpose": "baseline preflight"})
         run.log({"preflight/ok": 1})

@@ -1,12 +1,12 @@
-# Tuning protocol v3 — proposed design (T1)
+# Tuning protocol v3 — frozen design (T1/T2)
 
-Status: decision-ready proposal; no search or training authorised by this document. Sources: [baseline protocol §12](../baseline/BASELINE_PROTOCOL.md), [collection contract §9](../baseline/PRODUCTION_LAUNCH_v2.md), [v2 analysis](../../analysis/baseline_v2/REPORT.md), and [diagnostic memo](../../analysis/diagnostics_v3/MEMO.md). Freeze this design and its generated plan before production tuning.
+Status: **frozen**, all four researcher decisions accepted on 2026-10-28. T2 authorises implementation and local offline smoke validation; production machines and launches remain researcher-controlled. Sources: [baseline protocol §12](../baseline/BASELINE_PROTOCOL.md), [collection contract §9](../baseline/PRODUCTION_LAUNCH_v2.md), [v2 analysis](../../analysis/baseline_v2/REPORT.md), and [diagnostic memo](../../analysis/diagnostics_v3/MEMO.md). Freeze this design and its generated plan before production tuning.
 
 ## 1. Scope, fidelity and selection
 
 Cover all **11 cells**: delivery and colour each use DQN, DQN-TS, DRQN and QRM (QRM-Cue for colour); maintenance uses PPO, Recurrent PPO and PPO-RM. Preserve v3 tasks, observations, reward machines, sparse colour reward, discount factors (0.99 discrete; 0.999 maintenance), greedy headline and fixed secondary evaluation. No reward scaling/shaping, action repeat, algorithm substitutions or architecture changes. In particular, keep Recurrent PPO LSTM size 128: although suggested as tunable, varying it conflicts with the fixed-architecture requirement and increases compute uncertainty. DRQN encoder/LSTM sizes also remain fixed.
 
-Per cell, use **8 distinct candidates**: candidate 00 is the v3 default anchor; 7 are seeded random draws. Generate once using NumPy PCG64 seed 101, stable cell order and separately identified child streams. Discrete choices are uniform; log-uniform means uniform in log space. Reject duplicate configurations before training. Save sampler/version, spaces, complete resolved configurations, hashes and execution slots in immutable `tuning_plan.json`; never regenerate on resume. This anchor costs one search slot equally in every cell.
+Per cell, use **8 distinct candidates**: candidate 00 is the v3 default anchor; 7 are seeded random draws. Generate once using NumPy PCG64 seed 101, stable cell order and separately identified child streams. Discrete choices are uniform; log-uniform means uniform in log space. Reject duplicate configurations before training. Save sampler/version, spaces, complete resolved configurations, hashes and execution slots in immutable `trials_v3.json`; never regenerate on resume. This anchor costs one search slot equally in every cell.
 
 Every candidate trains fresh on seed **101**. Confirm the top two by fresh runs on **102, 103, 104**, at the same fidelity. Thus 88 screening + 66 confirmation = **154 runs** (14/cell). Shared seeds across candidates improve pairing; they do not count as independent replications. Derive training environment reset seeds as `10,000,000 + 1,000 * training_seed`, with independent named learner/replay/exploration streams.
 
@@ -62,11 +62,13 @@ Retain the §9 CSV/JSON contract, v3 noisy files/counters, plan hash, candidate 
 
 Keep latest restart state and final policy per run on-machine; never reuse baseline checkpoints. Collect CSV/JSON only; optionally bundle finalists' final policies separately after checking size. `selected_configs.json` records each cell's selected learner parameters, v3 provenance, plan/config hashes, candidate ID, screening/confirmation tuples, per-seed evidence paths, failures, tie-break reason and zero-success flag. Reduced budgets/seeds/evaluation settings remain provenance. Final-comparison execution and stress testing are outside scope.
 
-Before implementation changes, capture regression fixtures for **all v2/v3 baseline configurations and hashes** (full/smoke, seeds 1–10); add tests preserving them, rejecting seed leakage, and verifying deterministic plans, objective ranking, failure handling and path lengths. Require `python -B -m agents.common.baseline_plan write --check` and baseline manifest **55/55**, without writing results/v2 or validation/. On Windows use only `D:\miniconda3\envs\temporal_gym\python.exe`, `-B`, and pytest `-p no:cacheprovider`. T1 creates only this document; tests and implementation belong to later prompts.
+Before implementation changes, capture regression fixtures for **all v2/v3 baseline configurations and hashes** (full/smoke, seeds 1–10); add tests preserving them, rejecting seed leakage, and verifying deterministic plans, objective ranking, failure handling and path lengths. Require `python -B -m agents.common.baseline_plan write --check` and baseline manifest **55/55**, without writing results/v2 or validation/. On Windows use only `D:\miniconda3\envs\temporal_gym\python.exe`, `-B`, and pytest `-p no:cacheprovider`. T2 implements this contract and its regression tests.
 
-## Researcher decisions before freezing
+## Researcher decisions — accepted 2026-10-28
 
-- **Trial count:** recommend 8 candidates/cell including the default, plus top-two confirmation on three new seeds (154 runs).
-- **Fidelity:** recommend 25%; accept the explicit limitation on late learning rather than increasing cost now.
-- **Spending:** recommend a 100 billed-hour / approximately $30 compute cap, with a pause before exceeding it.
-- **Over-budget scope:** recommend retaining all 11 cells. Any cell removal or common trial-count/fidelity reduction requires your decision and a revised plan before affected runs; incomplete searches remain labelled incomplete.
+Implementation details (T2, no scientific-design change): diagnostic smoke uses two candidates/cell, 64 training steps, 32-step episode caps and small learner buffers/rollouts, then the same three confirmation seeds (88 tiny runs). It is explicitly ineligible for scientific selection. Missing **or failed** screening trials block automated selection unless an explicit, reasoned incomplete-data override is recorded; numerical failures remain unavailable. The 100-hour cap is conservatively split A 33.34 / B 33.33 / C 33.33, including setup/idle/retries, with user-managed rental shutdown. Retaining every completed restart may require approximately 60/70/220 GB free per role; storage is outside the compute estimate.
+
+- **Trial count:** accepted: 8 candidates/cell including the default, plus top-two confirmation on three new seeds (154 runs).
+- **Fidelity:** accepted: 25%; accept the explicit limitation on late learning rather than increasing cost now.
+- **Spending:** accepted: a 100 billed-hour / approximately $30 compute cap, with a pause before exceeding it.
+- **Over-budget scope:** accepted: retain all 11 cells. Any cell removal or common trial-count/fidelity reduction requires your decision and a revised plan before affected runs; incomplete searches remain labelled incomplete.
