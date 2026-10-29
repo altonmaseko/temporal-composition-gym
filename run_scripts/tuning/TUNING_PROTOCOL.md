@@ -66,6 +66,8 @@ Before implementation changes, capture regression fixtures for **all v2/v3 basel
 
 ## Researcher decisions — accepted 2026-10-28
 
+T3 storage clarification: production now deletes an attempt's restart/replay only after independent completion verification, retaining its final policy and every CSV/JSON record. This replaces the cumulative restart-retention assumption below; default free-disk gates are A 20 / B 20 / C 25 GB. Opting out retains the earlier 60/70/220 GB gates. Learner, task, budget, seed, evaluation and trial-list semantics remain frozen.
+
 Implementation details (T2, no scientific-design change): diagnostic smoke uses two candidates/cell, 64 training steps, 32-step episode caps and small learner buffers/rollouts, then the same three confirmation seeds (88 tiny runs). It is explicitly ineligible for scientific selection. Missing **or failed** screening trials block automated selection unless an explicit, reasoned incomplete-data override is recorded; numerical failures remain unavailable. The 100-hour cap is conservatively split A 33.34 / B 33.33 / C 33.33, including setup/idle/retries, with user-managed rental shutdown. Retaining every completed restart may require approximately 60/70/220 GB free per role; storage is outside the compute estimate.
 
 - **Trial count:** accepted: 8 candidates/cell including the default, plus top-two confirmation on three new seeds (154 runs).

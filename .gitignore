@@ -15,3 +15,4 @@ run_scripts/tuning/results/**/logs/
 # Diagnostic raw runs stay local; the compact CSV/JSON evidence bundle is committed.
 run_scripts/tuning/results/v3/smoke/
 run_scripts/tuning/results/rt/
+run_scripts/tuning/results/r?????/
