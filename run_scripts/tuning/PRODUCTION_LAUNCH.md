@@ -4,7 +4,7 @@ Run each block exactly as written, one at a time, on the named computer. Machine
 
 ## 1. Shared revision
 
-Validated code commit: `af2d21a58bc01247f88cd5f74a853628563b923e`, branch `new_experiments`. Push the implementation and this guide yourself before cloning. Later documentation/finalist/results commits are permitted if the code check in A passes. Each run records its revision and working-tree metadata.
+Launch code commit: `fe837314e40662649e0fe1bbfb7d88cfe2307d5b` (validated commit `af2d21a` plus the advisory budget-cap change in `launch.py`), branch `new_experiments`. Push the implementation and this guide yourself before cloning. Later documentation/finalist/results commits are permitted if the code check in A passes. Each run records its revision and working-tree metadata.
 
 ## 2. What will run
 
@@ -68,7 +68,7 @@ git clone --branch new_experiments https://github.com/altonmaseko/temporal-compo
 ```
 Code check: expected commit line, then **CODE CHECK DONE**, no diff. A nonzero exit means stop:
 ```bash
-cd ~/temporal-composition-gym && git log -1 --oneline && git diff --exit-code af2d21a58bc01247f88cd5f74a853628563b923e HEAD -- '*.py' '*.sh' '*.ps1' requirements.txt setup.py run_scripts/tuning/trials_v3.json run_scripts/baseline/baseline_plan.json && git diff --exit-code HEAD -- '*.py' '*.sh' '*.ps1' requirements.txt setup.py run_scripts/tuning/trials_v3.json run_scripts/baseline/baseline_plan.json && echo "CODE CHECK DONE"
+cd ~/temporal-composition-gym && git log -1 --oneline && git diff --exit-code fe837314e40662649e0fe1bbfb7d88cfe2307d5b HEAD -- '*.py' '*.sh' '*.ps1' requirements.txt setup.py run_scripts/tuning/trials_v3.json run_scripts/baseline/baseline_plan.json && git diff --exit-code HEAD -- '*.py' '*.sh' '*.ps1' requirements.txt setup.py run_scripts/tuning/trials_v3.json run_scripts/baseline/baseline_plan.json && echo "CODE CHECK DONE"
 ```
 Create venv and install. Expected: Python version, successful pip exit; resolve installation errors before B:
 ```bash
@@ -130,7 +130,7 @@ git clone --branch new_experiments https://github.com/altonmaseko/temporal-compo
 ```
 Code check: expected commit line, then **CODE CHECK DONE**, no diff. A nonzero exit means stop:
 ```bash
-cd ~/temporal-composition-gym && git log -1 --oneline && git diff --exit-code af2d21a58bc01247f88cd5f74a853628563b923e HEAD -- '*.py' '*.sh' '*.ps1' requirements.txt setup.py run_scripts/tuning/trials_v3.json run_scripts/baseline/baseline_plan.json && git diff --exit-code HEAD -- '*.py' '*.sh' '*.ps1' requirements.txt setup.py run_scripts/tuning/trials_v3.json run_scripts/baseline/baseline_plan.json && echo "CODE CHECK DONE"
+cd ~/temporal-composition-gym && git log -1 --oneline && git diff --exit-code fe837314e40662649e0fe1bbfb7d88cfe2307d5b HEAD -- '*.py' '*.sh' '*.ps1' requirements.txt setup.py run_scripts/tuning/trials_v3.json run_scripts/baseline/baseline_plan.json && git diff --exit-code HEAD -- '*.py' '*.sh' '*.ps1' requirements.txt setup.py run_scripts/tuning/trials_v3.json run_scripts/baseline/baseline_plan.json && echo "CODE CHECK DONE"
 ```
 Create venv and install. Expected: Python version, successful pip exit; resolve installation errors before B:
 ```bash
@@ -192,7 +192,7 @@ git clone --branch new_experiments https://github.com/altonmaseko/temporal-compo
 ```
 Code check: expected commit line, then **CODE CHECK DONE**, no diff. A nonzero exit means stop:
 ```bash
-cd ~/temporal-composition-gym && git log -1 --oneline && git diff --exit-code af2d21a58bc01247f88cd5f74a853628563b923e HEAD -- '*.py' '*.sh' '*.ps1' requirements.txt setup.py run_scripts/tuning/trials_v3.json run_scripts/baseline/baseline_plan.json && git diff --exit-code HEAD -- '*.py' '*.sh' '*.ps1' requirements.txt setup.py run_scripts/tuning/trials_v3.json run_scripts/baseline/baseline_plan.json && echo "CODE CHECK DONE"
+cd ~/temporal-composition-gym && git log -1 --oneline && git diff --exit-code fe837314e40662649e0fe1bbfb7d88cfe2307d5b HEAD -- '*.py' '*.sh' '*.ps1' requirements.txt setup.py run_scripts/tuning/trials_v3.json run_scripts/baseline/baseline_plan.json && git diff --exit-code HEAD -- '*.py' '*.sh' '*.ps1' requirements.txt setup.py run_scripts/tuning/trials_v3.json run_scripts/baseline/baseline_plan.json && echo "CODE CHECK DONE"
 ```
 Create venv and install. Expected: Python version, successful pip exit; resolve installation errors before B:
 ```bash
