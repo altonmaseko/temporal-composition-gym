@@ -201,11 +201,23 @@ def test_strict_record_verification_and_duplicate_detection(tmp_path):
     assert inspect_trial(tmp_path,cfg,p['plan_hash'])['state']=='duplicate'
     chosen=inspect_trial(tmp_path,cfg,p['plan_hash'],{h:path.relative_to(tmp_path).as_posix()})
     assert chosen['state']=='complete' and chosen['objective']==(0,0,0)
+    from agents.common.tuning_storage import prune_completed
+    restart=path/'checkpoints/restart'; restart.mkdir(parents=True)
+    (restart/'state.json').write_text('{}')
+    policy=path/'checkpoints/policy_step000000064.zip'; policy.write_bytes(b'policy')
+    assert not prune_completed(tmp_path,cfg,p['plan_hash'])  # duplicate, no decision
+    assert restart.exists()
+    assert prune_completed(tmp_path,cfg,p['plan_hash'],{h:path.relative_to(tmp_path).as_posix()})
+    assert not restart.exists() and policy.read_bytes()==b'policy'
     m=manifest(tmp_path,p,'smoke',{h:path.relative_to(tmp_path).as_posix()})
     assert m['counts']['complete']==1 and 'duplicate' not in m['counts']
     (path/'eval_periodic_noisy.csv').unlink()
     invalid=verify_run(path,cfg,p['plan_hash'])
     assert not invalid['verified'] and invalid['objective'] is None
+    restart.mkdir(); (restart/'state.json').write_text('{}')
+    # Explicitly choosing an invalid attempt must never remove its restart.
+    assert not prune_completed(tmp_path,cfg,p['plan_hash'],{h:path.relative_to(tmp_path).as_posix()})
+    assert restart.exists() and policy.exists()
 
 
 def test_checkpoint_replacement_retries_windows_lock(tmp_path,monkeypatch):

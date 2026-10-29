@@ -30,7 +30,10 @@ def main(argv=None):
     # Exclusive output: never clobber earlier collection evidence.
     with zipfile.ZipFile(check_path(a.out),'x',compression=zipfile.ZIP_DEFLATED) as z:
         for f in sorted(files):
-            z.write(f,f.relative_to(root).as_posix())
+            name=f.relative_to(root).as_posix()
+            if f.name.startswith('billing_') or f.name.startswith('carry_'):
+                name=f'accounting/{digest(json.loads(f.read_text()))[:12]}.json'
+            z.write(f,name)
         collected=manifest(root,plan,a.mode,choices)
         z.writestr(f'collection/{digest(collected)[:12]}.json',json.dumps(collected,indent=2))
         z.writestr('trials_v3.json',json.dumps(plan,indent=2))

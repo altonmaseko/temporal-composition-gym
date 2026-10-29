@@ -15,6 +15,7 @@ from agents.common.tuning_records import inspect_trial,load_finalists
 from agents.common.tuning_io import safe_root,check_path
 from agents.common.tuning_budget import remaining_seconds,projected_seconds
 from agents.common.run_io import write_json_atomic
+from agents.common.tuning_storage import prune_completed
 
 
 def main(argv=None):
@@ -32,7 +33,11 @@ def main(argv=None):
     p.add_argument('--hourly-rate',type=float,default=.30)
     p.add_argument('--threads',type=int,default=1)
     p.add_argument('--attempt-choices',type=Path)
+    p.add_argument('--prune-completed-restarts',action=argparse.BooleanOptionalAction,default=None,
+                   help='default on in full mode; retain final policies and all evidence')
     a=p.parse_args(argv)
+    if a.prune_completed_restarts is None:
+        a.prune_completed_restarts = a.mode == 'full'
     if a.mode=='full' and a.role=='all':
         p.error('production requires a single role and its fixed share of the cap')
     if a.mode=='full' and not a.dry_run and not a.billing_start:
@@ -109,6 +114,8 @@ def main(argv=None):
                 if state=='failed':
                     code=code or 1
                 observed.setdefault((s['env'],s['algo']),[]).append(time.monotonic()-started)
+        if a.prune_completed_restarts and state in ('complete','skipped_complete'):
+            prune_completed(root,cfg,plan['plan_hash'],choices)
         with (folder/'status.csv').open('a',newline='') as f:
             writer=csv.writer(f)
             if f.tell()==0:

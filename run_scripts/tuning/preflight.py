@@ -19,6 +19,7 @@ def main(argv=None):
     p.add_argument('--wandb-mode',choices=('online','offline','disabled'),default='offline')
     p.add_argument('--results-root',type=Path,default=RESULTS)
     p.add_argument('--learning-check',action='store_true')
+    p.add_argument('--prune-completed-restarts',action=argparse.BooleanOptionalAction,default=True)
     p.add_argument('--mode',choices=('full','smoke'),default='full',help='resource envelope; learning trials always smoke')
     a=p.parse_args(argv)
     root=safe_root(a.results_root)
@@ -32,7 +33,8 @@ def main(argv=None):
         import shutil
         # Completed trials retain restart/replay plus final policy, so capacity must
         # cover the whole role, not only the peak live learner used by baseline preflight.
-        needed={'a':60.,'b':70.,'c':220.}[a.role]
+        from agents.common.tuning_storage import DISK_GB
+        needed=DISK_GB[a.role] if a.prune_completed_restarts else {'a':60.,'b':70.,'c':220.}[a.role]
         free=shutil.disk_usage(root).free/1e9
         rep.add('retained tuning checkpoints',free>=needed,
                 f'{free:.1f} GB free; conservative cumulative role allowance {needed:.0f} GB')
@@ -53,6 +55,7 @@ def main(argv=None):
                 code=subprocess.call(cmd,cwd=ROOT,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
                 record=inspect_trial(temp,cfg,plan['plan_hash'])
                 rep.add(f"learning {cell['env']}/{cell['algo']}",code==0 and record['state']=='complete',str(record))
+    print('PREFLIGHT FAILED' if rep.failed else 'PREFLIGHT PASSED',flush=True)
     return int(rep.failed)
 
 
