@@ -1,0 +1,91 @@
+{
+  "protocol_version": "v3",
+  "phase": "tuning",
+  "mode": "full",
+  "env": {
+    "key": "delivery",
+    "id": "TemporalComp/HazardousDelivery-v0",
+    "variant": "main",
+    "kwargs": {
+      "grid_size": 10,
+      "percent_death_squares": 0.05,
+      "percent_damage_squares": 0.05,
+      "randomise_start": true,
+      "randomise_goal": true,
+      "num_packages": 3,
+      "carrying_capacity": 1,
+      "health_regeneration_nodes": 2,
+      "task_dependencies": false,
+      "include_health_in_state": true,
+      "include_inventory_in_state": false,
+      "max_steps": 500,
+      "resample_unsolvable": true
+    }
+  },
+  "algo": {
+    "name": "dqn",
+    "family": "memoryless",
+    "impl": "sb3",
+    "hyperparams": {
+      "policy": "MlpPolicy",
+      "gamma": 0.99,
+      "buffer_size": 100000,
+      "train_freq": 8,
+      "gradient_steps": 1,
+      "batch_size": 32,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.1,
+      "exploration_fraction": 0.2,
+      "max_grad_norm": 10.0,
+      "learning_rate": 3.128976531247265e-05,
+      "learning_starts": 10000,
+      "target_update_interval": 5000,
+      "policy_kwargs": {
+        "net_arch": [
+          128,
+          128
+        ]
+      }
+    }
+  },
+  "seed": {
+    "train_seed": 101,
+    "train_env_reset_seed": 10101000
+  },
+  "budget": {
+    "env_steps": 250000
+  },
+  "eval": {
+    "n_points": 20,
+    "every_steps": 12500,
+    "periodic_episodes": 50,
+    "final_episodes": 200,
+    "periodic_seed_block": "tuning_validation",
+    "final_seed_block": "tuning_terminal",
+    "policy": "greedy (epsilon=0 / deterministic=True); recurrent state reset at episode start",
+    "secondary": {
+      "name": "noisy",
+      "value_based_epsilon": 0.05,
+      "rule": "secondary evaluation with training-time action noise: epsilon 0.05 for DQN, DQN-TS, DRQN, QRM and QRM-Cue (Q-values still computed every step, so recurrent state advances); stochastic action sampling for PPO, Recurrent PPO and PPO-RM. Random numbers come from a per-episode generator seeded by the episode seed, isolated from training streams. The greedy evaluation remains the headline (D5).",
+      "rng_offset": 7000
+    }
+  },
+  "checkpoint": {
+    "every_steps": 25000,
+    "save_replay": true
+  },
+  "logging": {
+    "train_log_every_steps": 1250
+  },
+  "overrides": {},
+  "wandb": {
+    "project": "new_experiments",
+    "entity": null,
+    "group": "tuning-v3"
+  },
+  "tuning": {
+    "candidate": 4,
+    "learner_hash": "6052979ef4ac7507cb57d69eeccaee83d35db51920acf5d4843343aebfcc4e15",
+    "schema": 1
+  }
+}

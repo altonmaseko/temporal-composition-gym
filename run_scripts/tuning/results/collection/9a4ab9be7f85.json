@@ -1,0 +1,2988 @@
+{
+  "protocol_version": "v3",
+  "phase": "tuning",
+  "mode": "full",
+  "plan_hash": "e160f2cf0fdacdca89218135287bafc9aefcbcd21d695582365da2114a857ddd",
+  "expected": 154,
+  "counts": {
+    "missing": 59,
+    "pending_selection": 66,
+    "complete": 29
+  },
+  "by_role": {
+    "a": {
+      "missing": 21,
+      "pending_selection": 6
+    },
+    "b": {
+      "missing": 38,
+      "pending_selection": 36
+    },
+    "c": {
+      "complete": 29,
+      "pending_selection": 24
+    }
+  },
+  "entries": [
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": 0,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 0,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": 1,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 1,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": 2,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 2,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": 3,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 3,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": 4,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 4,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": 5,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 5,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": 6,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 6,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": 7,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 7,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 8,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 9,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 10,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 11,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 12,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 13,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": 0,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 0,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": 1,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 1,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": 2,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 2,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": 3,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 3,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": 4,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 4,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": 5,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 5,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": 6,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 6,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": 7,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 7,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 8,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 9,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 10,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 11,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 12,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "dqn_ts",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 13,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": 0,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 0,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": 1,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 1,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": 2,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 2,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": 3,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 3,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": 4,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 4,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": 5,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 5,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": 6,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 6,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": 7,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 7,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 8,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 9,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 10,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 11,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 12,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "drqn",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 13,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": 0,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 0,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": 1,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 1,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": 2,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 2,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": 3,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 3,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": 4,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 4,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": 5,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 5,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": 6,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 6,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": 7,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 7,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 8,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 9,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 10,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 11,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 12,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "delivery",
+      "algo": "qrm",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 13,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": 0,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 0,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn/t00/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.007000000000000001,
+        -0.529
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.001,
+        0.24,
+        -1.482
+      ],
+      "config_hash": "9252ac3814d0a0f603e1c6469d0c24d94c4ede6420dedf23fceb642e5d376c50",
+      "n_updates": 182500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn/t00/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.007000000000000001,
+            -0.529
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.001,
+            0.24,
+            -1.482
+          ],
+          "config_hash": "9252ac3814d0a0f603e1c6469d0c24d94c4ede6420dedf23fceb642e5d376c50",
+          "n_updates": 182500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": 1,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 1,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn/t01/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.011,
+        -0.7255
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.001,
+        0.23,
+        -1.568
+      ],
+      "config_hash": "cb436e253314c402737fec07e652e535c4b15375397dc04fefdafdca7ad9537f",
+      "n_updates": 182500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn/t01/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.011,
+            -0.7255
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.001,
+            0.23,
+            -1.568
+          ],
+          "config_hash": "cb436e253314c402737fec07e652e535c4b15375397dc04fefdafdca7ad9537f",
+          "n_updates": 182500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": 2,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 2,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn/t02/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.009000000000000001,
+        -0.518
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.1965,
+        -1.35
+      ],
+      "config_hash": "7102ab1f34e8f531ac2b1e5b23e718cb12193076863b46c1755edf28ec138284",
+      "n_updates": 182500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn/t02/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.009000000000000001,
+            -0.518
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.1965,
+            -1.35
+          ],
+          "config_hash": "7102ab1f34e8f531ac2b1e5b23e718cb12193076863b46c1755edf28ec138284",
+          "n_updates": 182500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": 3,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 3,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn/t03/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.009000000000000001,
+        -0.597
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.1555,
+        -1.334
+      ],
+      "config_hash": "b61977a6d3648966a88958d2fd4a24842667de3fe84958827058f941cc468f7a",
+      "n_updates": 182500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn/t03/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.009000000000000001,
+            -0.597
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.1555,
+            -1.334
+          ],
+          "config_hash": "b61977a6d3648966a88958d2fd4a24842667de3fe84958827058f941cc468f7a",
+          "n_updates": 182500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": 4,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 4,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn/t04/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.007000000000000001,
+        -0.518
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.0935,
+        -0.9815
+      ],
+      "config_hash": "9992f18b38df065655048b3453627f6ef58390f7224962f7ad92c5aa9276d889",
+      "n_updates": 91250,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn/t04/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.007000000000000001,
+            -0.518
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.0935,
+            -0.9815
+          ],
+          "config_hash": "9992f18b38df065655048b3453627f6ef58390f7224962f7ad92c5aa9276d889",
+          "n_updates": 91250,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": 5,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 5,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn/t05/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.011,
+        -0.545
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.2195,
+        -1.8815
+      ],
+      "config_hash": "8132ef0db2a897126908a7b99a801021d16bbde33cd3fc60229e95bd93363209",
+      "n_updates": 182500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn/t05/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.011,
+            -0.545
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.2195,
+            -1.8815
+          ],
+          "config_hash": "8132ef0db2a897126908a7b99a801021d16bbde33cd3fc60229e95bd93363209",
+          "n_updates": 182500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": 6,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 6,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn/t06/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.007000000000000001,
+        -0.518
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.2025,
+        -1.4215
+      ],
+      "config_hash": "83a758615e4dfcd916c6ec48b4ffdd39440a92aa7b7d231210e0ba13562462e6",
+      "n_updates": 182500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn/t06/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.007000000000000001,
+            -0.518
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.2025,
+            -1.4215
+          ],
+          "config_hash": "83a758615e4dfcd916c6ec48b4ffdd39440a92aa7b7d231210e0ba13562462e6",
+          "n_updates": 182500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": 7,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 7,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn/t07/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.008000000000000002,
+        -0.535
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.2005,
+        -1.5
+      ],
+      "config_hash": "bcaa0879755f8c89547412ed001e84eae5c308ee09be567e7bdbde944c0b1122",
+      "n_updates": 182500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn/t07/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.008000000000000002,
+            -0.535
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.2005,
+            -1.5
+          ],
+          "config_hash": "bcaa0879755f8c89547412ed001e84eae5c308ee09be567e7bdbde944c0b1122",
+          "n_updates": 182500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 8,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 9,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 10,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 11,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 12,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "dqn",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 13,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": 0,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 0,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn_ts/t00/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.014,
+        -0.512
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.2435,
+        -1.5795
+      ],
+      "config_hash": "5f4108ad1c0175d0deab8bea02d1f764465e6340c1565c63ea6a05752e554a9f",
+      "n_updates": 182500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn_ts/t00/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.014,
+            -0.512
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.2435,
+            -1.5795
+          ],
+          "config_hash": "5f4108ad1c0175d0deab8bea02d1f764465e6340c1565c63ea6a05752e554a9f",
+          "n_updates": 182500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": 1,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 1,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn_ts/t01/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.014,
+        -0.512
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.001,
+        0.2655,
+        -1.7685
+      ],
+      "config_hash": "8e00f136597235a85954654cbb4798567d6b65c7cc161a175207b0010d87507e",
+      "n_updates": 182500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn_ts/t01/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.014,
+            -0.512
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.001,
+            0.2655,
+            -1.7685
+          ],
+          "config_hash": "8e00f136597235a85954654cbb4798567d6b65c7cc161a175207b0010d87507e",
+          "n_updates": 182500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": 2,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 2,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn_ts/t02/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.025,
+        -0.737
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.003,
+        0.318,
+        -1.919
+      ],
+      "config_hash": "992a43fa6f3595afe10f1e32f445c64157a9c8d4942d1604adbff25b429e6ea1",
+      "n_updates": 182500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn_ts/t02/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.025,
+            -0.737
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.003,
+            0.318,
+            -1.919
+          ],
+          "config_hash": "992a43fa6f3595afe10f1e32f445c64157a9c8d4942d1604adbff25b429e6ea1",
+          "n_updates": 182500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": 3,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 3,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn_ts/t03/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.021,
+        -0.684
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.002,
+        0.261,
+        -1.824
+      ],
+      "config_hash": "03594fa54bcb6a7ad3e75eb221f988a54a0e016a5b92df89c0e76ad844e472e1",
+      "n_updates": 91250,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn_ts/t03/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.021,
+            -0.684
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.002,
+            0.261,
+            -1.824
+          ],
+          "config_hash": "03594fa54bcb6a7ad3e75eb221f988a54a0e016a5b92df89c0e76ad844e472e1",
+          "n_updates": 91250,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": 4,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 4,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn_ts/t04/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.0425,
+        -0.694
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.003,
+        0.2955,
+        -1.833
+      ],
+      "config_hash": "b3095245be7d1759e90e8648542ece8a6978afdff7ff12627f932fe3d52248bb",
+      "n_updates": 182500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn_ts/t04/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.0425,
+            -0.694
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.003,
+            0.2955,
+            -1.833
+          ],
+          "config_hash": "b3095245be7d1759e90e8648542ece8a6978afdff7ff12627f932fe3d52248bb",
+          "n_updates": 182500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": 5,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 5,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn_ts/t05/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.015,
+        -0.561
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.001,
+        0.2185,
+        -1.545
+      ],
+      "config_hash": "9f411815381240ad37b4ec69484018bfdf6bc46c135802e83d8a8007ae0ef5e7",
+      "n_updates": 182500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn_ts/t05/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.015,
+            -0.561
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.001,
+            0.2185,
+            -1.545
+          ],
+          "config_hash": "9f411815381240ad37b4ec69484018bfdf6bc46c135802e83d8a8007ae0ef5e7",
+          "n_updates": 182500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": 6,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 6,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn_ts/t06/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.013,
+        -0.533
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.1965,
+        -1.369
+      ],
+      "config_hash": "bddcce03f72869cbf9314010028d56dfd0573282a40777412bf4631c38be69ae",
+      "n_updates": 91250,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn_ts/t06/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.013,
+            -0.533
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.1965,
+            -1.369
+          ],
+          "config_hash": "bddcce03f72869cbf9314010028d56dfd0573282a40777412bf4631c38be69ae",
+          "n_updates": 91250,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": 7,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 7,
+      "role": "c",
+      "run_dir": "v3/full/colour/dqn_ts/t07/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.013,
+        -0.522
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.151,
+        -1.314
+      ],
+      "config_hash": "6fe763a341148df7e617150fbe92069412dd549df11e274600e083a2a7c3067a",
+      "n_updates": 91250,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/dqn_ts/t07/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.013,
+            -0.522
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.151,
+            -1.314
+          ],
+          "config_hash": "6fe763a341148df7e617150fbe92069412dd549df11e274600e083a2a7c3067a",
+          "n_updates": 91250,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 8,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 9,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 10,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 11,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 12,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "dqn_ts",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 13,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": 0,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 0,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": 1,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 1,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": 2,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 2,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": 3,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 3,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": 4,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 4,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": 5,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 5,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": 6,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 6,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": 7,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 7,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 8,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 9,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 10,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 11,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 12,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "drqn",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 13,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": 0,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 0,
+      "role": "c",
+      "run_dir": "v3/full/colour/qrm_cue/t00/s101/a00",
+      "verified": true,
+      "objective": [
+        0.001,
+        0.009,
+        -0.485
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.001,
+        0.3,
+        -1.618
+      ],
+      "config_hash": "ed07052197bca9d36d453383e0e164ab47b4c0478e2aecab23b496a26c252791",
+      "n_updates": 182501,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/qrm_cue/t00/s101/a00",
+          "verified": true,
+          "objective": [
+            0.001,
+            0.009,
+            -0.485
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.001,
+            0.3,
+            -1.618
+          ],
+          "config_hash": "ed07052197bca9d36d453383e0e164ab47b4c0478e2aecab23b496a26c252791",
+          "n_updates": 182501,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": 1,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 1,
+      "role": "c",
+      "run_dir": "v3/full/colour/qrm_cue/t01/s101/a00",
+      "verified": true,
+      "objective": [
+        0.001,
+        0.009,
+        -0.485
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.002,
+        0.276,
+        -1.7195
+      ],
+      "config_hash": "08ed8e5fd3f1f14364e3e3ab1b5ab99f7b83fc18ae7bb2889ab7efaf04b32fa0",
+      "n_updates": 182501,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/qrm_cue/t01/s101/a00",
+          "verified": true,
+          "objective": [
+            0.001,
+            0.009,
+            -0.485
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.002,
+            0.276,
+            -1.7195
+          ],
+          "config_hash": "08ed8e5fd3f1f14364e3e3ab1b5ab99f7b83fc18ae7bb2889ab7efaf04b32fa0",
+          "n_updates": 182501,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": 2,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 2,
+      "role": "c",
+      "run_dir": "v3/full/colour/qrm_cue/t02/s101/a00",
+      "verified": true,
+      "objective": [
+        0.001,
+        0.012,
+        -0.6
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.002,
+        0.2215,
+        -1.57
+      ],
+      "config_hash": "ae8a86ef68156874707f6b4360bb907174f03c4cb5b978029996215c9ad70a3c",
+      "n_updates": 91251,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/qrm_cue/t02/s101/a00",
+          "verified": true,
+          "objective": [
+            0.001,
+            0.012,
+            -0.6
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.002,
+            0.2215,
+            -1.57
+          ],
+          "config_hash": "ae8a86ef68156874707f6b4360bb907174f03c4cb5b978029996215c9ad70a3c",
+          "n_updates": 91251,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": 3,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 3,
+      "role": "c",
+      "run_dir": "v3/full/colour/qrm_cue/t03/s101/a00",
+      "verified": true,
+      "objective": [
+        0.001,
+        0.009,
+        -0.485
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.001,
+        0.159,
+        -1.107
+      ],
+      "config_hash": "a3b1b1db9849d3c8b13a1db8af5441faa52d2e58b713113b349707c5c663ad45",
+      "n_updates": 91251,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/qrm_cue/t03/s101/a00",
+          "verified": true,
+          "objective": [
+            0.001,
+            0.009,
+            -0.485
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.001,
+            0.159,
+            -1.107
+          ],
+          "config_hash": "a3b1b1db9849d3c8b13a1db8af5441faa52d2e58b713113b349707c5c663ad45",
+          "n_updates": 91251,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": 4,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 4,
+      "role": "c",
+      "run_dir": "v3/full/colour/qrm_cue/t04/s101/a00",
+      "verified": true,
+      "objective": [
+        0.001,
+        0.015,
+        -0.622
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.001,
+        0.128,
+        -1.188
+      ],
+      "config_hash": "392b0dccb8f259456a6e86ad29994ea70467d74fbb0fde29039eac62a194e19c",
+      "n_updates": 91251,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/qrm_cue/t04/s101/a00",
+          "verified": true,
+          "objective": [
+            0.001,
+            0.015,
+            -0.622
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.001,
+            0.128,
+            -1.188
+          ],
+          "config_hash": "392b0dccb8f259456a6e86ad29994ea70467d74fbb0fde29039eac62a194e19c",
+          "n_updates": 91251,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": 5,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 5,
+      "role": "c",
+      "run_dir": "v3/full/colour/qrm_cue/t05/s101/a00",
+      "verified": true,
+      "objective": [
+        0.001,
+        0.0145,
+        -0.485
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0015,
+        0.2745,
+        -1.545
+      ],
+      "config_hash": "52dd76db5a928ce65f885f9d0f0cb7fb31cf607feb7fa6b80b324e0e65c70f25",
+      "n_updates": 91251,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/qrm_cue/t05/s101/a00",
+          "verified": true,
+          "objective": [
+            0.001,
+            0.0145,
+            -0.485
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0015,
+            0.2745,
+            -1.545
+          ],
+          "config_hash": "52dd76db5a928ce65f885f9d0f0cb7fb31cf607feb7fa6b80b324e0e65c70f25",
+          "n_updates": 91251,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": 6,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 6,
+      "role": "c",
+      "run_dir": "v3/full/colour/qrm_cue/t06/s101/a00",
+      "verified": true,
+      "objective": [
+        0.001,
+        0.0215,
+        -0.496
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0035,
+        0.218,
+        -1.301
+      ],
+      "config_hash": "eef114f6f41e3e792376c685eb551f1560a343df8411e758ae36153dbcd4cd60",
+      "n_updates": 182501,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/qrm_cue/t06/s101/a00",
+          "verified": true,
+          "objective": [
+            0.001,
+            0.0215,
+            -0.496
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0035,
+            0.218,
+            -1.301
+          ],
+          "config_hash": "eef114f6f41e3e792376c685eb551f1560a343df8411e758ae36153dbcd4cd60",
+          "n_updates": 182501,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": 7,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 7,
+      "role": "c",
+      "run_dir": "v3/full/colour/qrm_cue/t07/s101/a00",
+      "verified": true,
+      "objective": [
+        0.001,
+        0.009,
+        -0.485
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.002,
+        0.2385,
+        -1.2275
+      ],
+      "config_hash": "8ed271d3291ba8ac2f6e32fe732f65f4cfca925156b66462449a8b12a8423997",
+      "n_updates": 91251,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/colour/qrm_cue/t07/s101/a00",
+          "verified": true,
+          "objective": [
+            0.001,
+            0.009,
+            -0.485
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.002,
+            0.2385,
+            -1.2275
+          ],
+          "config_hash": "8ed271d3291ba8ac2f6e32fe732f65f4cfca925156b66462449a8b12a8423997",
+          "n_updates": 91251,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 8,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 9,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 10,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 11,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 12,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "colour",
+      "algo": "qrm_cue",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 13,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": 0,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 0,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": 1,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 1,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": 2,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 2,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": 3,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 3,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": 4,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 4,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": 5,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 5,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": 6,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 6,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": 7,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 7,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 8,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 9,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 10,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 11,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 12,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 13,
+      "role": "b",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": 0,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 0,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": 1,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 1,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": 2,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 2,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": 3,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 3,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": 4,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 4,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": 5,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 5,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": 6,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 6,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": 7,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 7,
+      "role": "a",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 8,
+      "role": "a",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 9,
+      "role": "a",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 10,
+      "role": "a",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 11,
+      "role": "a",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 12,
+      "role": "a",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "recurrent_ppo",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 13,
+      "role": "a",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": 0,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 0,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": 1,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 1,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": 2,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 2,
+      "role": "b",
+      "state": "missing",
+      "attempts": [],
+      "objective": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": 3,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 3,
+      "role": "c",
+      "run_dir": "v3/full/maintenance/ppo_rm/t03/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.0,
+        -4284.342624999808
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.0,
+        -3160.8066249998037
+      ],
+      "config_hash": "4b12338931bebdffe2a39495bb67bf54057320c8a979d1613ef16a33db005c63",
+      "n_updates": 5000,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/maintenance/ppo_rm/t03/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.0,
+            -4284.342624999808
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.0,
+            -3160.8066249998037
+          ],
+          "config_hash": "4b12338931bebdffe2a39495bb67bf54057320c8a979d1613ef16a33db005c63",
+          "n_updates": 5000,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": 4,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 4,
+      "role": "c",
+      "run_dir": "v3/full/maintenance/ppo_rm/t04/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.0075,
+        -3277.620374999998
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.01625,
+        -744.7092499999904
+      ],
+      "config_hash": "ef71af982480529109b0c89dcf859cb23ad597e638bf056b11a365e854ccbeca",
+      "n_updates": 1250,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/maintenance/ppo_rm/t04/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.0075,
+            -3277.620374999998
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.01625,
+            -744.7092499999904
+          ],
+          "config_hash": "ef71af982480529109b0c89dcf859cb23ad597e638bf056b11a365e854ccbeca",
+          "n_updates": 1250,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": 5,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 5,
+      "role": "c",
+      "run_dir": "v3/full/maintenance/ppo_rm/t05/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.0,
+        -3879.2178749997806
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.0,
+        -3375.338374999824
+      ],
+      "config_hash": "9a6890ae07ac3c4118f2cf5c45fb6e14ef7607bac5ac76c4377a5d6549708054",
+      "n_updates": 1250,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/maintenance/ppo_rm/t05/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.0,
+            -3879.2178749997806
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.0,
+            -3375.338374999824
+          ],
+          "config_hash": "9a6890ae07ac3c4118f2cf5c45fb6e14ef7607bac5ac76c4377a5d6549708054",
+          "n_updates": 1250,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": 6,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 6,
+      "role": "c",
+      "run_dir": "v3/full/maintenance/ppo_rm/t06/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.0025,
+        -10404.663500000031
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.015,
+        0.02,
+        -4502.687000000181
+      ],
+      "config_hash": "e22b5eae8118d005f3775f993fc444c9ea0ee1e80a7fe913b262a58596663d88",
+      "n_updates": 2500,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/maintenance/ppo_rm/t06/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.0025,
+            -10404.663500000031
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.015,
+            0.02,
+            -4502.687000000181
+          ],
+          "config_hash": "e22b5eae8118d005f3775f993fc444c9ea0ee1e80a7fe913b262a58596663d88",
+          "n_updates": 2500,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": 7,
+      "seed": 101,
+      "stage": "screen",
+      "slot": 7,
+      "role": "c",
+      "run_dir": "v3/full/maintenance/ppo_rm/t07/s101/a00",
+      "verified": true,
+      "objective": [
+        0.0,
+        0.0,
+        -3848.4266249997877
+      ],
+      "problems": [],
+      "state": "complete",
+      "noisy_objective": [
+        0.0,
+        0.0,
+        -3416.014874999818
+      ],
+      "config_hash": "fa4947f1cf6caa9895858cd4b40e024f6d0c71de7ba5f212a4a82bc779b3c42b",
+      "n_updates": 1250,
+      "final_success": 0.0,
+      "attempts": [
+        {
+          "run_dir": "v3/full/maintenance/ppo_rm/t07/s101/a00",
+          "verified": true,
+          "objective": [
+            0.0,
+            0.0,
+            -3848.4266249997877
+          ],
+          "problems": [],
+          "state": "complete",
+          "noisy_objective": [
+            0.0,
+            0.0,
+            -3416.014874999818
+          ],
+          "config_hash": "fa4947f1cf6caa9895858cd4b40e024f6d0c71de7ba5f212a4a82bc779b3c42b",
+          "n_updates": 1250,
+          "final_success": 0.0
+        }
+      ],
+      "explicit_attempt_choice": null
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 8,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 9,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 0,
+      "slot": 10,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": null,
+      "seed": 102,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 11,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": null,
+      "seed": 103,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 12,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    },
+    {
+      "env": "maintenance",
+      "algo": "ppo_rm",
+      "candidate": null,
+      "seed": 104,
+      "stage": "confirm",
+      "rank": 1,
+      "slot": 13,
+      "role": "c",
+      "state": "pending_selection",
+      "objective": null,
+      "attempts": []
+    }
+  ],
+  "unexpected_runs": [],
+  "all_complete": false
+}

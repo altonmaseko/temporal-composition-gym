@@ -1,0 +1,7 @@
+trial,state,exit_code,seconds
+maintenance/recurrent_ppo/t00/s102,complete,0,2532.94058930804
+maintenance/recurrent_ppo/t00/s103,complete,0,2566.5912992660888
+maintenance/recurrent_ppo/t00/s104,complete,0,2528.6930661010556
+maintenance/recurrent_ppo/t01/s102,complete,0,2274.0143450880423
+maintenance/recurrent_ppo/t01/s103,complete,0,2388.0063509191386
+maintenance/recurrent_ppo/t01/s104,complete,0,2365.693632096052

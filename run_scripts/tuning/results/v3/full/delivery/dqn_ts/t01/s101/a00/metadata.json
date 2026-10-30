@@ -1,0 +1,101 @@
+{
+  "created_utc": "2026-10-29T11:03:11.814463Z",
+  "git": {
+    "rev": "9bfa221365b1e34ac66689b02dcd21052939ad6e",
+    "branch": "new_experiments",
+    "dirty": false,
+    "changed_tracked_files": [],
+    "diff_sha256": null
+  },
+  "python": {
+    "version": "3.12.15",
+    "executable": "/root/tcg/bin/python"
+  },
+  "packages": {
+    "torch": "2.14.0",
+    "stable_baselines3": "2.9.0",
+    "sb3_contrib": "2.9.0",
+    "gymnasium": "1.3.0",
+    "minigrid": "3.1.0",
+    "pymunk": "7.3.0",
+    "pygame": "2.6.1",
+    "numpy": "2.2.6",
+    "wandb": "0.30.0",
+    "psutil": "7.2.2"
+  },
+  "hardware": {
+    "hostname": "ea67ffae35cf",
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "cpu_count_logical": 16,
+    "cpu_count_physical": 8,
+    "ram_total_gb": 67.33,
+    "ram_available_gb": 63.07,
+    "disk_free_gb": 54.67,
+    "torch_cuda_available": true,
+    "torch_cuda_version": "13.0",
+    "gpus": [
+      {
+        "index": 0,
+        "name": "NVIDIA GeForce RTX 4060 Ti",
+        "vram_gb": 16.72,
+        "capability": "8.9"
+      }
+    ],
+    "nvidia_smi": [
+      "NVIDIA GeForce RTX 4060 Ti, 16380 MiB, 595.91.07"
+    ]
+  },
+  "device": {
+    "requested": "cpu",
+    "selected": "cpu",
+    "cuda_available": true,
+    "is_gpu_run": false,
+    "require_gpu": false
+  },
+  "threads": {
+    "torch_num_threads": 1,
+    "requested": 1
+  },
+  "env_vars": {
+    "CUDA_VISIBLE_DEVICES": null,
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": null,
+    "WANDB_MODE": "online",
+    "PYTHONHASHSEED": null,
+    "BASELINE_MACHINE_ROLE": null,
+    "BASELINE_BATCH_ID": null
+  },
+  "argv": [
+    "/root/temporal-composition-gym/run_scripts/tuning/run_trial.py",
+    "--env",
+    "delivery",
+    "--algo",
+    "dqn_ts",
+    "--candidate",
+    "1",
+    "--seed",
+    "101",
+    "--mode",
+    "full",
+    "--results-root",
+    "/root/temporal-composition-gym/run_scripts/tuning/results",
+    "--device",
+    "cpu",
+    "--wandb-mode",
+    "online",
+    "--threads",
+    "1",
+    "--batch-id",
+    "1029104925-2316",
+    "--launcher-stdout",
+    "/root/temporal-composition-gym/run_scripts/tuning/results/v3/full/b/b/1029104925-2316/09.out.log",
+    "--launcher-stderr",
+    "/root/temporal-composition-gym/run_scripts/tuning/results/v3/full/b/b/1029104925-2316/09.err.log"
+  ],
+  "launcher_logs": {
+    "stdout": "/root/temporal-composition-gym/run_scripts/tuning/results/v3/full/b/b/1029104925-2316/09.out.log",
+    "stderr": "/root/temporal-composition-gym/run_scripts/tuning/results/v3/full/b/b/1029104925-2316/09.err.log"
+  }
+}

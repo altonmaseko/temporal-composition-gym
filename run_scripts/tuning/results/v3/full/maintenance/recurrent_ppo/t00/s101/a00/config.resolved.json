@@ -1,0 +1,97 @@
+{
+  "protocol_version": "v3",
+  "phase": "tuning",
+  "mode": "full",
+  "env": {
+    "key": "maintenance",
+    "id": "TemporalComp/DeferredMaintenance-v0",
+    "variant": "main",
+    "kwargs": {
+      "max_stages": 4,
+      "readiness_delay_range": [
+        1,
+        2
+      ],
+      "max_code_types": 3,
+      "max_active_requests": 3,
+      "codes_per_collection_stage": 1,
+      "distractor_stations": true,
+      "required_hover_duration": 2.0,
+      "spatial_sensor_type": "local_grid",
+      "gravity_scale": 500.0,
+      "max_steps": 4000
+    }
+  },
+  "algo": {
+    "name": "recurrent_ppo",
+    "family": "implicit",
+    "impl": "sb3",
+    "hyperparams": {
+      "policy": "MlpLstmPolicy",
+      "n_steps": 2048,
+      "batch_size": 64,
+      "n_epochs": 10,
+      "learning_rate": 0.0003,
+      "gamma": 0.999,
+      "gae_lambda": 0.95,
+      "clip_range": 0.2,
+      "ent_coef": 0.0,
+      "vf_coef": 0.5,
+      "max_grad_norm": 0.5,
+      "policy_kwargs": {
+        "net_arch": {
+          "pi": [
+            128
+          ],
+          "vf": [
+            128
+          ]
+        },
+        "lstm_hidden_size": 128,
+        "n_lstm_layers": 1,
+        "shared_lstm": false,
+        "enable_critic_lstm": true
+      }
+    }
+  },
+  "seed": {
+    "train_seed": 101,
+    "train_env_reset_seed": 10101000
+  },
+  "budget": {
+    "env_steps": 512000
+  },
+  "eval": {
+    "n_points": 20,
+    "every_steps": 25600,
+    "periodic_episodes": 20,
+    "final_episodes": 100,
+    "periodic_seed_block": "tuning_validation",
+    "final_seed_block": "tuning_terminal",
+    "policy": "greedy (epsilon=0 / deterministic=True); recurrent state reset at episode start",
+    "secondary": {
+      "name": "noisy",
+      "value_based_epsilon": 0.05,
+      "rule": "secondary evaluation with training-time action noise: epsilon 0.05 for DQN, DQN-TS, DRQN, QRM and QRM-Cue (Q-values still computed every step, so recurrent state advances); stochastic action sampling for PPO, Recurrent PPO and PPO-RM. Random numbers come from a per-episode generator seeded by the episode seed, isolated from training streams. The greedy evaluation remains the headline (D5).",
+      "rng_offset": 7000
+    }
+  },
+  "checkpoint": {
+    "every_steps": 51200,
+    "save_replay": true
+  },
+  "logging": {
+    "train_log_every_steps": 2560
+  },
+  "overrides": {},
+  "wandb": {
+    "project": "new_experiments",
+    "entity": null,
+    "group": "tuning-v3"
+  },
+  "tuning": {
+    "candidate": 0,
+    "learner_hash": "be71646f893f0b1e5b6909a0ba020787ea352a7460074f316277604282e9ad8a",
+    "schema": 1
+  }
+}

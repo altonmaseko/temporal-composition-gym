@@ -1,0 +1,56 @@
+{
+  "global_step": 512000,
+  "n_updates": 2500,
+  "train_episodes": 129,
+  "final_eval": {
+    "n_episodes": 100,
+    "stage_exits_mean": 0.01,
+    "wall_touches_mean": null,
+    "return_mean": -3376.665999999773,
+    "return_std": 266.1727695388615,
+    "return_min": -3508.099999999762,
+    "return_max": -1004.0,
+    "success_rate": 0.0,
+    "length_mean": 3960.74,
+    "progress_mean": 0.0,
+    "causes": {
+      "timeout": 99,
+      "uncollected_codes_at_exit": 1
+    }
+  },
+  "last_periodic_eval": {
+    "n_episodes": 20,
+    "stage_exits_mean": 0.05,
+    "wall_touches_mean": null,
+    "return_mean": -3372.774999999773,
+    "return_std": 120.33286282225195,
+    "return_min": -3508.099999999762,
+    "return_max": -3104.9999999997804,
+    "success_rate": 0.0,
+    "length_mean": 4000.0,
+    "progress_mean": 0.0,
+    "causes": {
+      "timeout": 20
+    }
+  },
+  "config_hash": "06b6106d621682b18bca8a69259ba5075a511d21a24d9516a914852f5360d659",
+  "protocol_version": "v3",
+  "final_eval_noisy": {
+    "n_episodes": 100,
+    "stage_exits_mean": 0.02,
+    "wall_touches_mean": null,
+    "return_mean": -3152.932999999777,
+    "return_std": 219.87246442196923,
+    "return_min": -3288.0999999997703,
+    "return_max": -1005.2,
+    "success_rate": 0.0,
+    "length_mean": 3960.99,
+    "progress_mean": 0.0,
+    "causes": {
+      "timeout": 99,
+      "uncollected_codes_at_exit": 1
+    }
+  },
+  "run_id": "tuning-v3-full-maintenance-recurrent_ppo-s104-06b6106d62-20261030T073025Z-bfc3a1",
+  "completed_utc": "2026-10-30T08:09:47.673142Z"
+}

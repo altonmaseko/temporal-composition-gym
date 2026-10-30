@@ -1,0 +1,101 @@
+{
+  "created_utc": "2026-10-29T10:26:26.146143Z",
+  "git": {
+    "rev": "9bfa221365b1e34ac66689b02dcd21052939ad6e",
+    "branch": "new_experiments",
+    "dirty": false,
+    "changed_tracked_files": [],
+    "diff_sha256": null
+  },
+  "python": {
+    "version": "3.12.15",
+    "executable": "/root/tcg/bin/python"
+  },
+  "packages": {
+    "torch": "2.14.0",
+    "stable_baselines3": "2.9.0",
+    "sb3_contrib": "2.9.0",
+    "gymnasium": "1.3.0",
+    "minigrid": "3.1.0",
+    "pymunk": "7.3.0",
+    "pygame": "2.6.1",
+    "numpy": "2.2.6",
+    "wandb": "0.30.0",
+    "psutil": "7.2.2"
+  },
+  "hardware": {
+    "hostname": "08172b6d969e",
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "cpu_count_logical": 32,
+    "cpu_count_physical": 24,
+    "ram_total_gb": 67.19,
+    "ram_available_gb": 62.72,
+    "disk_free_gb": 54.68,
+    "torch_cuda_available": true,
+    "torch_cuda_version": "13.0",
+    "gpus": [
+      {
+        "index": 0,
+        "name": "NVIDIA GeForce RTX 4080 SUPER",
+        "vram_gb": 16.71,
+        "capability": "8.9"
+      }
+    ],
+    "nvidia_smi": [
+      "NVIDIA GeForce RTX 4080 SUPER, 16376 MiB, 580.126.09"
+    ]
+  },
+  "device": {
+    "requested": "cpu",
+    "selected": "cpu",
+    "cuda_available": true,
+    "is_gpu_run": false,
+    "require_gpu": false
+  },
+  "threads": {
+    "torch_num_threads": 1,
+    "requested": 1
+  },
+  "env_vars": {
+    "CUDA_VISIBLE_DEVICES": null,
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": null,
+    "WANDB_MODE": "online",
+    "PYTHONHASHSEED": null,
+    "BASELINE_MACHINE_ROLE": null,
+    "BASELINE_BATCH_ID": null
+  },
+  "argv": [
+    "/root/temporal-composition-gym/run_scripts/tuning/run_trial.py",
+    "--env",
+    "delivery",
+    "--algo",
+    "drqn",
+    "--candidate",
+    "3",
+    "--seed",
+    "101",
+    "--mode",
+    "full",
+    "--results-root",
+    "/root/temporal-composition-gym/run_scripts/tuning/results",
+    "--device",
+    "cpu",
+    "--wandb-mode",
+    "online",
+    "--threads",
+    "1",
+    "--batch-id",
+    "1029100655-2040",
+    "--launcher-stdout",
+    "/root/temporal-composition-gym/run_scripts/tuning/results/v3/full/b/a/1029100655-2040/03.out.log",
+    "--launcher-stderr",
+    "/root/temporal-composition-gym/run_scripts/tuning/results/v3/full/b/a/1029100655-2040/03.err.log"
+  ],
+  "launcher_logs": {
+    "stdout": "/root/temporal-composition-gym/run_scripts/tuning/results/v3/full/b/a/1029100655-2040/03.out.log",
+    "stderr": "/root/temporal-composition-gym/run_scripts/tuning/results/v3/full/b/a/1029100655-2040/03.err.log"
+  }
+}

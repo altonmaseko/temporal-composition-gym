@@ -1,0 +1,23 @@
+{
+  "run_id": "tuning-v3-full-maintenance-ppo_rm-s101-9a6890ae07-20261029T194715Z-2f60a8",
+  "run_uid": "20261029T194715Z-2f60a8",
+  "wandb_id": "a9839b506bd95b04",
+  "config_hash": "9a6890ae07ac3c4118f2cf5c45fb6e14ef7607bac5ac76c4377a5d6549708054",
+  "protocol_version": "v3",
+  "phase": "tuning",
+  "mode": "full",
+  "env": "maintenance",
+  "algo": "ppo_rm",
+  "family": "explicit",
+  "seed": 101,
+  "machine_role": "c",
+  "batch_id": "1029101534-1940",
+  "results_root": "/root/temporal-composition-gym/run_scripts/tuning/results",
+  "run_dir": "/root/temporal-composition-gym/run_scripts/tuning/results/v3/full/maintenance/ppo_rm/t05/s101/a00",
+  "created_utc": "2026-10-29T19:47:15.712966Z",
+  "plan_hash": "e160f2cf0fdacdca89218135287bafc9aefcbcd21d695582365da2114a857ddd",
+  "candidate": 5,
+  "stage": "screen",
+  "slot": 5,
+  "assignment_hash": null
+}

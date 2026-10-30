@@ -1,0 +1,59 @@
+{
+  "global_step": 250000,
+  "n_updates": 30001,
+  "train_episodes": 2554,
+  "final_eval": {
+    "n_episodes": 200,
+    "stage_exits_mean": null,
+    "wall_touches_mean": null,
+    "return_mean": 1.33,
+    "return_std": 7.055572265946966,
+    "return_min": -50.0,
+    "return_max": 20.0,
+    "success_rate": 0.0,
+    "length_mean": 495.045,
+    "progress_mean": 0.225,
+    "causes": {
+      "timeout": 198,
+      "premature_goal": 2
+    }
+  },
+  "last_periodic_eval": {
+    "n_episodes": 50,
+    "stage_exits_mean": null,
+    "wall_touches_mean": null,
+    "return_mean": -0.26,
+    "return_std": 7.644108842762509,
+    "return_min": -50.0,
+    "return_max": 10.0,
+    "success_rate": 0.0,
+    "length_mean": 490.46,
+    "progress_mean": 0.12,
+    "causes": {
+      "timeout": 49,
+      "damage_death": 1
+    }
+  },
+  "config_hash": "a8f34fa082c5b62cc0c9d1cc30d5386b248b8311f66e8b364dfe3ee229b0049c",
+  "protocol_version": "v3",
+  "final_eval_noisy": {
+    "n_episodes": 200,
+    "stage_exits_mean": null,
+    "wall_touches_mean": null,
+    "return_mean": -22.525,
+    "return_std": 27.25012614649701,
+    "return_min": -62.0,
+    "return_max": 30.0,
+    "success_rate": 0.0,
+    "length_mean": 316.33,
+    "progress_mean": 0.56,
+    "causes": {
+      "lava": 64,
+      "timeout": 94,
+      "premature_goal": 38,
+      "damage_death": 4
+    }
+  },
+  "run_id": "tuning-v3-full-delivery-drqn-s101-a8f34fa082-20261029T102056Z-7e78c5",
+  "completed_utc": "2026-10-29T10:26:22.004606Z"
+}

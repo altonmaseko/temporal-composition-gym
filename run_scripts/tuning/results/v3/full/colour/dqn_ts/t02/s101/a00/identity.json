@@ -1,0 +1,23 @@
+{
+  "run_id": "tuning-v3-full-colour-dqn_ts-s101-992a43fa6f-20261029T140923Z-e75a4c",
+  "run_uid": "20261029T140923Z-e75a4c",
+  "wandb_id": "acc31108006fd501",
+  "config_hash": "992a43fa6f3595afe10f1e32f445c64157a9c8d4942d1604adbff25b429e6ea1",
+  "protocol_version": "v3",
+  "phase": "tuning",
+  "mode": "full",
+  "env": "colour",
+  "algo": "dqn_ts",
+  "family": "control",
+  "seed": 101,
+  "machine_role": "c",
+  "batch_id": "1029101534-1940",
+  "results_root": "/root/temporal-composition-gym/run_scripts/tuning/results",
+  "run_dir": "/root/temporal-composition-gym/run_scripts/tuning/results/v3/full/colour/dqn_ts/t02/s101/a00",
+  "created_utc": "2026-10-29T14:09:23.370726Z",
+  "plan_hash": "e160f2cf0fdacdca89218135287bafc9aefcbcd21d695582365da2114a857ddd",
+  "candidate": 2,
+  "stage": "screen",
+  "slot": 2,
+  "assignment_hash": null
+}

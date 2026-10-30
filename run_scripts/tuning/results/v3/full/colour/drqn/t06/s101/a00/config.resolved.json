@@ -1,0 +1,89 @@
+{
+  "protocol_version": "v3",
+  "phase": "tuning",
+  "mode": "full",
+  "env": {
+    "key": "colour",
+    "id": "TemporalComp/SequentialColour-v0",
+    "variant": "main",
+    "kwargs": {
+      "sequence_length_range": [
+        3,
+        5
+      ],
+      "retention_delay_steps": 2,
+      "allow_consecutive_duplicates": false,
+      "colour_vocabulary_size": 6,
+      "randomise_wall_colors": true,
+      "hard_death_mode": false,
+      "infinite_mode": false,
+      "reward_density": "sparse",
+      "frames_per_colour": 5,
+      "max_steps": 300
+    }
+  },
+  "algo": {
+    "name": "drqn",
+    "family": "implicit",
+    "impl": "custom",
+    "hyperparams": {
+      "encoder": "cnn",
+      "enc_dim": 512,
+      "lstm_dim": 256,
+      "gamma": 0.99,
+      "lr": 2.0276778688510218e-05,
+      "replay_frames": 100000,
+      "learning_starts": 20000,
+      "train_freq": 8,
+      "target_update": 10000,
+      "batch_size": 4,
+      "train_len": 96,
+      "burn_in": 32,
+      "episode_start_fraction": 0.5,
+      "eps_start": 1.0,
+      "eps_end": 0.05,
+      "eps_fraction": 0.8,
+      "grad_clip": 10.0
+    }
+  },
+  "seed": {
+    "train_seed": 101,
+    "train_env_reset_seed": 10101000
+  },
+  "budget": {
+    "env_steps": 750000
+  },
+  "eval": {
+    "n_points": 20,
+    "every_steps": 37500,
+    "periodic_episodes": 50,
+    "final_episodes": 200,
+    "periodic_seed_block": "tuning_validation",
+    "final_seed_block": "tuning_terminal",
+    "policy": "greedy (epsilon=0 / deterministic=True); recurrent state reset at episode start",
+    "secondary": {
+      "name": "noisy",
+      "value_based_epsilon": 0.05,
+      "rule": "secondary evaluation with training-time action noise: epsilon 0.05 for DQN, DQN-TS, DRQN, QRM and QRM-Cue (Q-values still computed every step, so recurrent state advances); stochastic action sampling for PPO, Recurrent PPO and PPO-RM. Random numbers come from a per-episode generator seeded by the episode seed, isolated from training streams. The greedy evaluation remains the headline (D5).",
+      "rng_offset": 7000
+    }
+  },
+  "checkpoint": {
+    "every_steps": 75000,
+    "save_replay": true
+  },
+  "logging": {
+    "train_log_every_steps": 3750
+  },
+  "overrides": {},
+  "wandb": {
+    "project": "new_experiments",
+    "entity": null,
+    "group": "tuning-v3"
+  },
+  "tuning": {
+    "candidate": 6,
+    "learner_hash": "086405ccf4840e16420ff5f77019725124fda479d012aade07d7c2529db928b0",
+    "schema": 1
+  }
+}

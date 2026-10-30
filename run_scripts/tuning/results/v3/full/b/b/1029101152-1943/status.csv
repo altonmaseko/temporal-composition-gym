@@ -1,0 +1,8 @@
+trial,state,exit_code,seconds
+delivery/dqn/t00/s101,complete,0,297.51846757810563
+delivery/dqn/t01/s101,complete,0,302.55591551493853
+delivery/dqn/t02/s101,complete,0,261.3070191498846
+delivery/dqn/t03/s101,complete,0,293.5893112998456
+delivery/dqn/t04/s101,complete,0,275.5416460239794
+delivery/dqn/t05/s101,complete,0,268.48712047794834
+delivery/dqn/t06/s101,failed,130,37.32680210005492

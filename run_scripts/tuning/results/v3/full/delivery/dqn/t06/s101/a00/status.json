@@ -1,0 +1,38 @@
+{
+  "state": "complete",
+  "started_utc": "2026-10-29T10:40:12.859910Z",
+  "budget": 250000,
+  "env_steps_done": 250000,
+  "final_eval_done": true,
+  "resumes": [
+    {
+      "utc": "2026-10-29T10:49:27.010491Z",
+      "restored_step": 25000,
+      "launcher_logs": {
+        "stdout": "/root/temporal-composition-gym/run_scripts/tuning/results/v3/full/b/b/1029104925-2316/06.out.log",
+        "stderr": "/root/temporal-composition-gym/run_scripts/tuning/results/v3/full/b/b/1029104925-2316/06.err.log"
+      },
+      "device": {
+        "requested": "cpu",
+        "selected": "cpu",
+        "cuda_available": true,
+        "is_gpu_run": false,
+        "require_gpu": false
+      }
+    }
+  ],
+  "updated_utc": "2026-10-29T10:53:29.438367Z",
+  "wandb": {
+    "id": "ff7e0430af6e95ea",
+    "url": "https://wandb.ai/altonmaseko-wits-university/new_experiments/runs/ff7e0430af6e95ea",
+    "mode": "online",
+    "project": "new_experiments",
+    "entity": null
+  },
+  "error": null,
+  "n_updates": 30000,
+  "restored_steps": 25000,
+  "new_steps_this_session": 225000,
+  "finished_utc": "2026-10-29T10:53:29.438256Z",
+  "verified": true
+}

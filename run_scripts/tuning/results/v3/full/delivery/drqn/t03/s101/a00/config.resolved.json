@@ -1,0 +1,89 @@
+{
+  "protocol_version": "v3",
+  "phase": "tuning",
+  "mode": "full",
+  "env": {
+    "key": "delivery",
+    "id": "TemporalComp/HazardousDelivery-v0",
+    "variant": "main",
+    "kwargs": {
+      "grid_size": 10,
+      "percent_death_squares": 0.05,
+      "percent_damage_squares": 0.05,
+      "randomise_start": true,
+      "randomise_goal": true,
+      "num_packages": 3,
+      "carrying_capacity": 1,
+      "health_regeneration_nodes": 2,
+      "task_dependencies": false,
+      "include_health_in_state": true,
+      "include_inventory_in_state": false,
+      "max_steps": 500,
+      "resample_unsolvable": true
+    }
+  },
+  "algo": {
+    "name": "drqn",
+    "family": "implicit",
+    "impl": "custom",
+    "hyperparams": {
+      "encoder": "mlp",
+      "enc_dim": 128,
+      "lstm_dim": 128,
+      "gamma": 0.99,
+      "lr": 9.984432351257751e-05,
+      "replay_frames": 100000,
+      "learning_starts": 10000,
+      "train_freq": 4,
+      "target_update": 5000,
+      "batch_size": 8,
+      "train_len": 32,
+      "burn_in": 16,
+      "episode_start_fraction": 0.0,
+      "eps_start": 1.0,
+      "eps_end": 0.2,
+      "eps_fraction": 0.8,
+      "grad_clip": 10.0
+    }
+  },
+  "seed": {
+    "train_seed": 101,
+    "train_env_reset_seed": 10101000
+  },
+  "budget": {
+    "env_steps": 250000
+  },
+  "eval": {
+    "n_points": 20,
+    "every_steps": 12500,
+    "periodic_episodes": 50,
+    "final_episodes": 200,
+    "periodic_seed_block": "tuning_validation",
+    "final_seed_block": "tuning_terminal",
+    "policy": "greedy (epsilon=0 / deterministic=True); recurrent state reset at episode start",
+    "secondary": {
+      "name": "noisy",
+      "value_based_epsilon": 0.05,
+      "rule": "secondary evaluation with training-time action noise: epsilon 0.05 for DQN, DQN-TS, DRQN, QRM and QRM-Cue (Q-values still computed every step, so recurrent state advances); stochastic action sampling for PPO, Recurrent PPO and PPO-RM. Random numbers come from a per-episode generator seeded by the episode seed, isolated from training streams. The greedy evaluation remains the headline (D5).",
+      "rng_offset": 7000
+    }
+  },
+  "checkpoint": {
+    "every_steps": 25000,
+    "save_replay": true
+  },
+  "logging": {
+    "train_log_every_steps": 1250
+  },
+  "overrides": {},
+  "wandb": {
+    "project": "new_experiments",
+    "entity": null,
+    "group": "tuning-v3"
+  },
+  "tuning": {
+    "candidate": 3,
+    "learner_hash": "1a6bf251af00b690198e090eae192fe916603f47f57f004415b99bf7d10587e4",
+    "schema": 1
+  }
+}
