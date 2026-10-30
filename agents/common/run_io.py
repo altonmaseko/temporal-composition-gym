@@ -50,6 +50,13 @@ CSV_FIELDS = {
 for _name in ("eval_periodic", "eval_points", "eval_final"):
     CSV_FIELDS[f"{_name}_noisy"] = list(CSV_FIELDS[_name])
 
+# Stress phase (decision D11): per-episode files gain the required count and the within-4,000-step
+# metrics. Only stress run directories use this table; baseline and tuning files are unchanged.
+STRESS_EPISODE_FIELDS = ["required", "progress_at_4000", "return_at_4000", "success_by_4000"]
+STRESS_CSV_FIELDS = {name: list(fields) + (STRESS_EPISODE_FIELDS if name.split("_noisy")[0] in
+                                           ("train_episodes", "eval_periodic", "eval_final") else [])
+                     for name, fields in CSV_FIELDS.items()}
+
 
 def utc_now():
     return _dt.datetime.now(_dt.timezone.utc)
@@ -159,6 +166,8 @@ def collect_metadata(device_info, threads, extra=None):
 
 # --------------------------------------------------------------------------- run directory
 class RunDirectory:
+    csv_fields = CSV_FIELDS
+
     def __init__(self, path):
         self.path = path
         self.ckpt_dir = os.path.join(path, "checkpoints")
@@ -196,12 +205,12 @@ class RunDirectory:
 
     # -- csv
     def csv_writer(self, name):
-        return CSVLog(self.file(f"{name}.csv"), CSV_FIELDS[name])
+        return CSVLog(self.file(f"{name}.csv"), self.csv_fields[name])
 
     def truncate_records(self, max_step):
         """Resume support: drop rows logged after the restored step (originals kept as .bak)."""
         stamp = utc_now().strftime("%Y%m%dT%H%M%SZ")
-        for name in CSV_FIELDS:
+        for name in self.csv_fields:
             path = self.file(f"{name}.csv")
             if not os.path.exists(path) or name == "eval_final":
                 continue
@@ -212,7 +221,7 @@ class RunDirectory:
                 continue
             shutil.copy2(path, f"{path}.pre-resume-{stamp}.bak")
             with open(path, "w", newline="", encoding="utf-8") as f:
-                w = csv.DictWriter(f, fieldnames=CSV_FIELDS[name])
+                w = csv.DictWriter(f, fieldnames=self.csv_fields[name])
                 w.writeheader()
                 w.writerows(keep)
         final = self.file("eval_final.csv")

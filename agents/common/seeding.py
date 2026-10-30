@@ -26,8 +26,16 @@ EVAL_EPISODE_SEED_BASE = {
     "final_test": 5_000_000,
 }
 EVAL_BLOCK_SIZE = 1_000_000
-# A sub-block within the existing tuning million, not another top-level block.
-EVAL_SUBBLOCKS = {"tuning_terminal": (3_010_000, 990_000)}
+# Sub-blocks within an existing million, not further top-level blocks. The stress phase
+# (decision D11) uses its own pair the same way: periodic evaluation at the block base
+# (first 10,000 seeds), final evaluation in the sub-block.
+EVAL_SUBBLOCKS = {
+    "tuning_terminal": (3_010_000, 990_000),
+    "stress_terminal": (4_010_000, 990_000),
+    "final_test_terminal": (5_010_000, 990_000),
+}
+# Blocks whose periodic seeds must stay below their terminal sub-block.
+_PERIODIC_LIMITED = ("tuning_validation", "stress_eval", "final_test")
 TRAIN_ENV_SEED_BASE = 10_000_000
 
 # Fixed child index per stream name. Never renumber existing entries.
@@ -47,7 +55,7 @@ def eval_episode_seeds(kind, n):
         base, limit = EVAL_SUBBLOCKS[kind]
     else:
         base = EVAL_EPISODE_SEED_BASE[kind]
-        limit = 10_000 if kind == "tuning_validation" else EVAL_BLOCK_SIZE
+        limit = 10_000 if kind in _PERIODIC_LIMITED else EVAL_BLOCK_SIZE
     if not 0 < n <= limit:
         raise ValueError("n must be in (0, EVAL_BLOCK_SIZE]")
     return [base + i for i in range(n)]

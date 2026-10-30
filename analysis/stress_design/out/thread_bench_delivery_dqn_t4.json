@@ -1,0 +1,10 @@
+{
+ "cell": "delivery/dqn",
+ "threads": 4,
+ "omp": "4",
+ "torch_threads": 4,
+ "steps": 30000,
+ "seconds": 69.28057527542114,
+ "steps_per_s": 433.021808504572,
+ "learning_starts": 10000
+}

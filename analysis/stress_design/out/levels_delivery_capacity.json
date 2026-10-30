@@ -1,0 +1,196 @@
+{
+ "env": "delivery",
+ "axis": "carrying_capacity",
+ "seed_block": "6200000+i, i<200",
+ "levels": [
+  {
+   "value": 1,
+   "env_kwargs": {
+    "grid_size": 10,
+    "percent_death_squares": 0.05,
+    "percent_damage_squares": 0.05,
+    "randomise_start": true,
+    "randomise_goal": true,
+    "num_packages": 3,
+    "carrying_capacity": 1,
+    "health_regeneration_nodes": 2,
+    "task_dependencies": false,
+    "include_health_in_state": true,
+    "include_inventory_in_state": false,
+    "max_steps": 500,
+    "resample_unsolvable": true
+   },
+   "max_steps": 500,
+   "oracle": {
+    "n": 200,
+    "success_rate": 1.0,
+    "return_mean": 79.98,
+    "return_sd": 0.198997487421324,
+    "length_mean": 32.915,
+    "length_p50": 32.5,
+    "length_p95": 44.0,
+    "length_max": 66,
+    "progress_mean": 3.0,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 1.0,
+    "causes": {
+     "success": 200
+    },
+    "layout_attempts_mean": 1.005,
+    "layout_resampled_fraction": 0.005,
+    "span_first_delivery_to_end_mean": 25.97
+   },
+   "oracle_errors": [],
+   "oracle_seconds": 10.1,
+   "random": {
+    "n": 200,
+    "success_rate": 0.0,
+    "return_mean": -49.79,
+    "return_sd": 4.490645833285008,
+    "length_mean": 31.67,
+    "length_p50": 18.0,
+    "length_p95": 97.04999999999998,
+    "length_max": 311,
+    "progress_mean": 0.195,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 0.065,
+    "causes": {
+     "lava": 149,
+     "damage_death": 8,
+     "premature_goal": 43
+    },
+    "layout_attempts_mean": 1.005,
+    "layout_resampled_fraction": 0.005,
+    "span_first_delivery_to_end_mean": 36.73529411764706
+   },
+   "random_errors": [],
+   "random_seconds": 6.3
+  },
+  {
+   "value": 2,
+   "env_kwargs": {
+    "grid_size": 10,
+    "percent_death_squares": 0.05,
+    "percent_damage_squares": 0.05,
+    "randomise_start": true,
+    "randomise_goal": true,
+    "num_packages": 3,
+    "carrying_capacity": 2,
+    "health_regeneration_nodes": 2,
+    "task_dependencies": false,
+    "include_health_in_state": true,
+    "include_inventory_in_state": false,
+    "max_steps": 500,
+    "resample_unsolvable": true
+   },
+   "max_steps": 500,
+   "oracle": {
+    "n": 200,
+    "success_rate": 1.0,
+    "return_mean": 79.98,
+    "return_sd": 0.198997487421324,
+    "length_mean": 31.975,
+    "length_p50": 32.0,
+    "length_p95": 42.0,
+    "length_max": 49,
+    "progress_mean": 3.0,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 1.0,
+    "causes": {
+     "success": 200
+    },
+    "layout_attempts_mean": 1.005,
+    "layout_resampled_fraction": 0.005,
+    "span_first_delivery_to_end_mean": 21.485
+   },
+   "oracle_errors": [],
+   "oracle_seconds": 9.6,
+   "random": {
+    "n": 200,
+    "success_rate": 0.0,
+    "return_mean": -49.74,
+    "return_sd": 4.608947819188237,
+    "length_mean": 31.67,
+    "length_p50": 18.0,
+    "length_p95": 97.04999999999998,
+    "length_max": 311,
+    "progress_mean": 0.2,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 0.06666666666666667,
+    "causes": {
+     "lava": 149,
+     "damage_death": 8,
+     "premature_goal": 43
+    },
+    "layout_attempts_mean": 1.005,
+    "layout_resampled_fraction": 0.005,
+    "span_first_delivery_to_end_mean": 36.73529411764706
+   },
+   "random_errors": [],
+   "random_seconds": 8.1
+  },
+  {
+   "value": 3,
+   "env_kwargs": {
+    "grid_size": 10,
+    "percent_death_squares": 0.05,
+    "percent_damage_squares": 0.05,
+    "randomise_start": true,
+    "randomise_goal": true,
+    "num_packages": 3,
+    "carrying_capacity": 3,
+    "health_regeneration_nodes": 2,
+    "task_dependencies": false,
+    "include_health_in_state": true,
+    "include_inventory_in_state": false,
+    "max_steps": 500,
+    "resample_unsolvable": true
+   },
+   "max_steps": 500,
+   "oracle": {
+    "n": 200,
+    "success_rate": 1.0,
+    "return_mean": 79.98,
+    "return_sd": 0.198997487421324,
+    "length_mean": 31.655,
+    "length_p50": 32.0,
+    "length_p95": 41.0,
+    "length_max": 47,
+    "progress_mean": 3.0,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 1.0,
+    "causes": {
+     "success": 200
+    },
+    "layout_attempts_mean": 1.005,
+    "layout_resampled_fraction": 0.005,
+    "span_first_delivery_to_end_mean": 17.78
+   },
+   "oracle_errors": [],
+   "oracle_seconds": 12.2,
+   "random": {
+    "n": 200,
+    "success_rate": 0.0,
+    "return_mean": -49.74,
+    "return_sd": 4.608947819188237,
+    "length_mean": 31.67,
+    "length_p50": 18.0,
+    "length_p95": 97.04999999999998,
+    "length_max": 311,
+    "progress_mean": 0.2,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 0.06666666666666667,
+    "causes": {
+     "lava": 149,
+     "damage_death": 8,
+     "premature_goal": 43
+    },
+    "layout_attempts_mean": 1.005,
+    "layout_resampled_fraction": 0.005,
+    "span_first_delivery_to_end_mean": 36.73529411764706
+   },
+   "random_errors": [],
+   "random_seconds": 9.0
+  }
+ ]
+}

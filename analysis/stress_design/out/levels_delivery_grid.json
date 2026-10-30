@@ -1,0 +1,322 @@
+{
+ "env": "delivery",
+ "axis": "grid_size",
+ "seed_block": "6200000+i, i<200",
+ "levels": [
+  {
+   "value": 8,
+   "env_kwargs": {
+    "grid_size": 8,
+    "percent_death_squares": 0.05,
+    "percent_damage_squares": 0.05,
+    "randomise_start": true,
+    "randomise_goal": true,
+    "num_packages": 3,
+    "carrying_capacity": 1,
+    "health_regeneration_nodes": 2,
+    "task_dependencies": false,
+    "include_health_in_state": true,
+    "include_inventory_in_state": false,
+    "max_steps": 500,
+    "resample_unsolvable": true
+   },
+   "max_steps": 500,
+   "oracle": {
+    "n": 200,
+    "success_rate": 1.0,
+    "return_mean": 79.995,
+    "return_sd": 0.07053367989832943,
+    "length_mean": 24.25,
+    "length_p50": 24.0,
+    "length_p95": 33.0,
+    "length_max": 37,
+    "progress_mean": 3.0,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 1.0,
+    "causes": {
+     "success": 200
+    },
+    "layout_attempts_mean": 1.0,
+    "layout_resampled_fraction": 0.0,
+    "span_first_delivery_to_end_mean": 19.41
+   },
+   "oracle_errors": [],
+   "oracle_seconds": 6.2,
+   "random": {
+    "n": 200,
+    "success_rate": 0.0,
+    "return_mean": -46.69,
+    "return_sd": 5.971088677954799,
+    "length_mean": 40.62,
+    "length_p50": 23.0,
+    "length_p95": 155.2999999999999,
+    "length_max": 396,
+    "progress_mean": 0.43,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 0.1433333333333333,
+    "causes": {
+     "lava": 96,
+     "premature_goal": 103,
+     "damage_death": 1
+    },
+    "layout_attempts_mean": 1.0,
+    "layout_resampled_fraction": 0.0,
+    "span_first_delivery_to_end_mean": 45.16901408450704
+   },
+   "random_errors": [],
+   "random_seconds": 8.0
+  },
+  {
+   "value": 10,
+   "env_kwargs": {
+    "grid_size": 10,
+    "percent_death_squares": 0.05,
+    "percent_damage_squares": 0.05,
+    "randomise_start": true,
+    "randomise_goal": true,
+    "num_packages": 3,
+    "carrying_capacity": 1,
+    "health_regeneration_nodes": 2,
+    "task_dependencies": false,
+    "include_health_in_state": true,
+    "include_inventory_in_state": false,
+    "max_steps": 500,
+    "resample_unsolvable": true
+   },
+   "max_steps": 500,
+   "oracle": {
+    "n": 200,
+    "success_rate": 1.0,
+    "return_mean": 79.98,
+    "return_sd": 0.198997487421324,
+    "length_mean": 32.915,
+    "length_p50": 32.5,
+    "length_p95": 44.0,
+    "length_max": 66,
+    "progress_mean": 3.0,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 1.0,
+    "causes": {
+     "success": 200
+    },
+    "layout_attempts_mean": 1.005,
+    "layout_resampled_fraction": 0.005,
+    "span_first_delivery_to_end_mean": 25.97
+   },
+   "oracle_errors": [],
+   "oracle_seconds": 9.8,
+   "random": {
+    "n": 200,
+    "success_rate": 0.0,
+    "return_mean": -49.79,
+    "return_sd": 4.490645833285008,
+    "length_mean": 31.67,
+    "length_p50": 18.0,
+    "length_p95": 97.04999999999998,
+    "length_max": 311,
+    "progress_mean": 0.195,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 0.065,
+    "causes": {
+     "lava": 149,
+     "damage_death": 8,
+     "premature_goal": 43
+    },
+    "layout_attempts_mean": 1.005,
+    "layout_resampled_fraction": 0.005,
+    "span_first_delivery_to_end_mean": 36.73529411764706
+   },
+   "random_errors": [],
+   "random_seconds": 7.5
+  },
+  {
+   "value": 12,
+   "env_kwargs": {
+    "grid_size": 12,
+    "percent_death_squares": 0.05,
+    "percent_damage_squares": 0.05,
+    "randomise_start": true,
+    "randomise_goal": true,
+    "num_packages": 3,
+    "carrying_capacity": 1,
+    "health_regeneration_nodes": 2,
+    "task_dependencies": false,
+    "include_health_in_state": true,
+    "include_inventory_in_state": false,
+    "max_steps": 500,
+    "resample_unsolvable": true
+   },
+   "max_steps": 500,
+   "oracle": {
+    "n": 200,
+    "success_rate": 1.0,
+    "return_mean": 79.99,
+    "return_sd": 0.09949874371066199,
+    "length_mean": 41.275,
+    "length_p50": 40.5,
+    "length_p95": 55.0,
+    "length_max": 64,
+    "progress_mean": 3.0,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 1.0,
+    "causes": {
+     "success": 200
+    },
+    "layout_attempts_mean": 1.0,
+    "layout_resampled_fraction": 0.0,
+    "span_first_delivery_to_end_mean": 32.82
+   },
+   "oracle_errors": [],
+   "oracle_seconds": 17.6,
+   "random": {
+    "n": 200,
+    "success_rate": 0.0,
+    "return_mean": -50.745,
+    "return_sd": 3.9331889097779174,
+    "length_mean": 37.7,
+    "length_p50": 25.0,
+    "length_p95": 127.24999999999991,
+    "length_max": 308,
+    "progress_mean": 0.135,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 0.045,
+    "causes": {
+     "lava": 163,
+     "premature_goal": 28,
+     "damage_death": 9
+    },
+    "layout_attempts_mean": 1.0,
+    "layout_resampled_fraction": 0.0,
+    "span_first_delivery_to_end_mean": 32.03703703703704
+   },
+   "random_errors": [],
+   "random_seconds": 10.1
+  },
+  {
+   "value": 14,
+   "env_kwargs": {
+    "grid_size": 14,
+    "percent_death_squares": 0.05,
+    "percent_damage_squares": 0.05,
+    "randomise_start": true,
+    "randomise_goal": true,
+    "num_packages": 3,
+    "carrying_capacity": 1,
+    "health_regeneration_nodes": 2,
+    "task_dependencies": false,
+    "include_health_in_state": true,
+    "include_inventory_in_state": false,
+    "max_steps": 500,
+    "resample_unsolvable": true
+   },
+   "max_steps": 500,
+   "oracle": {
+    "n": 200,
+    "success_rate": 1.0,
+    "return_mean": 79.995,
+    "return_sd": 0.07053367989832941,
+    "length_mean": 48.655,
+    "length_p50": 48.0,
+    "length_p95": 65.04999999999998,
+    "length_max": 81,
+    "progress_mean": 3.0,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 1.0,
+    "causes": {
+     "success": 200
+    },
+    "layout_attempts_mean": 1.0,
+    "layout_resampled_fraction": 0.0,
+    "span_first_delivery_to_end_mean": 38.49
+   },
+   "oracle_errors": [],
+   "oracle_seconds": 27.5,
+   "random": {
+    "n": 200,
+    "success_rate": 0.0,
+    "return_mean": -51.0,
+    "return_sd": 3.266496594212215,
+    "length_mean": 41.26,
+    "length_p50": 26.0,
+    "length_p95": 147.09999999999997,
+    "length_max": 293,
+    "progress_mean": 0.105,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 0.035,
+    "causes": {
+     "lava": 157,
+     "premature_goal": 34,
+     "damage_death": 9
+    },
+    "layout_attempts_mean": 1.0,
+    "layout_resampled_fraction": 0.0,
+    "span_first_delivery_to_end_mean": 48.42857142857143
+   },
+   "random_errors": [],
+   "random_seconds": 9.7
+  },
+  {
+   "value": 16,
+   "env_kwargs": {
+    "grid_size": 16,
+    "percent_death_squares": 0.05,
+    "percent_damage_squares": 0.05,
+    "randomise_start": true,
+    "randomise_goal": true,
+    "num_packages": 3,
+    "carrying_capacity": 1,
+    "health_regeneration_nodes": 2,
+    "task_dependencies": false,
+    "include_health_in_state": true,
+    "include_inventory_in_state": false,
+    "max_steps": 500,
+    "resample_unsolvable": true
+   },
+   "max_steps": 500,
+   "oracle": {
+    "n": 200,
+    "success_rate": 1.0,
+    "return_mean": 80.0,
+    "return_sd": 0.0,
+    "length_mean": 57.71,
+    "length_p50": 58.0,
+    "length_p95": 78.04999999999998,
+    "length_max": 90,
+    "progress_mean": 3.0,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 1.0,
+    "causes": {
+     "success": 200
+    },
+    "layout_attempts_mean": 1.0,
+    "layout_resampled_fraction": 0.0,
+    "span_first_delivery_to_end_mean": 46.365
+   },
+   "oracle_errors": [],
+   "oracle_seconds": 25.6,
+   "random": {
+    "n": 200,
+    "success_rate": 0.0,
+    "return_mean": -51.565,
+    "return_sd": 3.155277325370941,
+    "length_mean": 39.09,
+    "length_p50": 20.0,
+    "length_p95": 134.5999999999998,
+    "length_max": 291,
+    "progress_mean": 0.04,
+    "required_mean": 3.0,
+    "progress_fraction_mean": 0.013333333333333332,
+    "causes": {
+     "lava": 172,
+     "premature_goal": 20,
+     "damage_death": 8
+    },
+    "layout_attempts_mean": 1.0,
+    "layout_resampled_fraction": 0.0,
+    "span_first_delivery_to_end_mean": 81.66666666666667
+   },
+   "random_errors": [],
+   "random_seconds": 8.5
+  }
+ ]
+}

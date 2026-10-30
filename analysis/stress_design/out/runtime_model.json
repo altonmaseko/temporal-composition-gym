@@ -1,0 +1,304 @@
+{
+ "method": "Stress-design probe: full-budget wall-clock per cell from the verified tuning records.",
+ "cells": {
+  "delivery/dqn": {
+   "candidate": "t00",
+   "runs_used": [
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\dqn\\t00\\s101\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\dqn\\t00\\s102\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\dqn\\t00\\s103\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\dqn\\t00\\s104\\a00"
+   ],
+   "gpus": [
+    "cpu"
+   ],
+   "threads": [
+    1
+   ],
+   "eval_s_per_step": 0.0001552320595321426,
+   "eval_steps_per_s": 6441.968257162357,
+   "eval_steps_periodic_total": 844472.0,
+   "final_eval_s": 25.87746173143387,
+   "tuning_total_h_mean": 0.06658676284882757,
+   "tuning_train_h": 0.022977675807764046,
+   "tuning_eval_h": 0.04360908704106352,
+   "projected_full_train_h": 0.09191070323105618,
+   "projected_full_eval_h": 0.04360908704106352,
+   "projected_full_total_h": 0.13551979027211972,
+   "naive_tuning_x4_h": 0.2663470513953103,
+   "v2_full_h_mean": 0.16280914783477785
+  },
+  "delivery/dqn_ts": {
+   "candidate": "t07",
+   "runs_used": [
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\dqn_ts\\t07\\s101\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\dqn_ts\\t07\\s102\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\dqn_ts\\t07\\s103\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\dqn_ts\\t07\\s104\\a00"
+   ],
+   "gpus": [
+    "cpu"
+   ],
+   "threads": [
+    1
+   ],
+   "eval_s_per_step": 0.00016081231726132607,
+   "eval_steps_per_s": 6218.429141686717,
+   "eval_steps_periodic_total": 811962.5,
+   "final_eval_s": 27.17296850681305,
+   "tuning_total_h_mean": 0.06133947609199418,
+   "tuning_train_h": 0.017423712009603725,
+   "tuning_eval_h": 0.04391576408239045,
+   "projected_full_train_h": 0.0696948480384149,
+   "projected_full_eval_h": 0.04391576408239045,
+   "projected_full_total_h": 0.11361061212080535,
+   "naive_tuning_x4_h": 0.24535790436797672,
+   "v2_full_h_mean": 0.1696468705071343
+  },
+  "delivery/drqn": {
+   "candidate": "t07",
+   "runs_used": [
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\drqn\\t07\\s101\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\drqn\\t07\\s102\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\drqn\\t07\\s103\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\drqn\\t07\\s104\\a00"
+   ],
+   "gpus": [
+    "cpu"
+   ],
+   "threads": [
+    1
+   ],
+   "eval_s_per_step": 0.00023816036534371737,
+   "eval_steps_per_s": 4198.851469499477,
+   "eval_steps_periodic_total": 775032.5,
+   "final_eval_s": 37.14495086669922,
+   "tuning_total_h_mean": 0.1736678629782465,
+   "tuning_train_h": 0.11207257376454294,
+   "tuning_eval_h": 0.06159528921370354,
+   "projected_full_train_h": 0.44829029505817175,
+   "projected_full_eval_h": 0.06159528921370354,
+   "projected_full_total_h": 0.5098855842718752,
+   "naive_tuning_x4_h": 0.694671451912986,
+   "v2_full_h_mean": 0.5208789970609877
+  },
+  "delivery/qrm": {
+   "candidate": "t07",
+   "runs_used": [
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\qrm\\t07\\s101\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\qrm\\t07\\s102\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\qrm\\t07\\s103\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\delivery\\qrm\\t07\\s104\\a00"
+   ],
+   "gpus": [
+    "cpu"
+   ],
+   "threads": [
+    1
+   ],
+   "eval_s_per_step": 0.0001349634420226593,
+   "eval_steps_per_s": 7409.4138754412315,
+   "eval_steps_periodic_total": 829591.0,
+   "final_eval_s": 22.371318995952606,
+   "tuning_total_h_mean": 0.057168913897540835,
+   "tuning_train_h": 0.019763952109950335,
+   "tuning_eval_h": 0.0374049617875905,
+   "projected_full_train_h": 0.07905580843980134,
+   "projected_full_eval_h": 0.0374049617875905,
+   "projected_full_total_h": 0.11646077022739185,
+   "naive_tuning_x4_h": 0.22867565559016334,
+   "v2_full_h_mean": 0.11341956766446432
+  },
+  "colour/dqn": {
+   "candidate": "t01",
+   "runs_used": [
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\dqn\\t01\\s101\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\dqn\\t01\\s102\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\dqn\\t01\\s103\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\dqn\\t01\\s104\\a00"
+   ],
+   "gpus": [
+    "NVIDIA GeForce RTX 4070 Ti SUPER"
+   ],
+   "threads": [
+    1
+   ],
+   "eval_s_per_step": 0.0005900467175964303,
+   "eval_steps_per_s": 1694.781057461898,
+   "eval_steps_periodic_total": 629971.75,
+   "final_eval_s": 70.77676659822464,
+   "tuning_total_h_mean": 0.3823983999258942,
+   "tuning_train_h": 0.25948455045118135,
+   "tuning_eval_h": 0.12291384947471283,
+   "projected_full_train_h": 1.0379382018047254,
+   "projected_full_eval_h": 0.12291384947471283,
+   "projected_full_total_h": 1.1608520512794382,
+   "naive_tuning_x4_h": 1.5295935997035768,
+   "v2_full_h_mean": 0.9926156793302959
+  },
+  "colour/dqn_ts": {
+   "candidate": "t04",
+   "runs_used": [
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\dqn_ts\\t04\\s101\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\dqn_ts\\t04\\s102\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\dqn_ts\\t04\\s103\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\dqn_ts\\t04\\s104\\a00"
+   ],
+   "gpus": [
+    "NVIDIA GeForce RTX 4070 Ti SUPER"
+   ],
+   "threads": [
+    1
+   ],
+   "eval_s_per_step": 0.000658815616081771,
+   "eval_steps_per_s": 1517.8753745203906,
+   "eval_steps_periodic_total": 629856.0,
+   "final_eval_s": 79.03710025548935,
+   "tuning_total_h_mean": 0.41040169263879456,
+   "tuning_train_h": 0.2731805274970354,
+   "tuning_eval_h": 0.13722116514175914,
+   "projected_full_train_h": 1.0927221099881417,
+   "projected_full_eval_h": 0.13722116514175914,
+   "projected_full_total_h": 1.2299432751299009,
+   "naive_tuning_x4_h": 1.6416067705551782,
+   "v2_full_h_mean": 1.0947234325144026
+  },
+  "colour/drqn": {
+   "candidate": "t05",
+   "runs_used": [
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\drqn\\t05\\s101\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\drqn\\t05\\s102\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\drqn\\t05\\s103\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\drqn\\t05\\s104\\a00"
+   ],
+   "gpus": [
+    "NVIDIA GeForce RTX 4070 Ti SUPER",
+    "NVIDIA GeForce RTX 4080 SUPER"
+   ],
+   "threads": [
+    1
+   ],
+   "eval_s_per_step": 0.00037480184799255033,
+   "eval_steps_per_s": 2668.076492568084,
+   "eval_steps_periodic_total": 629937.25,
+   "final_eval_s": 44.9601708650589,
+   "tuning_total_h_mean": 0.7127907840907574,
+   "tuning_train_h": 0.6347172586014673,
+   "tuning_eval_h": 0.07807352548928997,
+   "projected_full_train_h": 2.5388690344058693,
+   "projected_full_eval_h": 0.07807352548928997,
+   "projected_full_total_h": 2.616942559895159,
+   "naive_tuning_x4_h": 2.8511631363630294,
+   "v2_full_h_mean": 3.667007627050082
+  },
+  "colour/qrm_cue": {
+   "candidate": "t06",
+   "runs_used": [
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\qrm_cue\\t06\\s101\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\qrm_cue\\t06\\s102\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\qrm_cue\\t06\\s103\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\colour\\qrm_cue\\t06\\s104\\a00"
+   ],
+   "gpus": [
+    "NVIDIA GeForce RTX 4070 Ti SUPER"
+   ],
+   "threads": [
+    1
+   ],
+   "eval_s_per_step": 0.0005245955751173315,
+   "eval_steps_per_s": 1906.230337105568,
+   "eval_steps_periodic_total": 629497.0,
+   "final_eval_s": 62.93863445520401,
+   "tuning_total_h_mean": 0.3630198168920146,
+   "tuning_train_h": 0.2538059391272932,
+   "tuning_eval_h": 0.10921387776472138,
+   "projected_full_train_h": 1.0152237565091728,
+   "projected_full_eval_h": 0.10921387776472138,
+   "projected_full_total_h": 1.1244376342738942,
+   "naive_tuning_x4_h": 1.4520792675680585,
+   "v2_full_h_mean": 0.7199039182133145
+  },
+  "maintenance/ppo": {
+   "candidate": "t01",
+   "runs_used": [
+    "run_scripts\\tuning\\results\\v3\\full\\maintenance\\ppo\\t01\\s101\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\maintenance\\ppo\\t01\\s102\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\maintenance\\ppo\\t01\\s103\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\maintenance\\ppo\\t01\\s104\\a00"
+   ],
+   "gpus": [
+    "cpu"
+   ],
+   "threads": [
+    1
+   ],
+   "eval_s_per_step": 0.00019367766863412388,
+   "eval_steps_per_s": 5163.21787148883,
+   "eval_steps_periodic_total": 2891223.5,
+   "final_eval_s": 133.36848813295364,
+   "tuning_total_h_mean": 0.2410312386850516,
+   "tuning_train_h": 0.04835237599903883,
+   "tuning_eval_h": 0.1926788626860128,
+   "projected_full_train_h": 0.1934095039961553,
+   "projected_full_eval_h": 0.1926788626860128,
+   "projected_full_total_h": 0.38608836668216806,
+   "naive_tuning_x4_h": 0.9641249547402064,
+   "v2_full_h_mean": 0.44552710982163746
+  },
+  "maintenance/recurrent_ppo": {
+   "candidate": "t01",
+   "runs_used": [
+    "run_scripts\\tuning\\results\\v3\\full\\maintenance\\recurrent_ppo\\t01\\s101\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\maintenance\\recurrent_ppo\\t01\\s102\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\maintenance\\recurrent_ppo\\t01\\s103\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\maintenance\\recurrent_ppo\\t01\\s104\\a00"
+   ],
+   "gpus": [
+    "cpu"
+   ],
+   "threads": [
+    1
+   ],
+   "eval_s_per_step": 0.0004080631198207727,
+   "eval_steps_per_s": 2450.6012708014746,
+   "eval_steps_periodic_total": 3265043.75,
+   "final_eval_s": 322.13675129413605,
+   "tuning_total_h_mean": 0.5821936995784441,
+   "tuning_train_h": 0.12294812661247861,
+   "tuning_eval_h": 0.4592455729659655,
+   "projected_full_train_h": 0.49179250644991446,
+   "projected_full_eval_h": 0.4592455729659655,
+   "projected_full_total_h": 0.95103807941588,
+   "naive_tuning_x4_h": 2.3287747983137765,
+   "v2_full_h_mean": 1.0504551956918504
+  },
+  "maintenance/ppo_rm": {
+   "candidate": "t04",
+   "runs_used": [
+    "run_scripts\\tuning\\results\\v3\\full\\maintenance\\ppo_rm\\t04\\s101\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\maintenance\\ppo_rm\\t04\\s102\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\maintenance\\ppo_rm\\t04\\s103\\a00",
+    "run_scripts\\tuning\\results\\v3\\full\\maintenance\\ppo_rm\\t04\\s104\\a00"
+   ],
+   "gpus": [
+    "cpu"
+   ],
+   "threads": [
+    1
+   ],
+   "eval_s_per_step": 0.0002727103582350426,
+   "eval_steps_per_s": 3666.894086722308,
+   "eval_steps_periodic_total": 3028594.25,
+   "final_eval_s": 203.26152622699738,
+   "tuning_total_h_mean": 0.35846343110005063,
+   "tuning_train_h": 0.07276636162604559,
+   "tuning_eval_h": 0.28569706947400497,
+   "projected_full_train_h": 0.29106544650418237,
+   "projected_full_eval_h": 0.28569706947400497,
+   "projected_full_total_h": 0.5767625159781874,
+   "naive_tuning_x4_h": 1.4338537244002025,
+   "v2_full_h_mean": 0.33944118735525347
+  }
+ },
+ "one_set_total_h": 8.92154123954682
+}

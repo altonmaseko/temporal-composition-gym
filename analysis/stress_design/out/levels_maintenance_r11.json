@@ -1,0 +1,106 @@
+{
+ "env": "maintenance",
+ "axis": "readiness_delay_range",
+ "seed_block": "6200000+i, i<200",
+ "levels": [
+  {
+   "value": [
+    1,
+    1
+   ],
+   "env_kwargs": {
+    "max_stages": 4,
+    "readiness_delay_range": [
+     1,
+     1
+    ],
+    "max_code_types": 3,
+    "max_active_requests": 3,
+    "codes_per_collection_stage": 1,
+    "distractor_stations": true,
+    "required_hover_duration": 2.0,
+    "spatial_sensor_type": "local_grid",
+    "gravity_scale": 500.0,
+    "max_steps": 4000
+   },
+   "max_steps": 4000,
+   "oracle": {
+    "n": 200,
+    "success_rate": 1.0,
+    "return_mean": 1032.3605,
+    "return_sd": 21.10612919864805,
+    "length_mean": 1262.925,
+    "length_p50": 1271.0,
+    "length_p95": 1583.3,
+    "length_max": 1854,
+    "progress_mean": 1.0,
+    "required_mean": 1.0,
+    "progress_fraction_mean": 1.0,
+    "causes": {
+     "success": 200
+    },
+    "hold_span_mean": 467.61,
+    "hold_span_p95": 706.4999999999998,
+    "readiness_target_counts": {
+     "1": 200,
+     "2": 0,
+     "3": 0
+    }
+   },
+   "oracle_errors": [],
+   "oracle_seconds": 172.2,
+   "random": {
+    "n": 200,
+    "success_rate": 0.0,
+    "return_mean": -6155.01550000028,
+    "return_sd": 2378.392082292367,
+    "length_mean": 3598.335,
+    "length_p50": 4000.0,
+    "length_p95": 4000.0,
+    "length_max": 4000,
+    "progress_mean": 0.0,
+    "required_mean": 1.0,
+    "progress_fraction_mean": 0.0,
+    "causes": {
+     "timeout": 168,
+     "uncollected_codes_at_exit": 32
+    },
+    "hold_span_mean": null,
+    "hold_span_p95": null,
+    "readiness_target_counts": {
+     "1": 200,
+     "2": 0,
+     "3": 0
+    }
+   },
+   "random_errors": [],
+   "random_seconds": 210.0,
+   "null": {
+    "n": 200,
+    "success_rate": 0.0,
+    "return_mean": -19631.96249999977,
+    "return_sd": 2983.99394953199,
+    "length_mean": 3901.37,
+    "length_p50": 4000.0,
+    "length_p95": 4000.0,
+    "length_max": 4000,
+    "progress_mean": 0.0,
+    "required_mean": 1.0,
+    "progress_fraction_mean": 0.0,
+    "causes": {
+     "timeout": 195,
+     "uncollected_codes_at_exit": 5
+    },
+    "hold_span_mean": null,
+    "hold_span_p95": null,
+    "readiness_target_counts": {
+     "1": 200,
+     "2": 0,
+     "3": 0
+    }
+   },
+   "null_errors": [],
+   "null_seconds": 227.0
+  }
+ ]
+}

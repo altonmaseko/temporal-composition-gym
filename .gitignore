@@ -16,3 +16,10 @@ run_scripts/tuning/results/**/logs/
 run_scripts/tuning/results/v3/smoke/
 run_scripts/tuning/results/rt/
 run_scripts/tuning/results/r?????/
+# Stress runs: keep CSV/JSON records; never checkpoints/policies, W&B caches, logs, smoke or rehearsal roots
+run_scripts/stress/results/**/checkpoints/
+run_scripts/stress/results/**/_wb/
+run_scripts/stress/results/**/logs/
+run_scripts/stress/results/v3/smoke/
+run_scripts/stress/results/r?????/
+run_scripts/stress/results/pf*/

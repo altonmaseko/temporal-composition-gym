@@ -11,10 +11,27 @@ import time
 import gymnasium as gym
 import numpy as np
 
-from agents.common.run_io import utc_iso
+from agents.common.run_io import STRESS_EPISODE_FIELDS, utc_iso
 
 
 # --------------------------------------------------------------------------- episode records
+# Stress phase only (decision D11, STRESS_PROTOCOL.md section 9.1). Baseline and tuning records never
+# carry STRESS_EPISODE_FIELDS, so their CSV files are unchanged.
+STRESS_WITHIN_STEPS = 4000
+
+
+def required_count(env_key, core):
+    """Task-defined amount of work in this episode: packages, sequence length or codes issued.
+
+    Read from the environment at episode end for logging only; never shown to an agent.
+    """
+    if env_key == "delivery":
+        return int(core.num_packages)
+    if env_key == "colour":
+        return len(core.sequence)
+    return len(core.issued_codes)
+
+
 class EpisodeStats(gym.Wrapper):
     """Outermost wrapper: adds info["episode_record"] on the final step of every episode.
 
@@ -23,9 +40,14 @@ class EpisodeStats(gym.Wrapper):
     task milestones from the event stream: deliveries, correct walls, or services.
     """
 
-    def __init__(self, env, env_key):
+    def __init__(self, env, env_key, stress=None):
         super().__init__(env)
         self.env_key = env_key
+        # stress: the config's "stress" block (None outside the stress phase)
+        self.stress = stress
+        self.within = stress.get("within_steps") if stress else None
+        if self.within not in (None, STRESS_WITHIN_STEPS):
+            raise ValueError(f"within_steps must be None or {STRESS_WITHIN_STEPS} (record field names)")
         self._reset_counters()
 
     def _reset_counters(self):
@@ -33,6 +55,7 @@ class EpisodeStats(gym.Wrapper):
         self.stage_exits, self.wall_touches = 0, 0
         self._held, self._ready = [], False
         self._has_rm = False
+        self._at_within = None
 
     def reset(self, **kwargs):
         obs, info = self.env.reset(**kwargs)
@@ -69,6 +92,8 @@ class EpisodeStats(gym.Wrapper):
             self.ret_rm += float(info["rm"]["reward"])
         self.length += 1
         self._count(info.get("events", []), info)
+        if self.within is not None and self.length == self.within and not (terminated or truncated):
+            self._at_within = (self.progress, self.ret_raw)
         if terminated or truncated:
             info = dict(info)
             info["episode_record"] = {
@@ -80,6 +105,16 @@ class EpisodeStats(gym.Wrapper):
                 "stage_exits": self.stage_exits if self.env_key == "maintenance" else None,
                 "wall_touches": self.wall_touches if self.env_key == "colour" else None,
             }
+            if self.stress is not None:
+                rec = info["episode_record"]
+                rec["required"] = required_count(self.env_key, self.env.unwrapped)
+                if self.within is not None:
+                    ended_within = self.length <= self.within
+                    prog, ret = (self.progress, self.ret_raw) if ended_within else self._at_within
+                    rec.update(progress_at_4000=prog, return_at_4000=ret,
+                               success_by_4000=bool(rec["success"] and ended_within))
+                else:
+                    rec.update(progress_at_4000=None, return_at_4000=None, success_by_4000=None)
         return obs, reward, terminated, truncated, info
 
 
@@ -121,7 +156,8 @@ def init_wandb(cfg, identity, cfg_hash, mode, run_path, resume=False):
         resume="allow" if resume else None, mode=mode, dir=run_path,
         config={"resolved": cfg, "config_hash": cfg_hash, "identity": identity},
         tags=[cfg["phase"], cfg["protocol_version"], cfg["mode"], cfg["algo"]["family"], cfg["env"]["key"],
-              cfg["algo"]["name"], f"seed{cfg['seed']['train_seed']}"],
+              cfg["algo"]["name"], f"seed{cfg['seed']['train_seed']}"]
+             + ([f"level-{cfg['stress']['level']}"] if "stress" in cfg else []),
     )
     run.define_metric("global_step")
     run.define_metric("*", step_metric="global_step")

@@ -1,0 +1,1172 @@
+{
+ "per_run_hours": {
+  "delivery/dqn": {
+   "hours": 0.1846136913553096,
+   "eval_h": 0.04360908704106352,
+   "tuning_hw_projection_h": 0.13551979027211972,
+   "v2_plus_noisy_h": 0.1846136913553096
+  },
+  "delivery/dqn_ts": {
+   "hours": 0.19160475254832954,
+   "eval_h": 0.04391576408239045,
+   "tuning_hw_projection_h": 0.11361061212080535,
+   "v2_plus_noisy_h": 0.19160475254832954
+  },
+  "delivery/drqn": {
+   "hours": 0.5516766416678395,
+   "eval_h": 0.06159528921370354,
+   "tuning_hw_projection_h": 0.5098855842718752,
+   "v2_plus_noisy_h": 0.5516766416678395
+  },
+  "delivery/qrm": {
+   "hours": 0.13212204855825957,
+   "eval_h": 0.0374049617875905,
+   "tuning_hw_projection_h": 0.11646077022739185,
+   "v2_plus_noisy_h": 0.13212204855825957
+  },
+  "colour/dqn": {
+   "hours": 1.1608520512794382,
+   "eval_h": 0.12291384947471283,
+   "tuning_hw_projection_h": 1.1608520512794382,
+   "v2_plus_noisy_h": 1.0540726040676522
+  },
+  "colour/dqn_ts": {
+   "hours": 1.2299432751299009,
+   "eval_h": 0.13722116514175914,
+   "tuning_hw_projection_h": 1.2299432751299009,
+   "v2_plus_noisy_h": 1.1633340150852822
+  },
+  "colour/drqn": {
+   "hours": 3.706044389794727,
+   "eval_h": 0.07807352548928997,
+   "tuning_hw_projection_h": 2.616942559895159,
+   "v2_plus_noisy_h": 3.706044389794727
+  },
+  "colour/qrm_cue": {
+   "hours": 1.1244376342738942,
+   "eval_h": 0.10921387776472138,
+   "tuning_hw_projection_h": 1.1244376342738942,
+   "v2_plus_noisy_h": 0.7745108570956751
+  },
+  "maintenance/ppo": {
+   "hours": 0.5418665411646438,
+   "eval_h": 0.1926788626860128,
+   "tuning_hw_projection_h": 0.38608836668216806,
+   "v2_plus_noisy_h": 0.5418665411646438
+  },
+  "maintenance/recurrent_ppo": {
+   "hours": 1.2800779821748332,
+   "eval_h": 0.4592455729659655,
+   "tuning_hw_projection_h": 0.95103807941588,
+   "v2_plus_noisy_h": 1.2800779821748332
+  },
+  "maintenance/ppo_rm": {
+   "hours": 0.5767625159781874,
+   "eval_h": 0.28569706947400497,
+   "tuning_hw_projection_h": 0.5767625159781874,
+   "v2_plus_noisy_h": 0.48228972209225596
+  }
+ },
+ "machines": {
+  "a": {
+   "runs": 54,
+   "hours": 50.16277398239509,
+   "colour_hours": 32.400342362595076,
+   "queue": [
+    {
+     "slot": 0,
+     "level": "default",
+     "seed": 301,
+     "cell": "delivery/dqn",
+     "cum_h": 0.18
+    },
+    {
+     "slot": 1,
+     "level": "default",
+     "seed": 301,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 0.38
+    },
+    {
+     "slot": 2,
+     "level": "default",
+     "seed": 301,
+     "cell": "delivery/drqn",
+     "cum_h": 0.93
+    },
+    {
+     "slot": 3,
+     "level": "default",
+     "seed": 301,
+     "cell": "delivery/qrm",
+     "cum_h": 1.06
+    },
+    {
+     "slot": 4,
+     "level": "default",
+     "seed": 301,
+     "cell": "maintenance/ppo",
+     "cum_h": 1.6
+    },
+    {
+     "slot": 5,
+     "level": "default",
+     "seed": 301,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 2.88
+    },
+    {
+     "slot": 6,
+     "level": "default",
+     "seed": 301,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 3.46
+    },
+    {
+     "slot": 7,
+     "level": "default",
+     "seed": 301,
+     "cell": "colour/dqn",
+     "cum_h": 4.62
+    },
+    {
+     "slot": 8,
+     "level": "default",
+     "seed": 301,
+     "cell": "colour/dqn_ts",
+     "cum_h": 5.85
+    },
+    {
+     "slot": 9,
+     "level": "default",
+     "seed": 301,
+     "cell": "colour/qrm_cue",
+     "cum_h": 6.97
+    },
+    {
+     "slot": 10,
+     "level": "default",
+     "seed": 301,
+     "cell": "colour/drqn",
+     "cum_h": 10.68
+    },
+    {
+     "slot": 11,
+     "level": "easy",
+     "seed": 201,
+     "cell": "delivery/dqn",
+     "cum_h": 10.86
+    },
+    {
+     "slot": 12,
+     "level": "easy",
+     "seed": 201,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 11.06
+    },
+    {
+     "slot": 13,
+     "level": "easy",
+     "seed": 201,
+     "cell": "delivery/drqn",
+     "cum_h": 11.61
+    },
+    {
+     "slot": 14,
+     "level": "easy",
+     "seed": 201,
+     "cell": "delivery/qrm",
+     "cum_h": 11.74
+    },
+    {
+     "slot": 15,
+     "level": "easy",
+     "seed": 201,
+     "cell": "maintenance/ppo",
+     "cum_h": 12.28
+    },
+    {
+     "slot": 16,
+     "level": "easy",
+     "seed": 201,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 13.56
+    },
+    {
+     "slot": 17,
+     "level": "easy",
+     "seed": 201,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 14.14
+    },
+    {
+     "slot": 18,
+     "level": "easy",
+     "seed": 201,
+     "cell": "colour/dqn",
+     "cum_h": 15.3
+    },
+    {
+     "slot": 19,
+     "level": "easy",
+     "seed": 201,
+     "cell": "colour/dqn_ts",
+     "cum_h": 16.53
+    },
+    {
+     "slot": 20,
+     "level": "easy",
+     "seed": 201,
+     "cell": "colour/qrm_cue",
+     "cum_h": 17.65
+    },
+    {
+     "slot": 21,
+     "level": "easy",
+     "seed": 201,
+     "cell": "colour/drqn",
+     "cum_h": 21.36
+    },
+    {
+     "slot": 22,
+     "level": "default",
+     "seed": 304,
+     "cell": "delivery/dqn",
+     "cum_h": 21.54
+    },
+    {
+     "slot": 23,
+     "level": "default",
+     "seed": 304,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 21.74
+    },
+    {
+     "slot": 24,
+     "level": "default",
+     "seed": 304,
+     "cell": "delivery/drqn",
+     "cum_h": 22.29
+    },
+    {
+     "slot": 25,
+     "level": "default",
+     "seed": 304,
+     "cell": "delivery/qrm",
+     "cum_h": 22.42
+    },
+    {
+     "slot": 26,
+     "level": "default",
+     "seed": 304,
+     "cell": "maintenance/ppo",
+     "cum_h": 22.96
+    },
+    {
+     "slot": 27,
+     "level": "default",
+     "seed": 304,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 24.24
+    },
+    {
+     "slot": 28,
+     "level": "default",
+     "seed": 304,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 24.82
+    },
+    {
+     "slot": 29,
+     "level": "default",
+     "seed": 304,
+     "cell": "colour/dqn",
+     "cum_h": 25.98
+    },
+    {
+     "slot": 30,
+     "level": "default",
+     "seed": 304,
+     "cell": "colour/dqn_ts",
+     "cum_h": 27.21
+    },
+    {
+     "slot": 31,
+     "level": "default",
+     "seed": 304,
+     "cell": "colour/qrm_cue",
+     "cum_h": 28.33
+    },
+    {
+     "slot": 32,
+     "level": "default",
+     "seed": 304,
+     "cell": "colour/drqn",
+     "cum_h": 32.04
+    },
+    {
+     "slot": 33,
+     "level": "hard1",
+     "seed": 202,
+     "cell": "delivery/dqn",
+     "cum_h": 32.22
+    },
+    {
+     "slot": 34,
+     "level": "hard1",
+     "seed": 202,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 32.42
+    },
+    {
+     "slot": 35,
+     "level": "hard1",
+     "seed": 202,
+     "cell": "delivery/drqn",
+     "cum_h": 32.97
+    },
+    {
+     "slot": 36,
+     "level": "hard1",
+     "seed": 202,
+     "cell": "delivery/qrm",
+     "cum_h": 33.1
+    },
+    {
+     "slot": 37,
+     "level": "hard1",
+     "seed": 202,
+     "cell": "maintenance/ppo",
+     "cum_h": 33.69
+    },
+    {
+     "slot": 38,
+     "level": "hard1",
+     "seed": 202,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 35.08
+    },
+    {
+     "slot": 39,
+     "level": "hard1",
+     "seed": 202,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 35.73
+    },
+    {
+     "slot": 40,
+     "level": "hard1",
+     "seed": 202,
+     "cell": "colour/dqn",
+     "cum_h": 36.89
+    },
+    {
+     "slot": 41,
+     "level": "hard1",
+     "seed": 202,
+     "cell": "colour/dqn_ts",
+     "cum_h": 38.12
+    },
+    {
+     "slot": 42,
+     "level": "hard1",
+     "seed": 202,
+     "cell": "colour/qrm_cue",
+     "cum_h": 39.25
+    },
+    {
+     "slot": 43,
+     "level": "hard1",
+     "seed": 202,
+     "cell": "colour/drqn",
+     "cum_h": 42.95
+    },
+    {
+     "slot": 44,
+     "level": "hard1",
+     "seed": 203,
+     "cell": "delivery/dqn",
+     "cum_h": 43.14
+    },
+    {
+     "slot": 45,
+     "level": "hard1",
+     "seed": 203,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 43.33
+    },
+    {
+     "slot": 46,
+     "level": "hard1",
+     "seed": 203,
+     "cell": "delivery/drqn",
+     "cum_h": 43.88
+    },
+    {
+     "slot": 47,
+     "level": "hard1",
+     "seed": 203,
+     "cell": "delivery/qrm",
+     "cum_h": 44.01
+    },
+    {
+     "slot": 48,
+     "level": "hard1",
+     "seed": 203,
+     "cell": "maintenance/ppo",
+     "cum_h": 44.6
+    },
+    {
+     "slot": 49,
+     "level": "hard1",
+     "seed": 203,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 46.0
+    },
+    {
+     "slot": 50,
+     "level": "hard1",
+     "seed": 203,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 46.65
+    },
+    {
+     "slot": 51,
+     "level": "hard1",
+     "seed": 203,
+     "cell": "colour/dqn",
+     "cum_h": 47.81
+    },
+    {
+     "slot": 52,
+     "level": "hard1",
+     "seed": 203,
+     "cell": "colour/dqn_ts",
+     "cum_h": 49.04
+    },
+    {
+     "slot": 53,
+     "level": "hard1",
+     "seed": 203,
+     "cell": "colour/qrm_cue",
+     "cum_h": 50.16
+    }
+   ]
+  },
+  "b": {
+   "runs": 54,
+   "hours": 50.39717935867658,
+   "colour_hours": 32.400342362595076,
+   "queue": [
+    {
+     "slot": 0,
+     "level": "default",
+     "seed": 302,
+     "cell": "delivery/dqn",
+     "cum_h": 0.18
+    },
+    {
+     "slot": 1,
+     "level": "default",
+     "seed": 302,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 0.38
+    },
+    {
+     "slot": 2,
+     "level": "default",
+     "seed": 302,
+     "cell": "delivery/drqn",
+     "cum_h": 0.93
+    },
+    {
+     "slot": 3,
+     "level": "default",
+     "seed": 302,
+     "cell": "delivery/qrm",
+     "cum_h": 1.06
+    },
+    {
+     "slot": 4,
+     "level": "default",
+     "seed": 302,
+     "cell": "maintenance/ppo",
+     "cum_h": 1.6
+    },
+    {
+     "slot": 5,
+     "level": "default",
+     "seed": 302,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 2.88
+    },
+    {
+     "slot": 6,
+     "level": "default",
+     "seed": 302,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 3.46
+    },
+    {
+     "slot": 7,
+     "level": "default",
+     "seed": 302,
+     "cell": "colour/dqn",
+     "cum_h": 4.62
+    },
+    {
+     "slot": 8,
+     "level": "default",
+     "seed": 302,
+     "cell": "colour/dqn_ts",
+     "cum_h": 5.85
+    },
+    {
+     "slot": 9,
+     "level": "default",
+     "seed": 302,
+     "cell": "colour/qrm_cue",
+     "cum_h": 6.97
+    },
+    {
+     "slot": 10,
+     "level": "default",
+     "seed": 302,
+     "cell": "colour/drqn",
+     "cum_h": 10.68
+    },
+    {
+     "slot": 11,
+     "level": "hard1",
+     "seed": 201,
+     "cell": "delivery/dqn",
+     "cum_h": 10.86
+    },
+    {
+     "slot": 12,
+     "level": "hard1",
+     "seed": 201,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 11.06
+    },
+    {
+     "slot": 13,
+     "level": "hard1",
+     "seed": 201,
+     "cell": "delivery/drqn",
+     "cum_h": 11.61
+    },
+    {
+     "slot": 14,
+     "level": "hard1",
+     "seed": 201,
+     "cell": "delivery/qrm",
+     "cum_h": 11.74
+    },
+    {
+     "slot": 15,
+     "level": "hard1",
+     "seed": 201,
+     "cell": "maintenance/ppo",
+     "cum_h": 12.33
+    },
+    {
+     "slot": 16,
+     "level": "hard1",
+     "seed": 201,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 13.72
+    },
+    {
+     "slot": 17,
+     "level": "hard1",
+     "seed": 201,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 14.37
+    },
+    {
+     "slot": 18,
+     "level": "hard1",
+     "seed": 201,
+     "cell": "colour/dqn",
+     "cum_h": 15.53
+    },
+    {
+     "slot": 19,
+     "level": "hard1",
+     "seed": 201,
+     "cell": "colour/dqn_ts",
+     "cum_h": 16.76
+    },
+    {
+     "slot": 20,
+     "level": "hard1",
+     "seed": 201,
+     "cell": "colour/qrm_cue",
+     "cum_h": 17.89
+    },
+    {
+     "slot": 21,
+     "level": "hard1",
+     "seed": 201,
+     "cell": "colour/drqn",
+     "cum_h": 21.59
+    },
+    {
+     "slot": 22,
+     "level": "default",
+     "seed": 305,
+     "cell": "delivery/dqn",
+     "cum_h": 21.78
+    },
+    {
+     "slot": 23,
+     "level": "default",
+     "seed": 305,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 21.97
+    },
+    {
+     "slot": 24,
+     "level": "default",
+     "seed": 305,
+     "cell": "delivery/drqn",
+     "cum_h": 22.52
+    },
+    {
+     "slot": 25,
+     "level": "default",
+     "seed": 305,
+     "cell": "delivery/qrm",
+     "cum_h": 22.65
+    },
+    {
+     "slot": 26,
+     "level": "default",
+     "seed": 305,
+     "cell": "maintenance/ppo",
+     "cum_h": 23.2
+    },
+    {
+     "slot": 27,
+     "level": "default",
+     "seed": 305,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 24.48
+    },
+    {
+     "slot": 28,
+     "level": "default",
+     "seed": 305,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 25.05
+    },
+    {
+     "slot": 29,
+     "level": "default",
+     "seed": 305,
+     "cell": "colour/dqn",
+     "cum_h": 26.21
+    },
+    {
+     "slot": 30,
+     "level": "default",
+     "seed": 305,
+     "cell": "colour/dqn_ts",
+     "cum_h": 27.44
+    },
+    {
+     "slot": 31,
+     "level": "default",
+     "seed": 305,
+     "cell": "colour/qrm_cue",
+     "cum_h": 28.57
+    },
+    {
+     "slot": 32,
+     "level": "default",
+     "seed": 305,
+     "cell": "colour/drqn",
+     "cum_h": 32.27
+    },
+    {
+     "slot": 33,
+     "level": "hard2",
+     "seed": 202,
+     "cell": "delivery/dqn",
+     "cum_h": 32.46
+    },
+    {
+     "slot": 34,
+     "level": "hard2",
+     "seed": 202,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 32.65
+    },
+    {
+     "slot": 35,
+     "level": "hard2",
+     "seed": 202,
+     "cell": "delivery/drqn",
+     "cum_h": 33.2
+    },
+    {
+     "slot": 36,
+     "level": "hard2",
+     "seed": 202,
+     "cell": "delivery/qrm",
+     "cum_h": 33.33
+    },
+    {
+     "slot": 37,
+     "level": "hard2",
+     "seed": 202,
+     "cell": "maintenance/ppo",
+     "cum_h": 33.92
+    },
+    {
+     "slot": 38,
+     "level": "hard2",
+     "seed": 202,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 35.32
+    },
+    {
+     "slot": 39,
+     "level": "hard2",
+     "seed": 202,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 35.97
+    },
+    {
+     "slot": 40,
+     "level": "hard2",
+     "seed": 202,
+     "cell": "colour/dqn",
+     "cum_h": 37.13
+    },
+    {
+     "slot": 41,
+     "level": "hard2",
+     "seed": 202,
+     "cell": "colour/dqn_ts",
+     "cum_h": 38.36
+    },
+    {
+     "slot": 42,
+     "level": "hard2",
+     "seed": 202,
+     "cell": "colour/qrm_cue",
+     "cum_h": 39.48
+    },
+    {
+     "slot": 43,
+     "level": "hard2",
+     "seed": 202,
+     "cell": "colour/drqn",
+     "cum_h": 43.19
+    },
+    {
+     "slot": 44,
+     "level": "hard2",
+     "seed": 203,
+     "cell": "delivery/dqn",
+     "cum_h": 43.37
+    },
+    {
+     "slot": 45,
+     "level": "hard2",
+     "seed": 203,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 43.57
+    },
+    {
+     "slot": 46,
+     "level": "hard2",
+     "seed": 203,
+     "cell": "delivery/drqn",
+     "cum_h": 44.12
+    },
+    {
+     "slot": 47,
+     "level": "hard2",
+     "seed": 203,
+     "cell": "delivery/qrm",
+     "cum_h": 44.25
+    },
+    {
+     "slot": 48,
+     "level": "hard2",
+     "seed": 203,
+     "cell": "maintenance/ppo",
+     "cum_h": 44.84
+    },
+    {
+     "slot": 49,
+     "level": "hard2",
+     "seed": 203,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 46.23
+    },
+    {
+     "slot": 50,
+     "level": "hard2",
+     "seed": 203,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 46.88
+    },
+    {
+     "slot": 51,
+     "level": "hard2",
+     "seed": 203,
+     "cell": "colour/dqn",
+     "cum_h": 48.04
+    },
+    {
+     "slot": 52,
+     "level": "hard2",
+     "seed": 203,
+     "cell": "colour/dqn_ts",
+     "cum_h": 49.27
+    },
+    {
+     "slot": 53,
+     "level": "hard2",
+     "seed": 203,
+     "cell": "colour/qrm_cue",
+     "cum_h": 50.4
+    }
+   ]
+  },
+  "c": {
+   "runs": 46,
+   "hours": 50.3665002515724,
+   "colour_hours": 36.297198181501294,
+   "queue": [
+    {
+     "slot": 0,
+     "level": "default",
+     "seed": 303,
+     "cell": "delivery/dqn",
+     "cum_h": 0.18
+    },
+    {
+     "slot": 1,
+     "level": "default",
+     "seed": 303,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 0.38
+    },
+    {
+     "slot": 2,
+     "level": "default",
+     "seed": 303,
+     "cell": "delivery/drqn",
+     "cum_h": 0.93
+    },
+    {
+     "slot": 3,
+     "level": "default",
+     "seed": 303,
+     "cell": "delivery/qrm",
+     "cum_h": 1.06
+    },
+    {
+     "slot": 4,
+     "level": "default",
+     "seed": 303,
+     "cell": "maintenance/ppo",
+     "cum_h": 1.6
+    },
+    {
+     "slot": 5,
+     "level": "default",
+     "seed": 303,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 2.88
+    },
+    {
+     "slot": 6,
+     "level": "default",
+     "seed": 303,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 3.46
+    },
+    {
+     "slot": 7,
+     "level": "default",
+     "seed": 303,
+     "cell": "colour/dqn",
+     "cum_h": 4.62
+    },
+    {
+     "slot": 8,
+     "level": "default",
+     "seed": 303,
+     "cell": "colour/dqn_ts",
+     "cum_h": 5.85
+    },
+    {
+     "slot": 9,
+     "level": "default",
+     "seed": 303,
+     "cell": "colour/qrm_cue",
+     "cum_h": 6.97
+    },
+    {
+     "slot": 10,
+     "level": "default",
+     "seed": 303,
+     "cell": "colour/drqn",
+     "cum_h": 10.68
+    },
+    {
+     "slot": 11,
+     "level": "hard2",
+     "seed": 201,
+     "cell": "delivery/dqn",
+     "cum_h": 10.86
+    },
+    {
+     "slot": 12,
+     "level": "hard2",
+     "seed": 201,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 11.06
+    },
+    {
+     "slot": 13,
+     "level": "hard2",
+     "seed": 201,
+     "cell": "delivery/drqn",
+     "cum_h": 11.61
+    },
+    {
+     "slot": 14,
+     "level": "hard2",
+     "seed": 201,
+     "cell": "delivery/qrm",
+     "cum_h": 11.74
+    },
+    {
+     "slot": 15,
+     "level": "hard2",
+     "seed": 201,
+     "cell": "maintenance/ppo",
+     "cum_h": 12.33
+    },
+    {
+     "slot": 16,
+     "level": "hard2",
+     "seed": 201,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 13.72
+    },
+    {
+     "slot": 17,
+     "level": "hard2",
+     "seed": 201,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 14.37
+    },
+    {
+     "slot": 18,
+     "level": "hard2",
+     "seed": 201,
+     "cell": "colour/dqn",
+     "cum_h": 15.53
+    },
+    {
+     "slot": 19,
+     "level": "hard2",
+     "seed": 201,
+     "cell": "colour/dqn_ts",
+     "cum_h": 16.76
+    },
+    {
+     "slot": 20,
+     "level": "hard2",
+     "seed": 201,
+     "cell": "colour/qrm_cue",
+     "cum_h": 17.89
+    },
+    {
+     "slot": 21,
+     "level": "hard2",
+     "seed": 201,
+     "cell": "colour/drqn",
+     "cum_h": 21.59
+    },
+    {
+     "slot": 22,
+     "level": "easy",
+     "seed": 202,
+     "cell": "delivery/dqn",
+     "cum_h": 21.78
+    },
+    {
+     "slot": 23,
+     "level": "easy",
+     "seed": 202,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 21.97
+    },
+    {
+     "slot": 24,
+     "level": "easy",
+     "seed": 202,
+     "cell": "delivery/drqn",
+     "cum_h": 22.52
+    },
+    {
+     "slot": 25,
+     "level": "easy",
+     "seed": 202,
+     "cell": "delivery/qrm",
+     "cum_h": 22.65
+    },
+    {
+     "slot": 26,
+     "level": "easy",
+     "seed": 202,
+     "cell": "maintenance/ppo",
+     "cum_h": 23.2
+    },
+    {
+     "slot": 27,
+     "level": "easy",
+     "seed": 202,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 24.48
+    },
+    {
+     "slot": 28,
+     "level": "easy",
+     "seed": 202,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 25.05
+    },
+    {
+     "slot": 29,
+     "level": "easy",
+     "seed": 202,
+     "cell": "colour/dqn",
+     "cum_h": 26.21
+    },
+    {
+     "slot": 30,
+     "level": "easy",
+     "seed": 202,
+     "cell": "colour/dqn_ts",
+     "cum_h": 27.44
+    },
+    {
+     "slot": 31,
+     "level": "easy",
+     "seed": 202,
+     "cell": "colour/qrm_cue",
+     "cum_h": 28.57
+    },
+    {
+     "slot": 32,
+     "level": "easy",
+     "seed": 202,
+     "cell": "colour/drqn",
+     "cum_h": 32.27
+    },
+    {
+     "slot": 33,
+     "level": "easy",
+     "seed": 203,
+     "cell": "delivery/dqn",
+     "cum_h": 32.46
+    },
+    {
+     "slot": 34,
+     "level": "easy",
+     "seed": 203,
+     "cell": "delivery/dqn_ts",
+     "cum_h": 32.65
+    },
+    {
+     "slot": 35,
+     "level": "easy",
+     "seed": 203,
+     "cell": "delivery/drqn",
+     "cum_h": 33.2
+    },
+    {
+     "slot": 36,
+     "level": "easy",
+     "seed": 203,
+     "cell": "delivery/qrm",
+     "cum_h": 33.33
+    },
+    {
+     "slot": 37,
+     "level": "easy",
+     "seed": 203,
+     "cell": "maintenance/ppo",
+     "cum_h": 33.88
+    },
+    {
+     "slot": 38,
+     "level": "easy",
+     "seed": 203,
+     "cell": "maintenance/recurrent_ppo",
+     "cum_h": 35.16
+    },
+    {
+     "slot": 39,
+     "level": "easy",
+     "seed": 203,
+     "cell": "maintenance/ppo_rm",
+     "cum_h": 35.73
+    },
+    {
+     "slot": 40,
+     "level": "easy",
+     "seed": 203,
+     "cell": "colour/dqn",
+     "cum_h": 36.89
+    },
+    {
+     "slot": 41,
+     "level": "easy",
+     "seed": 203,
+     "cell": "colour/dqn_ts",
+     "cum_h": 38.12
+    },
+    {
+     "slot": 42,
+     "level": "easy",
+     "seed": 203,
+     "cell": "colour/qrm_cue",
+     "cum_h": 39.25
+    },
+    {
+     "slot": 43,
+     "level": "easy",
+     "seed": 203,
+     "cell": "colour/drqn",
+     "cum_h": 42.95
+    },
+    {
+     "slot": 44,
+     "level": "hard1",
+     "seed": 203,
+     "cell": "colour/drqn",
+     "cum_h": 46.66
+    },
+    {
+     "slot": 45,
+     "level": "hard2",
+     "seed": 203,
+     "cell": "colour/drqn",
+     "cum_h": 50.37
+    }
+   ]
+  }
+ },
+ "total_hours": 150.92645359264407
+}

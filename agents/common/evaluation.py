@@ -94,9 +94,13 @@ class EpsilonPolicy:
 
 
 def _record_row(seed, rec):
-    return {"episode_seed": int(seed), "return_raw": rec["return_raw"], "length": rec["length"],
-            "success": rec["success"], "cause": rec["cause"], "progress": rec["progress"],
-            "stage_exits": rec.get("stage_exits"), "wall_touches": rec.get("wall_touches")}
+    row = {"episode_seed": int(seed), "return_raw": rec["return_raw"], "length": rec["length"],
+           "success": rec["success"], "cause": rec["cause"], "progress": rec["progress"],
+           "stage_exits": rec.get("stage_exits"), "wall_touches": rec.get("wall_touches")}
+    if "required" in rec:                              # stress phase only (STRESS_PROTOCOL.md 9.1)
+        from agents.common.run_io import STRESS_EPISODE_FIELDS
+        row.update({k: rec[k] for k in STRESS_EPISODE_FIELDS})
+    return row
 
 
 def _run_episode(env, policy, seed):

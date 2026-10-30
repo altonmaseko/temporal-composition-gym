@@ -417,6 +417,7 @@ from pytest).
 | 2026-10-28 | v3 | Protocol v3 defined (decisions D5–D9, section 12): maintenance γ = 0.999; secondary noisy evaluation; extra logging. Selected with `--protocol v3`; v2 stays the default and its configs and hashes are unchanged (`baseline_plan.json` check passes, manifest 55/55) | Evidence in `analysis/baseline_v2/REPORT.md` and `analysis/diagnostics_v3/MEMO.md` |
 | 2026-10-28 | v2/v3 | Extra per-episode columns `stage_exits` (maintenance) and `wall_touches` (colour) in training and evaluation CSVs, and `stage_exits_mean` / `wall_touches_mean` in `eval_points*.csv`; empty where not applicable. `final_summary.json` gains `protocol_version` and `final_eval_noisy` (null for v2) | Logging only; collected v2 results are unaffected |
 | 2026-10-28 | v3 | D10: phase order tuning -> stress tests -> optional seed expansion. The stress test's default-difficulty level is the tuned RQ1 comparison and uses the final-comparison seeds (training 301-399, episode seeds 5,000,000+); the other stress levels use the stress seeds (201-299 / 4,000,000+). No separate final-comparison phase (section 13) | Saves a full 55-run phase; the default-level runs are identical to a separate final comparison |
+| 2026-10-30 | v3 | D11: stress-test protocol frozen (`run_scripts/stress/STRESS_PROTOCOL.md`, P1–P18 as recommended). Axes and levels easy/default/hard1/hard2: delivery `num_packages` 1/3/5/7; colour `retention_delay_steps` 0/2/24/48; maintenance `readiness_delay_range` (1,1)/(1,2)/(2,2)/(3,3) with `max_steps` 5,000 at hard1 and hard2 only. **Adds an easier level**, which D10 did not plan. Default level = v3 main condition, seeds 301–305 with the 5,000,000 block; other levels seeds 201–203 with the 4,000,000 block; new final-evaluation sub-blocks 4,010,000+ and 5,010,000+. 154 runs. Tuned hyperparameters taken verbatim. Normalised return is secondary; replacement machines keep their role | Researcher approval of the stress design; the easy level addresses the floor effect seen in tuning. Difficulty scale fixed before any stress result was seen |
 
 ## 12. Protocol v3 (decisions accepted 2026-10-28)
 
@@ -493,3 +494,26 @@ tuned final comparison, stress testing) use v3. v2 and v3 results are reported s
   length and repeated colours; maintenance readiness delay, active requests and distractors), the
   per-level seed count, and the cost cap. The difficulty scale must be fixed before any stress result
   is seen.
+
+- **D11 — ACCEPTED 2026-10-30: stress-test protocol frozen**
+  ([STRESS_PROTOCOL.md](../stress/STRESS_PROTOCOL.md), decisions P1–P18 as recommended there, plus
+  two additions).
+  - Levels: four per environment along one temporal-delay axis, **including an easier level** below
+    the default. This changes D10, which planned harder levels only. The easier level is there because
+    tuning left every cell at or near the floor.
+    - Delivery: `num_packages` 1 / **3** / 5 / 7.
+    - Colour: `retention_delay_steps` 0 / **2** / 24 / 48.
+    - Maintenance: `readiness_delay_range` (1,1) / **(1,2)** / (2,2) / (3,3), with `max_steps` raised
+      to 5,000 at the two harder levels only (oracle p95 > 2,000).
+  - Defaults (bold) are exactly the v3 main condition.
+  - Seeds: default level training seeds 301–305, episode seeds 5,000,000+ (periodic) and 5,010,000+
+    (final); other levels training seeds 201–203 at every level (paired), episode seeds 4,000,000+
+    and 4,010,000+. 154 runs.
+  - Hyperparameters are taken verbatim from the tuning selection; exploration decays over the same
+    fraction of the full budget, and warm-up stays absolute.
+  - Primary metrics: RQ1 greedy progress-fraction AUC; RQ2 final greedy progress fraction. Floors
+    are reported as "degradation not measurable".
+  - Additions: normalised return is secondary and never evidence of learning on its own; a machine
+    that dies is replaced by one with the same role using `--continue-batch` and identical settings,
+    never by moving runs between roles.
+  - The difficulty scale was fixed before any stress result was seen.

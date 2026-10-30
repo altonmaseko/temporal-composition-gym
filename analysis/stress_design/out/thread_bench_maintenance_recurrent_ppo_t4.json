@@ -1,0 +1,10 @@
+{
+ "cell": "maintenance/recurrent_ppo",
+ "threads": 4,
+ "omp": "4",
+ "torch_threads": 4,
+ "steps": 12288,
+ "seconds": 24.20723867416382,
+ "steps_per_s": 507.6167573427067,
+ "learning_starts": null
+}

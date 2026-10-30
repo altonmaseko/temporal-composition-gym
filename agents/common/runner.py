@@ -56,7 +56,7 @@ def build_env(cfg):
     elif algo == "dqn_ts":
         env = RewardMachineWrapper(base, make_reward_machine(key, base),
                                    obs_mode="dict" if key == "colour" else "append", reward_mode="env")
-    return EpisodeStats(env, key)
+    return EpisodeStats(env, key, stress=cfg.get("stress"))
 
 
 # --------------------------------------------------------------------------- RNG state
@@ -453,7 +453,7 @@ def run(cfg, args, directory_class=RunDirectory):
     if resume:
         rd = directory_class(os.path.abspath(args.resume))
         identity, status, restart_meta = _check_resume(rd, cfg, cfg_hash)
-        if cfg["phase"] == "tuning":
+        if cfg["phase"] in ("tuning", "stress"):
             rd.preserve_status(status)
         write_json_atomic(rd.file(f"metadata_resume_{time.strftime('%Y%m%dT%H%M%S')}.json"),
                           collect_metadata(device, threads, {"launcher_logs": launcher}))
@@ -463,8 +463,9 @@ def run(cfg, args, directory_class=RunDirectory):
         rd.truncate_records(restart_meta["global_step"])
     else:
         rd = directory_class.create(cfg, cfg_hash, args.results_root)
+        level = f"-{cfg['stress']['level']}" if cfg["phase"] == "stress" else ""
         run_id = f"{cfg['phase']}-{cfg['protocol_version']}-{cfg['mode']}-{cfg['env']['key']}-{cfg['algo']['name']}" \
-                 f"-s{cfg['seed']['train_seed']}-{cfg_hash[:10]}-{rd.run_uid}"
+                 f"{level}-s{cfg['seed']['train_seed']}-{cfg_hash[:10]}-{rd.run_uid}"
         identity = {
             "run_id": run_id, "run_uid": rd.run_uid, "wandb_id": wandb_id_for(run_id), "config_hash": cfg_hash,
             "protocol_version": cfg["protocol_version"], "phase": cfg["phase"], "mode": cfg["mode"],
@@ -475,6 +476,8 @@ def run(cfg, args, directory_class=RunDirectory):
         }
         if cfg["phase"] == "tuning":
             identity.update(args.tuning_context)
+        elif cfg["phase"] == "stress":
+            identity.update(args.stress_context)
         write_json_atomic(rd.file("config.resolved.json"), cfg)
         write_json_atomic(rd.file("identity.json"), identity)
         write_json_atomic(rd.file("metadata.json"), collect_metadata(device, threads, {"launcher_logs": launcher}))
@@ -488,7 +491,7 @@ def run(cfg, args, directory_class=RunDirectory):
     exit_code = 1
     try:
         wb = init_wandb(cfg, identity, cfg_hash, args.wandb_mode,
-                        rd.wandb_path if cfg["phase"] == "tuning" else rd.path, resume=resume)
+                        rd.wandb_path if cfg["phase"] in ("tuning", "stress") else rd.path, resume=resume)
         if wb is not None:
             rd.update_status(wandb={"id": wb.id, "url": getattr(wb, "url", None), "mode": args.wandb_mode,
                                     "project": cfg["wandb"]["project"], "entity": cfg["wandb"]["entity"]})

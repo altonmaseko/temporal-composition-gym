@@ -76,6 +76,49 @@ ABLATIONS = {
 }
 
 
+# Stress-test levels (decision D11, run_scripts/stress/STRESS_PROTOCOL.md sections 1-3). Each level
+# overrides only its environment's temporal-delay axis (and, for the two harder maintenance levels,
+# the step limit). "default" overrides nothing, so it is exactly the main condition above.
+STRESS_LEVELS = ("easy", "default", "hard1", "hard2")
+STRESS_AXES = {"delivery": "num_packages", "colour": "retention_delay_steps",
+               "maintenance": "readiness_delay_range"}
+STRESS_LEVEL_OVERRIDES = {
+    "delivery": {
+        "easy": {"num_packages": 1},
+        "default": {},
+        "hard1": {"num_packages": 5},
+        "hard2": {"num_packages": 7},
+    },
+    "colour": {
+        "easy": {"retention_delay_steps": 0},
+        "default": {},
+        "hard1": {"retention_delay_steps": 24},
+        "hard2": {"retention_delay_steps": 48},
+    },
+    "maintenance": {
+        "easy": {"readiness_delay_range": (1, 1)},
+        "default": {},
+        "hard1": {"readiness_delay_range": (2, 2), "max_steps": 5000},
+        "hard2": {"readiness_delay_range": (3, 3), "max_steps": 5000},
+    },
+}
+# Step limit of the main condition; raised-limit levels also record results within it.
+STRESS_WITHIN_STEPS = {"maintenance": 4000}
+
+
+def stress_env_kwargs(env_key, level):
+    """Resolved constructor kwargs for a stress level (a fresh copy; default == main condition)."""
+    if level not in STRESS_LEVELS:
+        raise KeyError(f"unknown stress level {level!r}; expected one of {STRESS_LEVELS}")
+    return env_kwargs(env_key, overrides=STRESS_LEVEL_OVERRIDES[env_key][level])
+
+
+def stress_within_steps(env_key, level):
+    """Step count for 'within the main-condition limit' metrics, or None if the limit is unchanged."""
+    raised = stress_env_kwargs(env_key, level)["max_steps"] != BASELINE_ENV_KWARGS[env_key]["max_steps"]
+    return STRESS_WITHIN_STEPS[env_key] if raised else None
+
+
 def env_kwargs(env_key, variant="main", overrides=None):
     """Resolved constructor kwargs for an environment variant (a fresh copy)."""
     if env_key not in ENV_IDS:
