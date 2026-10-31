@@ -1,0 +1,7 @@
+delivery 1 oracle {"success_rate": 1.0, "length_p95": 44.0, "return_mean": 79.98, "progress_fraction_mean": 1.0} errors=0
+delivery 1 random {"success_rate": 0.0, "length_p95": 97.04999999999998, "return_mean": -49.79, "progress_fraction_mean": 0.065} errors=0
+delivery 2 oracle {"success_rate": 1.0, "length_p95": 42.0, "return_mean": 79.98, "progress_fraction_mean": 1.0} errors=0
+delivery 2 random {"success_rate": 0.0, "length_p95": 97.04999999999998, "return_mean": -49.74, "progress_fraction_mean": 0.06666666666666667} errors=0
+delivery 3 oracle {"success_rate": 1.0, "length_p95": 41.0, "return_mean": 79.98, "progress_fraction_mean": 1.0} errors=0
+delivery 3 random {"success_rate": 0.0, "length_p95": 97.04999999999998, "return_mean": -49.74, "progress_fraction_mean": 0.06666666666666667} errors=0
+wrote C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym\analysis\stress_design\out\levels_delivery_capacity.json

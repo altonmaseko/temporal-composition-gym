@@ -1,0 +1,17 @@
+colour 0 oracle {"success_rate": 1.0, "length_p95": 90.0, "return_mean": 10.0, "progress_fraction_mean": 1.0} errors=0
+colour 0 random {"success_rate": 0.0, "length_p95": 300.0, "return_mean": -0.775, "progress_fraction_mean": 0.08891666666666666} errors=0
+colour 2 oracle {"success_rate": 1.0, "length_p95": 92.0, "return_mean": 10.0, "progress_fraction_mean": 1.0} errors=0
+colour 2 random {"success_rate": 0.0, "length_p95": 300.0, "return_mean": -0.8, "progress_fraction_mean": 0.07200000000000001} errors=0
+colour 8 oracle {"success_rate": 1.0, "length_p95": 98.0, "return_mean": 10.0, "progress_fraction_mean": 1.0} errors=0
+colour 8 random {"success_rate": 0.0, "length_p95": 300.0, "return_mean": -0.795, "progress_fraction_mean": 0.07091666666666667} errors=0
+colour 16 oracle {"success_rate": 1.0, "length_p95": 106.0, "return_mean": 10.0, "progress_fraction_mean": 1.0} errors=0
+colour 16 random {"success_rate": 0.0, "length_p95": 300.0, "return_mean": -0.795, "progress_fraction_mean": 0.06649999999999999} errors=0
+colour 24 oracle {"success_rate": 1.0, "length_p95": 114.0, "return_mean": 10.0, "progress_fraction_mean": 1.0} errors=0
+colour 24 random {"success_rate": 0.0, "length_p95": 300.0, "return_mean": -0.695, "progress_fraction_mean": 0.07583333333333332} errors=0
+colour 32 oracle {"success_rate": 1.0, "length_p95": 122.0, "return_mean": 10.0, "progress_fraction_mean": 1.0} errors=0
+colour 32 random {"success_rate": 0.0, "length_p95": 300.0, "return_mean": -0.665, "progress_fraction_mean": 0.08358333333333333} errors=0
+colour 48 oracle {"success_rate": 1.0, "length_p95": 138.0, "return_mean": 10.0, "progress_fraction_mean": 1.0} errors=0
+colour 48 random {"success_rate": 0.0, "length_p95": 300.0, "return_mean": -0.665, "progress_fraction_mean": 0.07041666666666666} errors=0
+colour 64 oracle {"success_rate": 1.0, "length_p95": 154.0, "return_mean": 10.0, "progress_fraction_mean": 1.0} errors=0
+colour 64 random {"success_rate": 0.0, "length_p95": 300.0, "return_mean": -0.605, "progress_fraction_mean": 0.06924999999999999} errors=0
+wrote C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym\analysis\stress_design\out\levels_colour_all.json

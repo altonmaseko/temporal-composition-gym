@@ -1,0 +1,11 @@
+delivery 8 oracle {"success_rate": 1.0, "length_p95": 33.0, "return_mean": 79.995, "progress_fraction_mean": 1.0} errors=0
+delivery 8 random {"success_rate": 0.0, "length_p95": 155.2999999999999, "return_mean": -46.69, "progress_fraction_mean": 0.1433333333333333} errors=0
+delivery 10 oracle {"success_rate": 1.0, "length_p95": 44.0, "return_mean": 79.98, "progress_fraction_mean": 1.0} errors=0
+delivery 10 random {"success_rate": 0.0, "length_p95": 97.04999999999998, "return_mean": -49.79, "progress_fraction_mean": 0.065} errors=0
+delivery 12 oracle {"success_rate": 1.0, "length_p95": 55.0, "return_mean": 79.99, "progress_fraction_mean": 1.0} errors=0
+delivery 12 random {"success_rate": 0.0, "length_p95": 127.24999999999991, "return_mean": -50.745, "progress_fraction_mean": 0.045} errors=0
+delivery 14 oracle {"success_rate": 1.0, "length_p95": 65.04999999999998, "return_mean": 79.995, "progress_fraction_mean": 1.0} errors=0
+delivery 14 random {"success_rate": 0.0, "length_p95": 147.09999999999997, "return_mean": -51.0, "progress_fraction_mean": 0.035} errors=0
+delivery 16 oracle {"success_rate": 1.0, "length_p95": 78.04999999999998, "return_mean": 80.0, "progress_fraction_mean": 1.0} errors=0
+delivery 16 random {"success_rate": 0.0, "length_p95": 134.5999999999998, "return_mean": -51.565, "progress_fraction_mean": 0.013333333333333332} errors=0
+wrote C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym\analysis\stress_design\out\levels_delivery_grid.json

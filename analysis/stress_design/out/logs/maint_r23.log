@@ -1,0 +1,4 @@
+maintenance [2, 3] oracle {"success_rate": 1.0, "length_p95": 2324.25, "return_mean": 1166.8435000000009, "progress_fraction_mean": 1.0} errors=0
+maintenance [2, 3] random {"success_rate": 0.0, "length_p95": 4000.0, "return_mean": -6059.60900000027, "progress_fraction_mean": 0.0} errors=0
+maintenance [2, 3] null {"success_rate": 0.0, "length_p95": 4000.0, "return_mean": -19824.26149999976, "progress_fraction_mean": 0.0} errors=0
+wrote C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym\analysis\stress_design\out\levels_maintenance_r23.json

@@ -1,0 +1,15 @@
+delivery 1 oracle {"success_rate": 1.0, "length_p95": 26.0, "return_mean": 59.995, "progress_fraction_mean": 1.0} errors=0
+delivery 1 random {"success_rate": 0.015, "length_p95": 107.14999999999995, "return_mean": -49.495, "progress_fraction_mean": 0.045} errors=0
+delivery 2 oracle {"success_rate": 1.0, "length_p95": 35.0, "return_mean": 70.0, "progress_fraction_mean": 1.0} errors=0
+delivery 2 random {"success_rate": 0.0, "length_p95": 132.44999999999985, "return_mean": -50.895, "progress_fraction_mean": 0.0425} errors=0
+delivery 3 oracle {"success_rate": 1.0, "length_p95": 44.0, "return_mean": 79.98, "progress_fraction_mean": 1.0} errors=0
+delivery 3 random {"success_rate": 0.0, "length_p95": 97.04999999999998, "return_mean": -49.79, "progress_fraction_mean": 0.065} errors=0
+delivery 4 oracle {"success_rate": 1.0, "length_p95": 53.0, "return_mean": 89.965, "progress_fraction_mean": 1.0} errors=0
+delivery 4 random {"success_rate": 0.0, "length_p95": 102.19999999999993, "return_mean": -48.865, "progress_fraction_mean": 0.0775} errors=0
+delivery 5 oracle {"success_rate": 1.0, "length_p95": 60.0, "return_mean": 99.99, "progress_fraction_mean": 1.0} errors=0
+delivery 5 random {"success_rate": 0.0, "length_p95": 102.04999999999998, "return_mean": -47.285, "progress_fraction_mean": 0.087} errors=0
+delivery 6 oracle {"success_rate": 1.0, "length_p95": 68.04999999999998, "return_mean": 109.965, "progress_fraction_mean": 1.0} errors=0
+delivery 6 random {"success_rate": 0.0, "length_p95": 114.14999999999995, "return_mean": -46.93, "progress_fraction_mean": 0.07333333333333332} errors=0
+delivery 7 oracle {"success_rate": 1.0, "length_p95": 74.04999999999998, "return_mean": 119.94, "progress_fraction_mean": 1.0} errors=0
+delivery 7 random {"success_rate": 0.0, "length_p95": 124.34999999999988, "return_mean": -44.395, "progress_fraction_mean": 0.10214285714285712} errors=0
+wrote C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym\analysis\stress_design\out\levels_delivery_all.json

@@ -1,0 +1,3 @@
+maintenance [2, 3] random {"success_rate": 0.0, "length_p95": 5000.0, "return_mean": -7541.55050000055, "progress_fraction_mean": 0.0} errors=0
+maintenance [2, 3] null {"success_rate": 0.0, "length_p95": 5000.0, "return_mean": -24847.761499998327, "progress_fraction_mean": 0.0} errors=0
+wrote C:\Users\alton\Desktop\School Work\Research Project Development\NEW-temporal-composition-gym\analysis\stress_design\out\levels_maintenance_r23_5k.json
