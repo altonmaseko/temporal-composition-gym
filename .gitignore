@@ -23,3 +23,6 @@ run_scripts/stress/results/**/logs/
 run_scripts/stress/results/v3/smoke/
 run_scripts/stress/results/r?????/
 run_scripts/stress/results/pf*/
+
+# Launch guides are filled in locally with SSH hosts, ports and keys: never commit them
+**/PRODUCTION_LAUNCH*.md
